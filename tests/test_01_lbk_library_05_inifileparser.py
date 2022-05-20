@@ -39,15 +39,10 @@ sample_ini = [
 
 def test_01_bare_constructor():
     """Test constructor with file name only, default for config_sub_dir"""
-    print("test-01")
     filename = "testfile.ini"
-    print("filename:", filename)
     default_dir = "testfile"
-    print("default_dir:", default_dir)
     default_config_dir = os.sep.join([os.environ["HOME"], ".config", default_dir])
-    print("default_config_dir:", default_config_dir)
     default_config_file = os.sep.join([default_config_dir, filename])
-    print("default_config_file:", default_config_file)
     parser = IniFileParser(filename)
     assert parser.config_file == default_config_file
     os.rmdir(default_config_dir)
@@ -55,15 +50,10 @@ def test_01_bare_constructor():
 
 def test_02_constructor():
     """Test constructor with file name and config_sub_dir"""
-    print("test-02")
     filename = "testfile.ini"
-    print("filename:", filename)
     config_sub_dir = "testfile"
-    print("config_sub_dir:", config_sub_dir)
     default_config_dir = os.sep.join([os.environ["HOME"], ".config", config_sub_dir])
-    print("default_config_dir:", default_config_dir)
     default_config_file = os.sep.join([default_config_dir, filename])
-    print("default_config_file:", default_config_file)
     parser = IniFileParser(filename, config_sub_dir)
     assert parser.config_file == default_config_file
     os.rmdir(default_config_dir)

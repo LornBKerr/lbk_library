@@ -20,7 +20,6 @@ License:    see License.txt
 import configparser
 import datetime
 import os
-import platform
 import re
 import sqlite3
 import sys
@@ -1708,13 +1707,19 @@ class IniFileParser:
         if not program_config_subdir:
             program_config_subdir = os.path.splitext(filename)[0]
 
-        # set the full path to the prgram config file directiory
-        if platform.system() == "Linux":
+        # set the full path to the program config file directiory
+        if sys.platform.startswith("linux"):
             config_dir = os.sep.join(
                 [os.environ["HOME"], ".config", program_config_subdir]
             )
-
-        # >>> Need Windows Variant
+        elif sys.platform.startswith("win"):
+            config_dir = os.sep.join(
+                [os.environ["HOME"], "AppData", "Local", program_config_subdir]
+            )
+        elif sys.platform.startswith("darwin"):
+            config_dir = os.sep.join(
+                [os.environ["HOME"], "Library", "Preferences", program_config_subdir]
+            )
 
         # if no path to config file, create path
         if not os.path.exists(config_dir):
