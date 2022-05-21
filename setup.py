@@ -15,7 +15,7 @@ with open(path.join(HERE, "README.md"), encoding="utf-8") as f:
 # This call to setup() does all the work
 setup(
     name="lbk_library",
-    version="0.3.3",
+    version="0.3.4",
     description="A Personal Project Support Library",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -33,7 +33,8 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Operating System :: POSIX :: Linux",
     ],
-    packages=["src/lbk_library"],
+    package_dir={"": "src"},
+    packages=["lbk_library"],
     include_package_data=True,
     install_requires=[],
 )
