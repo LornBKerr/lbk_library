@@ -237,7 +237,7 @@ def test_12_build_option_list(create_table):
     for entry_index in option_list:
         assert entry_index == str(i)
         i += 1
-
+    close_database(dbref)
 
 def test_13_iterator(create_table):
     dbref = create_table
@@ -254,7 +254,7 @@ def test_13_iterator(create_table):
     for row in element_set:
         assert row.get_entry_index() == i
         i += 1
-
+    close_database(dbref)
 
 def test_14_cleanup(open_database):
     dbref = open_database

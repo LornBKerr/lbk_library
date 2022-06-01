@@ -1672,18 +1672,18 @@ class IniFileParser:
     """
     Exposes the stored configuation file (*.ini) as a standard dict.
 
-    This uses the python configparser object to provide 2 simple methods
+    This uses the python 'configparser' object to provide 2 simple methods
     to read and write the full ini file. It initializes the config file
-    directories and reads, and writes ini files to and from the
+    directories and reads and writes ini files to and from the
     designated directories. For other needs, the full capabilities of
-    the configparser should be used.
+    the 'configparser' should be used.
 
-    It uses the standard Linux (Fedora) or Windows configuration
+    By default, it uses the standard Linux (Fedora) or Windows configuration
     locations.
     """
 
-    def __init__(self, filename: str, program_config_subdir: str = "") -> None:
-        r"""
+    def __init__(self, filename: str, program_config_subdir: str = "", config_dir: str = '') -> None:
+        """
         Initialize the configuration file parser.
 
         This sets the configuration file location in the standard config
@@ -1699,7 +1699,14 @@ class IniFileParser:
                 sub-directory of the config directory location for this
                 config file. Default is the empty string which
                 defaults to filename minus the suffix.
+            config_dir: (str) Used if the standard, platform dependent, config
+                directory location is not desired for ssome reason (testing
+                primarily)
         """
+        if not os.environ["HOME"]:
+            os.environ["HOME"] = Path.home()
+        print('os.environ["HOME"]', os.environ["HOME"])
+
         self.config_file: str = ""
         """The full path to the ini file """
 
@@ -1708,26 +1715,22 @@ class IniFileParser:
             program_config_subdir = os.path.splitext(filename)[0]
 
         # set the full path to the program config file directiory
-        if sys.platform.startswith("linux"):
-            config_dir = os.sep.join(
-                [os.environ["HOME"], ".config", program_config_subdir]
-            )
-        elif sys.platform.startswith("win"):
-            config_dir = os.sep.join(
-                [os.environ["HOME"], "AppData", "Local", program_config_subdir]
-            )
-        elif sys.platform.startswith("darwin"):
-            config_dir = os.sep.join(
-                [os.environ["HOME"], "Library", "Preferences", program_config_subdir]
-            )
+        if not config_dir:
+            if sys.platform.startswith("linux"):
+                config_dir = os.path.join(os.environ["HOME"], ".config", program_config_subdir
+                )
+            elif sys.platform.startswith("win"):
+                config_dir = os.path.join(os.environ["HOME"], "AppData", "Local", program_config_subdir)
+        else:
+            config_dir = os.path.join(config_dir, program_config_subdir)
 
         # if no path to config file, create path
         if not os.path.exists(config_dir):
             print(config_dir)
-            os.mkdir(config_dir, 0o744)
+            os.makedirs(config_dir, 0o744)
 
             # build the absolute file name.
-        self.config_file = os.sep.join([config_dir, filename])
+        self.config_file = os.path.join(config_dir, filename)
 
     # end __init()
 

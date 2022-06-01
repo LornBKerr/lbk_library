@@ -3,10 +3,13 @@
 import os
 import sys
 
-import pytest
+src_path = os.path.join(os.path.realpath('.'), 'src')
+print(src_path)
+if src_path not in sys.path:
+    sys.path.append(src_path)
+print(sys.path)
 
-if "/home/larry/development/lbk_library/src" not in sys.path:
-    sys.path.append("/home/larry/development/lbk_library/src")
+import pytest
 
 from lbk_library import Validate
 

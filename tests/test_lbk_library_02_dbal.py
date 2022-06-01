@@ -124,6 +124,7 @@ def test_10_sql_validate(dbal_open_database):
     assert dbref.sql_validate_value(10) == 10
     assert dbref.sql_validate_value(True) == 1
     assert dbref.sql_validate_value(False) == 0
+    close_database(dbref)
 
 
 def test_11_sql_fetchrow_none(dbal_open_database):
