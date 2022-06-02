@@ -239,6 +239,7 @@ def test_12_build_option_list(create_table):
         i += 1
     close_database(dbref)
 
+
 def test_13_iterator(create_table):
     dbref = create_table
     element = Element(dbref, "elements")
@@ -255,6 +256,7 @@ def test_13_iterator(create_table):
         assert row.get_entry_index() == i
         i += 1
     close_database(dbref)
+
 
 def test_14_cleanup(open_database):
     dbref = open_database

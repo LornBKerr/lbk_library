@@ -3,7 +3,7 @@
 import os
 import sys
 
-src_path = os.path.join(os.path.realpath('.'), 'src')
+src_path = os.path.join(os.path.realpath("."), "src")
 print(src_path)
 if src_path not in sys.path:
     sys.path.append(src_path)

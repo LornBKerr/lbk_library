@@ -1682,7 +1682,9 @@ class IniFileParser:
     locations.
     """
 
-    def __init__(self, filename: str, program_config_subdir: str = "", config_dir: str = '') -> None:
+    def __init__(
+        self, filename: str, program_config_subdir: str = "", config_dir: str = ""
+    ) -> None:
         """
         Initialize the configuration file parser.
 
@@ -1717,10 +1719,13 @@ class IniFileParser:
         # set the full path to the program config file directiory
         if not config_dir:
             if sys.platform.startswith("linux"):
-                config_dir = os.path.join(os.environ["HOME"], ".config", program_config_subdir
+                config_dir = os.path.join(
+                    os.environ["HOME"], ".config", program_config_subdir
                 )
             elif sys.platform.startswith("win"):
-                config_dir = os.path.join(os.environ["HOME"], "AppData", "Local", program_config_subdir)
+                config_dir = os.path.join(
+                    os.environ["HOME"], "AppData", "Local", program_config_subdir
+                )
         else:
             config_dir = os.path.join(config_dir, program_config_subdir)
 
