@@ -1705,9 +1705,7 @@ class IniFileParser:
                 directory location is not desired for ssome reason (testing
                 primarily)
         """
-        if not os.environ["HOME"]:
-            os.environ["HOME"] = Path.home()
-        print('os.environ["HOME"]', os.environ["HOME"])
+        home_dir = os.path.expanduser("~")
 
         self.config_file: str = ""
         """The full path to the ini file """
@@ -1719,12 +1717,10 @@ class IniFileParser:
         # set the full path to the program config file directiory
         if not config_dir:
             if sys.platform.startswith("linux"):
-                config_dir = os.path.join(
-                    os.environ["HOME"], ".config", program_config_subdir
-                )
+                config_dir = os.path.join(home_dir, ".config", program_config_subdir)
             elif sys.platform.startswith("win"):
                 config_dir = os.path.join(
-                    os.environ["HOME"], "AppData", "Local", program_config_subdir
+                    home_dir, "AppData", "Roaming", program_config_subdir
                 )
         else:
             config_dir = os.path.join(config_dir, program_config_subdir)

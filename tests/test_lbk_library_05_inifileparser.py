@@ -32,7 +32,6 @@ if SRC_DIR not in sys.path:
 
 from lbk_library import IniFileParser
 
-
 sample_config = {
     "section_1": {
         "data_1": "10",
@@ -40,7 +39,8 @@ sample_config = {
     },
     "section_2": {"data_3": "10.5", "data_4": "name", "data_5": "True"},
     "section_3": {},
- }
+}
+
 
 def test_00_test_locations():
     print("home =    ", HOME)
@@ -52,6 +52,7 @@ def test_00_test_locations():
 
     assert 1
 
+
 def test_01_bare_constructor():
     """Test constructor with file name only, default for config_sub_dir"""
     filename = "testfile.ini"
@@ -61,7 +62,10 @@ def test_01_bare_constructor():
     parser = IniFileParser(filename)
     assert parser.config_file == default_config_file
     os.rmdir(default_config_dir)
+
+
 # end test_01_bare_constructor()
+
 
 def test_02_constructor():
     """Test constructor with file name and config_sub_dir"""
@@ -72,7 +76,10 @@ def test_02_constructor():
     parser = IniFileParser(filename, config_sub_dir)
     assert parser.config_file == default_config_file
     os.rmdir(default_config_dir)
+
+
 # end test_02_constructor()
+
 
 def test_03_constructor():
     """
@@ -87,7 +94,10 @@ def test_03_constructor():
     parser = IniFileParser(filename, config_sub_dir, BASE_DIR)
     assert parser.config_file == test_config_file
     os.rmdir(test_config_dir)
+
+
 # end test_03_constructor()
+
 
 def test_04_read_empty_config():
     # File name, subdirectory, and config_dir
@@ -100,7 +110,10 @@ def test_04_read_empty_config():
     assert isinstance(config, dict)
     assert len(config) == 0
     os.rmdir(config_dir)
+
+
 # end test_04_read_empty_config()
+
 
 def test_05_write_empty_config():
     filename = "testfile.ini"
@@ -120,7 +133,10 @@ def test_05_write_empty_config():
     # cleanup
     os.remove(parser.config_file)
     os.rmdir(config_dir)
+
+
 # end test_05_write_empty_config()
+
 
 def test_06_write_config():
     # Write sample config file from a dict to local directory
@@ -138,6 +154,8 @@ def test_06_write_config():
     assert config == sample_config
     os.remove(parser.config_file)
     os.rmdir(config_dir)
+
+
 # end test_06_write_config()
 
 # end testlbk_library_05_inifileparser.py
