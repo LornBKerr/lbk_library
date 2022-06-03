@@ -30,9 +30,8 @@ def open_database():
 
 
 @pytest.fixture
-def create_table():
-    dbref = Dbal()
-    dbref.sql_connect(database)
+def create_table(open_database):
+    dbref = open_database
     dbref.sql_query("DROP TABLE IF EXISTS 'elements'")
     create_table = (
         'CREATE TABLE IF NOT EXISTS "elements"'
@@ -56,11 +55,17 @@ def test_01_new_database(create_table):
     close_database(dbref)
 
 
+# end test_01_new_database()
+
+
 def test_02_element_constr(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
     assert isinstance(element, Element)
     close_database(dbref)
+
+
+# end test_02_element_constr()
 
 
 def test_03_element_get_dbref(open_database):
@@ -70,6 +75,9 @@ def test_03_element_get_dbref(open_database):
     close_database(dbref)
 
 
+# end test_03_element_get_dbref()
+
+
 def test_04_element_get_table(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
@@ -77,11 +85,17 @@ def test_04_element_get_table(open_database):
     close_database(dbref)
 
 
+# end test_04_element_get_table()
+
+
 def test_05_element_get_validate(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
     assert isinstance(element._validate, Validate)
     close_database(dbref)
+
+
+# end test_05_element_get_validate()
 
 
 def test_06_element_get_set_initial_values(open_database):
@@ -192,6 +206,10 @@ def test_12_is_element_valid(open_database):
         value = element.is_element_valid()
     exc_raised = exc_info.value
     assert exc_info.typename == "KeyError"
+    close_database(dbref)
+
+
+# end test_12_is_element_valid()
 
 
 def test_13_update_property_flags(open_database):
@@ -238,7 +256,6 @@ def test_14_named_get_value(open_database):
     assert element.get_entry_index() == 0
     element._set_property("remarks", None)
     assert element.get_remarks() == ""
-    close_database(dbref)
 
     element._set_property("entry_index", 10)
     assert element.get_entry_index() == 10

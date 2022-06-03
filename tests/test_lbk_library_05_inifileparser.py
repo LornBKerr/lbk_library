@@ -11,6 +11,7 @@ import sys
 HOME = os.path.expanduser("~")
 BASE_DIR = os.path.abspath(".")
 SRC_DIR = os.path.join(BASE_DIR, "src")
+CONFIG_DIR = ""
 
 if sys.platform.startswith("linux"):
     if "XDG_CONFIG_HOME" in os.environ:
@@ -20,9 +21,9 @@ if sys.platform.startswith("linux"):
 
 elif sys.platform.startswith("win"):
     if "APPDATA" in os.environ:
-        CONFIG_DIR = os.path.join(os.environ["APPDATA"], "lbk_library")
+        CONFIG_DIR = os.path.join(os.environ["APPDATA"])
     else:
-        CONFIG_DIRT = os.path.join(HOME, "AppData", "Roaming", "lbk_library")
+        CONFIG_DIR = os.path.join(HOME, "AppData", "Roaming")
 
 # make sure the source dir is on the path.
 if SRC_DIR not in sys.path:
@@ -40,17 +41,6 @@ sample_config = {
     "section_2": {"data_3": "10.5", "data_4": "name", "data_5": "True"},
     "section_3": {},
 }
-
-
-def test_00_test_locations():
-    print("home =    ", HOME)
-    print("base dir =", BASE_DIR)
-    print("src dir = ", SRC_DIR)
-    print("config dir =", CONFIG_DIR)
-    print("sys path:")
-    print(sys.path)
-
-    assert 1
 
 
 def test_01_bare_constructor():
