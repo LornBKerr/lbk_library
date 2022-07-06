@@ -222,7 +222,6 @@ def test_18_sql_query_from_array_select(open_create_table):
     query_insert = {"type": "insert", "table": "test_table"}
     sql = dbref.sql_query_from_array(query_insert, value_set)
     result = dbref.sql_query(sql, value_set)
-    assert result
 
     query_select = {"type": "select", "table": "test_table", "columns": "*"}
     sql = dbref.sql_query_from_array(query_select)

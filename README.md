@@ -32,5 +32,6 @@ or optional.
 
 The **IniFileParser** exposes a stored configuation file (*.ini) as a standard
 python dict object using the python configparser library. it provides 2
-simple methods to read and write the full ini file. It uses the standard
+simple methods to read and write the full ini file and provides a method
+to get the config file directory path. It uses the standard
 Linux or Windows 10/11 configuration file locations.

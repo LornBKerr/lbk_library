@@ -1727,7 +1727,6 @@ class IniFileParser:
 
         # if no path to config file, create path
         if not os.path.exists(config_dir):
-            print(config_dir)
             os.makedirs(config_dir, 0o744)
 
             # build the absolute file name.
@@ -1772,6 +1771,17 @@ class IniFileParser:
         config_parser.write(open(self.config_file, "w"))
 
     # end write_config()
+
+    def config_path(self) -> str:
+        """
+        Provide the absolute path to the config file
+
+        Returns:
+            (str) The absolute path to the config file.
+        """
+        return self.config_file
+
+    # end config_path()
 
 
 # end class IniFileParser
