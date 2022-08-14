@@ -1,0 +1,12 @@
+# Requirements file for lbk_library virtual environment
+
+--extra-index-url https://test.pypi.org/simple/
+
+
+# Testing Requirements
+pytest
+pytest_cover
+coverage
+tox
+
+
