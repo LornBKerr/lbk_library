@@ -1720,7 +1720,7 @@ class IniFileParser:
                 config_dir = os.path.join(home_dir, ".config", program_config_subdir)
             elif sys.platform.startswith("win"):
                 config_dir = os.path.join(
-                    home_dir, "AppData", "Roaming", program_config_subdir
+                    home_dir, "AppData", "Local", program_config_subdir
                 )
         else:
             config_dir = os.path.join(config_dir, program_config_subdir)
