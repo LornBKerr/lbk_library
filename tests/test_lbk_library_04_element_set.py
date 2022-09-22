@@ -45,7 +45,7 @@ def create_table():
     dbref.sql_query("DROP TABLE IF EXISTS 'elements'")
     create_table = (
         'CREATE TABLE IF NOT EXISTS "elements"'
-        + '("entry_index" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
+        + '("record_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
         + ' "remarks" TEXT DEFAULT NULL)'
     )
     dbref.sql_query(create_table)
@@ -102,7 +102,7 @@ def test_06_ElementSet_get_properties_type(open_database):
 def test_07_Element_set_constructor(create_table):
     dbref = create_table
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(dbref, element_values)
@@ -113,22 +113,22 @@ def test_07_Element_set_constructor(create_table):
     assert len(properties) == 5
     for i in range(5):
         element = properties[i]
-        assert element.get_entry_index() == i + 1
+        assert element.get_record_id() == i + 1
     assert element_set.get_number_elements() == len(properties)
 
     # text_element_set_constructor_columns
-    element_set = ElementSet(dbref, "elements", Element, "entry_index", 3)
+    element_set = ElementSet(dbref, "elements", Element, "record_id", 3)
     properties = element_set.get_property_set()
     assert len(properties) == 1
     assert isinstance(properties, list)
-    assert properties[0].get_entry_index() == 3
+    assert properties[0].get_record_id() == 3
 
     # order by clause
     element_set = ElementSet(dbref, "elements", Element, None, None, "remarks")
     properties = element_set.get_property_set()
     for i in range(5):
         assert properties[i].get_remarks() == "Remark # " + str(i + 1)
-    element_set = ElementSet(dbref, "elements", Element, None, None, "entry_index")
+    element_set = ElementSet(dbref, "elements", Element, None, None, "record_id")
     properties = element_set.get_property_set()
     for i in range(5):
         assert properties[i].get_remarks() == "Remark # " + str(5 - i)
@@ -140,14 +140,14 @@ def test_07_Element_set_constructor(create_table):
     element_set = ElementSet(dbref, "elements", Element, None, None, None, 3, 1)
     properties = element_set.get_property_set()
     assert element_set.get_number_elements() == 3
-    assert properties[0].get_entry_index() == 2
+    assert properties[0].get_record_id() == 2
     close_database(dbref)
 
 
 def test_08_insert_element(create_table):
     dbref = create_table
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(dbref, element_values)
@@ -155,7 +155,7 @@ def test_08_insert_element(create_table):
     element_set = ElementSet(dbref, "elements", Element)
     length = element_set.get_number_elements()
     assert length == len(element_set.get_property_set())
-    new_values = {"entry_index": 0, "remarks": "Remark # 6"}
+    new_values = {"record_id": 0, "remarks": "Remark # 6"}
     element = new_element(dbref, new_values)
     element_set.insert(length, element)
     assert length + 1 == len(element_set.get_property_set())
@@ -166,7 +166,7 @@ def test_08_insert_element(create_table):
 def test_09_append_element(create_table):
     dbref = create_table
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(dbref, element_values)
@@ -174,7 +174,7 @@ def test_09_append_element(create_table):
     element_set = ElementSet(dbref, "elements", Element)
     length = element_set.get_number_elements()
     assert length == len(element_set.get_property_set())
-    new_values = {"entry_index": 0, "remarks": "Remark # 6"}
+    new_values = {"record_id": 0, "remarks": "Remark # 6"}
     element = new_element(dbref, new_values)
     element_set.append(element)
     assert length + 1 == len(element_set.get_property_set())
@@ -185,7 +185,7 @@ def test_09_append_element(create_table):
 def test_10_get_element(create_table):
     dbref = create_table
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(dbref, element_values)
@@ -195,7 +195,7 @@ def test_10_get_element(create_table):
     assert length == len(element_set.get_property_set())
     third_element_index = 2
     third_element = element_set.get(third_element_index)
-    assert third_element.get_entry_index() == 3
+    assert third_element.get_record_id() == 3
     close_database(dbref)
 
 
@@ -203,7 +203,7 @@ def test_11_delete_element(create_table):
     dbref = create_table
     length = 5
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(length):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(dbref, element_values)
@@ -214,14 +214,14 @@ def test_11_delete_element(create_table):
     element_set.delete(third_element_index)
     new_set = element_set.get_property_set()
     assert len(new_set) == length - 1
-    assert new_set[third_element_index].get_entry_index() == 4
+    assert new_set[third_element_index].get_record_id() == 4
     close_database(dbref)
 
 
 def test_12_build_option_list(create_table):
     dbref = create_table
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     number_elements = 5
     for i in range(number_elements):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
@@ -231,11 +231,11 @@ def test_12_build_option_list(create_table):
     properties = element_set.get_property_set()
     assert len(properties) == number_elements
     # build an option list
-    option_list = element_set.build_option_list("entry_index")
+    option_list = element_set.build_option_list("record_id")
     assert len(option_list) == 5
     i = 1
-    for entry_index in option_list:
-        assert entry_index == str(i)
+    for record_id in option_list:
+        assert record_id == str(i)
         i += 1
     close_database(dbref)
 
@@ -244,7 +244,7 @@ def test_13_iterator(create_table):
     dbref = create_table
     element = Element(dbref, "elements")
     remark = "Remark # "
-    element_values = {"entry_index": 1, "remarks": remark}
+    element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element.set_initial_values(element_values)
@@ -253,7 +253,7 @@ def test_13_iterator(create_table):
     element_set = ElementSet(dbref, "elements", Element)
     i = 1
     for row in element_set:
-        assert row.get_entry_index() == i
+        assert row.get_record_id() == i
         i += 1
     close_database(dbref)
 

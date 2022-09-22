@@ -39,7 +39,7 @@ def open_create_table():
     dbref.sql_query("DROP TABLE IF EXISTS 'test_table'")
     create_table = (
         'CREATE TABLE IF NOT EXISTS "test_table"'
-        + '("entry_index" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
+        + '("record_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
         + ' "remarks" TEXT DEFAULT NULL,'
         + ' "installed" BOOLEAN)'
     )
@@ -182,9 +182,9 @@ def test_16_sql_query_from_array_delete(open_create_table):
 
     # good delete
     query = {"type": "delete", "table": "test_table"}
-    query["where"] = "entry_index = " + str(index)
+    query["where"] = "record_id = " + str(index)
     sql_delete = dbref.sql_query_from_array(query)
-    assert sql_delete == "DELETE FROM test_table WHERE entry_index = 1"
+    assert sql_delete == "DELETE FROM test_table WHERE record_id = 1"
     result = dbref.sql_query(sql_delete)
     assert result
 
@@ -209,7 +209,7 @@ def test_17_sql_query_from_array_update(open_create_table):
     index = dbref.sql_nextid(result)
     value_set["installed"] = True
     query = {"type": "update", "table": "test_table"}
-    query["where"] = "entry_index = " + str(index)
+    query["where"] = "record_id = " + str(index)
     sql = dbref.sql_query_from_array(query, value_set)
     result = dbref.sql_query(sql, value_set)
     assert result
@@ -228,7 +228,7 @@ def test_18_sql_query_from_array_select(open_create_table):
     result = dbref.sql_query(sql, value_set)
     assert result
     new_row = dbref.sql_fetchrow(result)
-    assert new_row["entry_index"] == 1
+    assert new_row["record_id"] == 1
     assert new_row["remarks"] == value_set["remarks"]
     assert new_row["installed"] == value_set["installed"]
     query_select = {"type": "select", "table": "test_table", "keys": "[*]"}
@@ -241,14 +241,14 @@ def test_18_sql_query_from_array_select(open_create_table):
     query_select = {
         "type": "select",
         "table": "test_table",
-        "columns": ["entry_index", "remarks", "installed"],
+        "columns": ["record_id", "remarks", "installed"],
     }
     sql = dbref.sql_query_from_array(query_select)
     result = dbref.sql_query(sql)
     assert result
 
     new_row = dbref.sql_fetchrow(result)
-    assert new_row["entry_index"] == 1
+    assert new_row["record_id"] == 1
     assert new_row["remarks"] == value_set["remarks"]
     assert new_row["installed"] == value_set["installed"]
     assert len(new_row) == 3
@@ -265,20 +265,20 @@ def test_18_sql_query_from_array_select(open_create_table):
     query_select = {
         "type": "select",
         "table": "test_table",
-        "columns": ["entry_index", "remarks", "installed"],
-        "order_by": "entry_index DESC",
+        "columns": ["record_id", "remarks", "installed"],
+        "order_by": "record_id DESC",
     }
     sql = dbref.sql_query_from_array(query_select)
     result = dbref.sql_query(sql, value_set)
     assert result
     new_rows = dbref.sql_fetchrowset(result)
     assert len(new_rows) == 2
-    assert new_rows[1]["entry_index"] < new_rows[0]["entry_index"]
+    assert new_rows[1]["record_id"] < new_rows[0]["record_id"]
 
     query_select = {
         "type": "select",
         "table": "test_table",
-        "columns": ["entry_index", "remarks", "installed"],
+        "columns": ["record_id", "remarks", "installed"],
         "limit": ["1"],
     }
     sql = dbref.sql_query_from_array(query_select)
@@ -286,12 +286,12 @@ def test_18_sql_query_from_array_select(open_create_table):
     assert result
     new_rows = dbref.sql_fetchrowset(result)
     assert len(new_rows) == 1
-    assert new_rows[0]["entry_index"] == 1
+    assert new_rows[0]["record_id"] == 1
 
     query_select = {
         "type": "select",
         "table": "test_table",
-        "columns": ["entry_index", "remarks", "installed"],
+        "columns": ["record_id", "remarks", "installed"],
         "limit": ["1", "1"],
     }
     sql = dbref.sql_query_from_array(query_select)
@@ -299,14 +299,14 @@ def test_18_sql_query_from_array_select(open_create_table):
     assert result
     new_rows = dbref.sql_fetchrowset(result)
     assert len(new_rows) == 1
-    assert new_rows[0]["entry_index"] == 2
+    assert new_rows[0]["record_id"] == 2
 
-    query_select = {"type": "select", "table": "test_table", "where": "entry_index = 2"}
+    query_select = {"type": "select", "table": "test_table", "where": "record_id = 2"}
     sql = dbref.sql_query_from_array(query_select)
     result = dbref.sql_query(sql)
     assert result
     new_row = dbref.sql_fetchrow(result)
-    assert new_row["entry_index"] == 2
+    assert new_row["record_id"] == 2
     close_database(dbref)
 
 

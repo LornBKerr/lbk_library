@@ -438,7 +438,7 @@ class Dbal:
         # set clause
         set_list = []
         for key in value_set.keys():
-            if key != "entry_index":
+            if key != "record_id":
                 set_list.append(key + " = " + ":" + key)
         sql += ", ".join(set_list)
         # where clause
@@ -482,13 +482,13 @@ class Element:
                 values.
             default_values: (dict[str, Any]) the set of default values
                 for this element, default is None. If not given,
-                built-in defaults of {'entry_index': 0, 'remarks': ''}
+                built-in defaults of {'record_id': 0, 'remarks': ''}
                 will be used.
         """
         self._validate: Validate = Validate()
         """ reference to the Validate class for value validation """
 
-        self._defaults: dict[str, Any] = {"entry_index": 0, "remarks": ""}
+        self._defaults: dict[str, Any] = {"record_id": 0, "remarks": ""}
         """ Default values for the Element """
         self.__dbref: Dbal = dbref
         """ The database instance to use """
@@ -560,7 +560,7 @@ class Element:
         """
         return_value = False
         property_set = self.get_properties()
-        del property_set["entry_index"]  # new entry id will be assigned
+        del property_set["record_id"]  # new entry id will be assigned
         query = {
             "type": "insert",
             "table": self.get_table(),
@@ -569,7 +569,7 @@ class Element:
         result = self.get_dbref().sql_query(sql, property_set)
         if result:
             return_value = self.__dbref.sql_nextid(result)
-            property_set["entry_index"] = return_value
+            property_set["record_id"] = return_value
 
         return return_value
 
@@ -579,7 +579,7 @@ class Element:
         """
         Delete an element from the database.
 
-        This always uses the entry_index column and value to identify
+        This always uses the record_id column and value to identify
         the record to delete.
 
         Returns:
@@ -589,7 +589,7 @@ class Element:
         query = {
             "type": "delete",
             "table": self.get_table(),
-            "where": "entry_index =" + str(self.get_entry_index()),
+            "where": "record_id =" + str(self.get_record_id()),
         }
         sql = self.__dbref.sql_query_from_array(query, [])
         result = self.get_dbref().sql_query(sql, [])
@@ -603,18 +603,18 @@ class Element:
         """
         Update an element in the database.
 
-        This always uses the entry_index column and value to identify
+        This always uses the record_id column and value to identify
         the record to update.
 
         Returns:
             (bool) True if the update was successful, False if not.
         """
         return_value = False
-        # get the values to set, assume all but 'entry_index'
+        # get the values to set, assume all but 'record_id'
         property_set = self.get_properties()
         # query the database
         query = {"type": "update", "table": self.get_table()}
-        query["where"] = "entry_index = " + str(property_set["entry_index"])
+        query["where"] = "record_id = " + str(property_set["record_id"])
         sql = self.get_dbref().sql_query_from_array(query, property_set)
         result = self.get_dbref().sql_query(sql, property_set)
         if result:
@@ -640,7 +640,7 @@ class Element:
 
         This must be overridden and called by the child class to handle
         the full set of properties. This method sets the common
-        properties 'entry_index' (contained in all Elements) and
+        properties 'record_id' (contained in all Elements) and
         'remarks' (contained in many Elements).
 
         Each property is validated for type and value within an
@@ -655,8 +655,8 @@ class Element:
         """
         if properties is not None and isinstance(properties, dict):
             for key in properties.keys():
-                if key == "entry_index":
-                    self.set_entry_index(properties[key])
+                if key == "record_id":
+                    self.set_record_id(properties[key])
                 elif key == "remarks":
                     self.set_remarks(properties[key])
 
@@ -693,48 +693,48 @@ class Element:
 
     # end _set_property()
 
-    def get_entry_index(self) -> int:
+    def get_record_id(self) -> int:
         """
-        Get the Elements's entry_index.
+        Get the Elements's record_id.
 
         Returns:
-            (int) The Elements's entry_index or 0 if no entry_index is
+            (int) The Elements's record_id or 0 if no record_id is
                 assigned
         """
-        entry_index = self._get_property("entry_index")
-        if entry_index is None:
-            entry_index = self._defaults["entry_index"]
-        return entry_index
+        record_id = self._get_property("record_id")
+        if record_id is None:
+            record_id = self._defaults["record_id"]
+        return record_id
 
-    # end get_entry_index()
+    # end get_record_id()
 
-    def set_entry_index(self, entry_index: int) -> dict[str, Any]:
+    def set_record_id(self, record_id: int) -> dict[str, Any]:
         """
         Set the Element's entry index.
 
         Parameters:
-            entry_index: (int)  the new entry_index for the Element.
+            record_id: (int)  the new record_id for the Element.
                 Must be an integer greater than 0 and must be unique
                 when Element is stored to the database (not checked).
-                If the supplied entry_index is not valid, the
-                entry_index is set to __defaults['entry_index'].
+                If the supplied record_id is not valid, the
+                record_id is set to __defaults['record_id'].
 
         Returns:
             (dict)<br>&emsp;&emsp;['entry'] - (int) the updated
-                entry_index
+                record_id
             <br>&emsp;&emsp;['valid'] - (bool) True if the operation
                 suceeded, False otherwise
             <br>&emsp;&emsp;['msg'] - (str) Error message if not valid
         """
-        result = self._validate.integer_field(entry_index, self._validate.REQUIRED, 1)
+        result = self._validate.integer_field(record_id, self._validate.REQUIRED, 1)
         if result["valid"]:
-            self._set_property("entry_index", result["entry"])
+            self._set_property("record_id", result["entry"])
         else:
-            self._set_property("entry_index", self._defaults["entry_index"])
-        self.update_property_flags("entry_index", result["entry"], result["valid"])
+            self._set_property("record_id", self._defaults["record_id"])
+        self.update_property_flags("record_id", result["entry"], result["valid"])
         return result
 
-    # end set_entry_index()
+    # end set_record_id()
 
     def get_remarks(self) -> str:
         """
@@ -818,7 +818,7 @@ class Element:
         Set the initial settings for the element entries.
 
         The initial values are set. The changed flags are initialized
-        to false. If the entry_index is an integer greater than 0, the
+        to false. If the record_id is an integer greater than 0, the
         valid flags are initialized to True, otherwise, False.
 
         Parameters:
