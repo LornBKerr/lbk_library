@@ -1,13 +1,13 @@
 # command --> pytest --cov-report term-missing --cov=lbk_library ../tests/
 
-
 import os
 import sys
 
-import pytest
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
-if "/home/larry/development/lbk_library/src" not in sys.path:
-    sys.path.append("/home/larry/development/lbk_library/src")
+import pytest
 
 from lbk_library import Dbal, Element, Validate
 
@@ -91,7 +91,7 @@ def test_04_element_get_table(open_database):
 def test_05_element_get_validate(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
-    assert isinstance(element._validate, Validate)
+    assert isinstance(element.validate, Validate)
     close_database(dbref)
 
 

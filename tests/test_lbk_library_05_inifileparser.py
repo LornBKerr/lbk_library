@@ -4,7 +4,6 @@
 
 import os
 
-##from pathlib import Path
 import sys
 
 # define the basic directory locations that are os specific for Linux and Windows
@@ -28,8 +27,6 @@ elif sys.platform.startswith("win"):
 # make sure the source dir is on the path.
 if SRC_DIR not in sys.path:
     sys.path.insert(1, SRC_DIR)
-
-# import pytest
 
 from lbk_library import IniFileParser
 

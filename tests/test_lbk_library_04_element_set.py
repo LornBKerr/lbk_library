@@ -4,12 +4,13 @@
 import os
 import sys
 
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
+
 import pytest
 
-if "/home/larry/development/lbk_library/src" not in sys.path:
-    sys.path.append("/home/larry/development/lbk_library/src")
-
-from lbk_library import Dbal, Element, ElementSet
+from lbk_library import Dbal, Element, ElementSet, Validate
 
 database = "./test.db"
 
