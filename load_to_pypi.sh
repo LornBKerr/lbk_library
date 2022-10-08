@@ -1,5 +1,14 @@
 #! /bin/bash
 
+# ##############################################################
+# Build a PyPi distribution package for the lbk_library package.
+#
+# File:       load_to_pypi.sh
+# Author:     Lorn B Kerr
+# Copyright:  (c) 2022 Lorn B Kerr
+# License:    MIT, see file License
+# ##############################################################
+
 # Got to directory and start virtual enviroment
 cd ~/development/lbk_library
 source ~/development/lbk_library/.venv/bin/activate
@@ -16,8 +25,6 @@ fi
 if [[ -d ./src/lbk_library.egg-info ]]
 then
     rm -rfdv ./src//lbk_library.egg-info
-else
-    echo 'No egg info'
 fi
 
 # load required files to venv
