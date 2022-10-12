@@ -11,21 +11,19 @@ import pytest
 
 from lbk_library import Dbal, Element, Validate
 
-database = "./test.db"
+database = "test.db"
 
 
 def close_database(dbref):
     dbref.sql_close()
 
 
-def delete_database():
-    os.remove(database)
-
-
 @pytest.fixture
-def open_database():
+def open_database(tmpdir):
+    path = tmpdir.join(database)
     dbref = Dbal()
-    dbref.sql_connect(database)
+    # valid connection
+    dbref.sql_connect(path)
     return dbref
 
 
@@ -378,7 +376,6 @@ def test_20_cleanup(open_database):
     result = dbref.sql_query("DROP TABLE IF EXISTS 'elements'")
     assert result
     close_database(dbref)
-    delete_database()
 
 
 # end lbk_library_03_element.py
