@@ -1,4 +1,5 @@
-# command --> pytest --cov-report term-missing --cov=lbk_library tests/
+# command --> pytest --cov-report term-missing --cov=lbk_library ./tests/
+#   run from parent directory for 'src' and 'tests'.
 
 """ Test file for lbk_library Dbal Object"""
 
@@ -14,29 +15,33 @@ import pytest
 
 from lbk_library import Dbal
 
-database = "./test.db"
+database = "test.db"
 
+create_table = (
+    'CREATE TABLE IF NOT EXISTS "test_table"'
+    + '("record_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
+    + ' "remarks" TEXT DEFAULT NULL,'
+    + ' "installed" BOOLEAN)'
+)
 
 def close_database(dbref):
     dbref.sql_close()
 
 
-def delete_database():
-    os.remove(database)
-
-
 @pytest.fixture
-def dbal_open_database():
+def dbal_open_database(tmpdir):
+    path = tmpdir.join(database)
     dbref = Dbal()
     # valid connection
-    dbref.sql_connect(database)
+    dbref.sql_connect(path)
     return dbref
 
 
 @pytest.fixture
-def open_create_table():
+def open_create_table(tmpdir):
+    path = tmpdir.join(database)
     dbref = Dbal()
-    dbref.sql_connect(database)
+    dbref.sql_connect(path)
     dbref.sql_query("DROP TABLE IF EXISTS 'test_table'")
     create_table = (
         'CREATE TABLE IF NOT EXISTS "test_table"'
@@ -46,6 +51,10 @@ def open_create_table():
     )
     dbref.sql_query(create_table)
     return dbref
+
+
+def close_database(dbref):
+    dbref.sql_close()
 
 
 def test_01_dbal_constructor():
@@ -120,7 +129,7 @@ def test_09_sql_nextid_none(dbal_open_database):
 
 def test_10_sql_validate(dbal_open_database):
     dbref = dbal_open_database
-    assert dbref.sql_validate_value(None) == None
+    assert dbref.sql_validate_value(None) is None
     assert dbref.sql_validate_value("test") == "'test'"
     assert dbref.sql_validate_value(10) == 10
     assert dbref.sql_validate_value(True) == 1
@@ -311,12 +320,29 @@ def test_18_sql_query_from_array_select(open_create_table):
     close_database(dbref)
 
 
-def test_19_cleanup(dbal_open_database):
-    dbref = dbal_open_database
-    result = dbref.sql_query("DROP TABLE IF EXISTS 'test_table'")
-    assert result
-    close_database(dbref)
-    delete_database()
+def test_19_new_db_file(tmpdir):
+    # create a new database with the given name and table structure.
+    path = tmpdir.mkdir("new_database").join("test.db")
+    Dbal.new_file(path, [create_table])
+    assert os.path.exists(path)
+
+    dbref = Dbal()
+    dbref.sql_connect(path)
+    assert dbref.sql_is_connected()
+
+    query = "SELECT name FROM  sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
+    result = dbref.sql_query(query)
+    table_names = dbref.sql_fetchrowset(result)
+    assert len(table_names) == 1
+    assert table_names[0]["name"] == "test_table"
+
+    query = "PRAGMA table_info('test_table');"
+    result = dbref.sql_query(query)
+    column_names = dbref.sql_fetchrowset(result)
+    print(column_names)
+    expected_names = ["record_id", "remarks", "installed"]
+    for col in column_names:
+        assert col["name"] in expected_names
 
 
 # end lbk_library_02_dbal.py
