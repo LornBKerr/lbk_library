@@ -13,6 +13,7 @@ from typing import Any
 from .dbal import Dbal
 from .validate import Validate
 
+
 class Element:
     """
     This is the base class for types of information in the database.
@@ -510,5 +511,5 @@ class Element:
         self.__properties_valid.clear()
         # end clear_value_valid_flags()
 
-# end Class Element
 
+# end Class Element
