@@ -1,16 +1,16 @@
 """
-Implement a Database Abstraction Layer Implementation.
+Implement a Database Abstraction Layer.
 
 File:       dbal.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022 Lorn B Kerr
-License:    see License.txt
+License:    MIT, see file License
 """
 
 import sqlite3
 from traceback import print_exc
-from typing import Any, Union
-    
+from typing import Any
+
 
 class Dbal:
     """
@@ -22,6 +22,24 @@ class Dbal:
     This is inspired by and modeled on the Dbal of PHPBB3, much
     simplified and implemented in python.
     """
+
+    @classmethod
+    def new_file(cls, filename: str, sql_statements: list[str]) -> None:
+        """
+        Create and initialize the new database File.
+
+        Parameters:
+            filename (str): full path to the database file to be created.
+            sql_statements (list[str]): the sql definition of the
+                database as alist of one or more SQL commands.
+        """
+        dbref = Dbal()
+        dbref.sql_connect(filename)
+        for sql in sql_statements:
+            dbref.sql_query(sql)
+        dbref.sql_close()
+
+        # end new_file()
 
     def __init__(self) -> None:
         """Create a new Dbal object."""
@@ -67,6 +85,7 @@ class Dbal:
             # ignored for existing databases.
             self.sql_query('PRAGMA encoding = "UTF-8"', [])
         return return_value
+
         # end sql_connect()
 
     def sql_query(self, query: str, values: dict = {}) -> sqlite3.Cursor:
@@ -96,6 +115,7 @@ class Dbal:
             self._sql_error(query)
             raise sqlite3.OperationalError
         return query_result
+
         # end sql_query()
 
     def _sql_error(self, sql_text: str = "") -> None:
@@ -107,6 +127,7 @@ class Dbal:
         """
         print(sql_text)
         print_exc()
+
         # end _sql_error()
 
     def sql_close(self) -> None:
@@ -124,6 +145,7 @@ class Dbal:
             (bool) True if connected, False if not
         """
         return bool(self.__connection)
+
         # end is_connected()
 
     def sql_validate_value(self, var: Any) -> Any:
@@ -147,6 +169,7 @@ class Dbal:
         else:
             return_value = var
         return return_value
+
         # end sql_validate_value()
 
     def sql_nextid(self, query_result: sqlite3.Cursor) -> int:
@@ -167,6 +190,7 @@ class Dbal:
         if query_result:
             nextid = query_result.lastrowid
         return nextid
+
         # end sql_nextid()
 
     def sql_fetchrow(self, query_result: sqlite3.Cursor) -> dict:
@@ -185,6 +209,7 @@ class Dbal:
         if query_result:
             row = query_result.fetchone()
         return row
+
         # end sql_fetchrow()
 
     def sql_fetchrowset(self, query_result: sqlite3.Cursor) -> list:
@@ -204,6 +229,7 @@ class Dbal:
         if query_result:
             rows = query_result.fetchall()
         return rows
+
         # end sql_fetchrowset()
 
     def sql_query_from_array(self, query: dict, value_set: dict = {}) -> str:
@@ -256,9 +282,9 @@ class Dbal:
             elif sql == "UPDATE":
                 sql = self.__sql_update_statement(query, value_set)
             else:
-                sql = ""  # Bad type, not one of DELETE, INSERT,
-                #  SELECT, or UPDATE
+                sql = ""  # Bad type, not one of DELETE, INSERT, SELECT, or UPDATE
         return sql
+
         # end sql_query_from_array()
 
     def __sql_delete_statement(self, query: dict) -> str:
@@ -283,6 +309,7 @@ class Dbal:
         except KeyError:
             sql += " WHERE "  # illegal where clause
         return sql
+
         # end __sql_delete_statement()
 
     def __sql_insert_statement(self, query: dict, value_set: dict[str, Any]) -> str:
@@ -310,6 +337,7 @@ class Dbal:
         placeholder = "(" + ", ".join(holder) + ")"
         sql += columns + " VALUES " + placeholder
         return sql
+
         # end __sql_insert_statement()
 
     def __sql_select_statement(self, query: dict) -> str:
@@ -374,6 +402,7 @@ class Dbal:
             pass
 
         return sql
+
         # end __sql_select_statement()
 
     def __sql_update_statement(self, query: dict, value_set: dict) -> str:
@@ -408,6 +437,7 @@ class Dbal:
         if query["where"]:
             sql += " WHERE " + query["where"]
         return sql
+
         # end __sql_update_statement()
 
     def __dict_factory(self, cursor: sqlite3.Cursor, row: list[Any]) -> dict:
@@ -416,7 +446,8 @@ class Dbal:
         for idx, col in enumerate(cursor.description):
             dict_row[col[0]] = row[idx]
         return dict_row
+
         # end __dict_factory()
 
-# end class Dbal
 
+# end class Dbal
