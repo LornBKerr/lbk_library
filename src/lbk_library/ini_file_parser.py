@@ -43,12 +43,11 @@ class IniFileParser:
         Parameters:
             filename: (str) the config ini filename to be used.
             program_config_subdir: (str) (optional) the program specific
-                sub-directory of the config directory location for this
-                config file. Default is the empty string which
-                defaults to filename minus the suffix.
-            config_dir: (str) Used if the standard, platform dependent, config
-                directory location is not desired for ssome reason (testing
-                primarily)
+                config directory location for this config file. If not
+                given, defaults to filename minus the suffix.
+            config_dir: (str) Used if the standard, platform dependent,
+                config directory location is not desired for ssome reason
+                (testing primarily)
         """
         home_dir = os.path.expanduser("~")
 
@@ -67,6 +66,7 @@ class IniFileParser:
                 config_dir = os.path.join(
                     home_dir, "AppData", "Local", program_config_subdir
                 )
+
         else:
             config_dir = os.path.join(config_dir, program_config_subdir)
 
@@ -130,4 +130,3 @@ class IniFileParser:
 
 
 # end class IniFileParser
-
