@@ -13,6 +13,7 @@ from typing import Any
 from .dbal import Dbal
 from .element import Element
 
+
 class ElementSet:
     """
     The base class for a set of Elements in the database.
@@ -278,4 +279,3 @@ class ElementSet:
         # end __reset__()
 
 # end class ElementSet
-
