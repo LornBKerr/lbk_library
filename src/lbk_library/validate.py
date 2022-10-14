@@ -8,10 +8,10 @@ License:    see License
 """
 
 import datetime
-import os
 import re
 import sys
 from typing import Any, Union
+
 
 class Validate:
     """
@@ -400,5 +400,5 @@ class Validate:
         return result
         # end date_field()
 
-# end class Validate
 
+# end class Validate
