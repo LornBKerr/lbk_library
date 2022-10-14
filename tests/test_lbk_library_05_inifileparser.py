@@ -3,10 +3,15 @@
 # Test the IniFileParser functions
 
 import os
-
 import sys
 
-# define the basic directory locations that are os specific for Linux and Windows
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
+
+from lbk_library import IniFileParser
+
+# define the standard directory locations that are os specific for Linux and Windows
 HOME = os.path.expanduser("~")
 BASE_DIR = os.path.abspath(".")
 SRC_DIR = os.path.join(BASE_DIR, "src")
@@ -22,13 +27,8 @@ elif sys.platform.startswith("win"):
     if "APPDATA" in os.environ:
         CONFIG_DIR = os.path.join(os.environ["APPDATA"])
     else:
-        CONFIG_DIR = os.path.join(HOME, "AppData", "Roaming")
+        CONFIG_DIR = os.path.join(HOME, "AppData", "local")
 
-# make sure the source dir is on the path.
-if SRC_DIR not in sys.path:
-    sys.path.insert(1, SRC_DIR)
-
-from lbk_library import IniFileParser
 
 sample_config = {
     "section_1": {
@@ -40,72 +40,54 @@ sample_config = {
 }
 
 
-def test_01_bare_constructor():
-    """Test constructor with file name only, default for config_sub_dir"""
+def test_01_bare_constructor_get_config_dir_path():
+    # Verify the config path exists
     filename = "testfile.ini"
-    default_dir = "testfile"
-    default_config_dir = os.path.join(CONFIG_DIR, default_dir)
-    default_config_file = os.path.join(default_config_dir, filename)
+    sub_dir = os.path.splitext(filename)[0]
+    test_path = os.path.join(CONFIG_DIR, sub_dir, filename)
     parser = IniFileParser(filename)
-    assert parser.config_file == default_config_file
-    os.rmdir(default_config_dir)
+    parser_path = parser.config_path()
+    assert test_path == parser_path
+    # end test_01_get_config_dir_path()
 
-
-# end test_01_bare_constructor()
-
-
-def test_02_constructor():
+def test_02_constructor(tmpdir):
     """Test constructor with file name and config_sub_dir"""
     filename = "testfile.ini"
-    config_sub_dir = "testfile"
-    default_config_dir = os.path.join(CONFIG_DIR, config_sub_dir)
-    default_config_file = os.path.join(default_config_dir, filename)
+    config_sub_dir = tmpdir.join("testfile")
+    expected_path = tmpdir.join("testfile", filename)
     parser = IniFileParser(filename, config_sub_dir)
-    assert parser.config_file == default_config_file
-    os.rmdir(default_config_dir)
+    parser_path = parser.config_path()
+    assert expected_path == parser_path
+    # end test_02_constructor()
 
 
-# end test_02_constructor()
-
-
-def test_03_constructor():
+def test_03_constructor(tmpdir):
     """
-    Test constructor with file name, config_sub_dir and non-standard
-    destination dir
+    Test constructor with file name, config_sub_dir and config dir
     """
     filename = "testfile.ini"
-    config_sub_dir = "testfile"
-    current_dir = BASE_DIR
-    test_config_dir = os.path.join(BASE_DIR, config_sub_dir)
-    test_config_file = os.path.join(test_config_dir, filename)
-    parser = IniFileParser(filename, config_sub_dir, BASE_DIR)
-    assert parser.config_file == test_config_file
-    os.rmdir(test_config_dir)
+    config_sub_dir = tmpdir.join("testfile")
+    config_dir = "test"
+    expected_path = tmpdir.join("testfile", "test", filename)
+    parser = IniFileParser(filename, config_dir, config_sub_dir)
+    parser_path = parser.config_path()
+    assert parser_path == expected_path
+    # end test_03_constructor()
 
 
-# end test_03_constructor()
-
-
-def test_04_read_empty_config():
-    # File name, subdirectory, and config_dir
+def test_04_read_empty_config(tmpdir):
     filename = "testfile.ini"
-    subdir = "myTesting"
-    config_dir = os.path.join(CONFIG_DIR, subdir)
-    # reads empty file
+    subdir = tmpdir.join("testfile")
     parser = IniFileParser(filename, subdir)
     config = parser.read_config()
     assert isinstance(config, dict)
     assert len(config) == 0
-    os.rmdir(config_dir)
+    # end test_04_read_empty_config()
 
 
-# end test_04_read_empty_config()
-
-
-def test_05_write_empty_config():
+def test_05_write_empty_config(tmpdir):
     filename = "testfile.ini"
-    subdir = "myTesting"
-    config_dir = os.path.join(CONFIG_DIR, subdir)
+    subdir = tmpdir.join("testfile")
     # write and check empty file
     ini_file = {}
     parser = IniFileParser(filename, subdir)
@@ -117,19 +99,12 @@ def test_05_write_empty_config():
     config = parser.read_config()
     assert isinstance(config, dict)
     assert len(config) == 0
-    # cleanup
-    os.remove(parser.config_file)
-    os.rmdir(config_dir)
+    # end test_05_write_empty_config()
 
 
-# end test_05_write_empty_config()
-
-
-def test_06_write_config():
-    # Write sample config file from a dict to local directory
+def test_06_write_config(tmpdir):
     filename = "testfile.ini"
-    subdir = "myTesting"
-    config_dir = os.path.join(CONFIG_DIR, subdir)
+    subdir = tmpdir.join("testfile")
     # write and check sample file
     parser = IniFileParser(filename, subdir)
     parser.write_config(sample_config)
@@ -139,10 +114,6 @@ def test_06_write_config():
     assert isinstance(config, dict)
     assert len(config) == len(sample_config)
     assert config == sample_config
-    os.remove(parser.config_file)
-    os.rmdir(config_dir)
-
-
-# end test_06_write_config()
+    # end test_06_write_config()
 
 # end testlbk_library_05_inifileparser.py
