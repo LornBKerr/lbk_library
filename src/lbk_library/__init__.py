@@ -19,6 +19,6 @@ License:    see License
 from .dbal import Dbal
 from .element import Element
 from .element_set import ElementSet
-from .validate import Validate
 from .ini_file_parser import IniFileParser
+from .validate import Validate
 
