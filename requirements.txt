@@ -1,12 +1,14 @@
 # Requirements file for lbk_library virtual environment
 
---extra-index-url https://test.pypi.org/simple/
+# --extra-index-url https://test.pypi.org/simple/
 
+PyQt6
 
 # Testing Requirements
+coverage
 pytest
 pytest_cover
-coverage
+pytest_qt
 tox
 
 
