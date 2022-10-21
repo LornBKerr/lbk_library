@@ -21,4 +21,5 @@ from .element import Element
 from .element_set import ElementSet
 from .ini_file_parser import IniFileParser
 from .validate import Validate
-
+from .qt.focus_combo_box import FocusComboBox
+from .qt.dialog import Dialog
