@@ -24,10 +24,8 @@ if sys.platform.startswith("linux"):
         CONFIG_DIR = os.path.join(HOME, ".config")
 
 elif sys.platform.startswith("win"):
-    if "APPDATA" in os.environ:
-        CONFIG_DIR = os.path.join(os.environ["APPDATA"])
-    else:
-        CONFIG_DIR = os.path.join(HOME, "AppData", "local")
+    # force config dir to be in {APPDATA}\Local
+    CONFIG_DIR = os.path.join(HOME, "AppData", "Local")
 
 
 sample_config = {
