@@ -12,15 +12,8 @@ import pytest
 from lbk_library import Validate
 
 
-@pytest.fixture
-def open_validate():
+def test_01_integer_field():
     validate = Validate()
-    return validate
-
-
-def test_01_integer_field(open_validate):
-    # Test the validation function 'validate.integer_field()'
-    validate = open_validate
     number = 10  # good number
     result = validate.integer_field(number, validate.REQUIRED, 1, 30)
     assert result["valid"]
@@ -64,8 +57,8 @@ def test_01_integer_field(open_validate):
     assert result["entry"] == int(number)
 
 
-def test_03_float_field(open_validate):
-    validate = open_validate
+def test_03_float_field():
+    validate = Validate()
     number = None
     result = validate.float_field(number, validate.REQUIRED)
     assert not result["valid"]
@@ -101,9 +94,8 @@ def test_03_float_field(open_validate):
     assert result["entry"] == 20.0
 
 
-def test_04_text_field(open_validate):
-    # Test the validation function 'validate_text_field()'#
-    validate = open_validate
+def test_04_text_field():
+    validate = Validate()
     text = None  # required, 1 <= len(text) <=255
     result = validate.text_field(text, validate.REQUIRED)
     assert not result["valid"]
@@ -133,9 +125,8 @@ def test_04_text_field(open_validate):
     assert not result["valid"]
 
 
-def test_05_boolean(open_validate):
-    # Test the validation function 'validate.boolean()'
-    validate = open_validate
+def test_05_boolean():
+    validate = Validate()
     # ON values
     assert validate.boolean(True)["valid"]
     assert validate.boolean(True)["entry"]
@@ -162,9 +153,8 @@ def test_05_boolean(open_validate):
     assert not validate.boolean(2)["valid"]
 
 
-def test_06_date_field(open_validate):
-    # Test the validate function 'validate_date_field()'#
-    validate = open_validate
+def test_06_date_field():
+    validate = Validate()
     # Valid date
     assert validate.date_field("02/28/2020", validate.REQUIRED)["valid"]
     assert validate.date_field("2020-02-28", validate.REQUIRED)["valid"]
@@ -177,4 +167,12 @@ def test_06_date_field(open_validate):
     assert not validate.date_field("2021-02-29", validate.REQUIRED)["valid"]
 
 
-# end test_01_validate.py
+def test_07_reg_exp_field():
+    validate = Validate()
+    reg_exp = r"\d\d-\d\d\d"
+    value = "01-123"
+    assert validate.reg_exp_field(value, reg_exp, validate.REQUIRED)["valid"]
+    value = ""
+    assert not validate.reg_exp_field(value, reg_exp, validate.REQUIRED)["valid"]
+    value = 10
+    assert not validate.reg_exp_field(value, reg_exp, validate.REQUIRED)["valid"]

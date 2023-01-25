@@ -48,6 +48,7 @@ def test_01_bare_constructor_get_config_dir_path():
     assert test_path == parser_path
     # end test_01_get_config_dir_path()
 
+
 def test_02_constructor(tmpdir):
     """Test constructor with file name and config_sub_dir"""
     filename = "testfile.ini"
@@ -113,5 +114,6 @@ def test_06_write_config(tmpdir):
     assert len(config) == len(sample_config)
     assert config == sample_config
     # end test_06_write_config()
+
 
 # end testlbk_library_05_inifileparser.py

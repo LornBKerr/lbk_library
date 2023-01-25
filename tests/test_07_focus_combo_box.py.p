@@ -37,4 +37,3 @@ def test_02_focus_lost(qtbot):
     # check that the focusOut event is handled.
     box.clearFocus()
     qtbot.waitSignal(box.activated)
-

@@ -3,19 +3,21 @@
 import os
 import sys
 
+import pytest
+
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
-
-import pytest
 
 from lbk_library import Dbal, Element, ElementSet, Validate
 
 database = "test.db"
 table_name = "elements"
 
+
 def close_database(dbref):
     dbref.sql_close()
+
 
 def new_element(dbref, properties={}):
     # create a new Element from properties
@@ -40,7 +42,8 @@ def create_table(open_database):
     dbref = open_database
     dbref.sql_query("DROP TABLE IF EXISTS " + table_name)
     create_table = (
-        'CREATE TABLE IF NOT EXISTS ' + table_name
+        "CREATE TABLE IF NOT EXISTS "
+        + table_name
         + '("record_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
         + ' "remarks" TEXT DEFAULT NULL)'
     )
@@ -48,7 +51,6 @@ def create_table(open_database):
     return dbref
 
 
-# Test Empty ElementSet
 def test_01_ElementSet_constr(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)

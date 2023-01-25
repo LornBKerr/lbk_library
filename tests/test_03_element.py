@@ -207,9 +207,6 @@ def test_12_is_element_valid(open_database):
     close_database(dbref)
 
 
-# end test_12_is_element_valid()
-
-
 def test_13_update_property_flags(open_database):
     dbref = open_database
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
@@ -371,11 +368,12 @@ def test_20_element_delete(create_table):
     close_database(dbref)
 
 
-def test_20_cleanup(open_database):
+def test_21_set_validated_property(open_database):
     dbref = open_database
-    result = dbref.sql_query("DROP TABLE IF EXISTS 'elements'")
-    assert result
-    close_database(dbref)
-
-
-# end lbk_library_03_element.py
+    element = Element(dbref, "elements")
+    element.set_validated_property("test", True, "is_valid", "not_valid")
+    assert element._get_property("test") == "is_valid"
+    assert element._get_property("test") != "not_valid"
+    element.set_validated_property("test", False, "is_valid", "not_valid")
+    assert element._get_property("test") != "is_valid"
+    assert element._get_property("test") == "not_valid"
