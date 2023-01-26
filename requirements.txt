@@ -5,10 +5,9 @@
 PyQt6
 
 # Testing Requirements
+black
 coverage
+isort
 pytest
 pytest_cover
 pytest_qt
-tox
-
-
