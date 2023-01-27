@@ -3,7 +3,7 @@ Implement a Database Abstraction Layer.
 
 File:       dbal.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022 Lorn B Kerr
+Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
@@ -31,15 +31,13 @@ class Dbal:
         Parameters:
             filename (str): full path to the database file to be created.
             sql_statements (list[str]): the sql definition of the
-                database as alist of one or more SQL commands.
+                database as a list of one or more SQL commands.
         """
         dbref = Dbal()
         dbref.sql_connect(filename)
         for sql in sql_statements:
             dbref.sql_query(sql)
         dbref.sql_close()
-
-        # end new_file()
 
     def __init__(self) -> None:
         """Create a new Dbal object."""
@@ -48,8 +46,6 @@ class Dbal:
         self.__connection: sqlite3.Connection = None
         """ sqlite3 database connection object """
 
-    # end __init()
-
     def sql_connect(self, database: str) -> bool:
         """
         Connect to a specific Sqlite3 database.
@@ -57,16 +53,13 @@ class Dbal:
         The class variable __connection holds the connection object.
 
         Parameters:
-            database: (str) path to database from program root
+            database (str): path to database from program root
                 directory.
 
         Returns:
             (bool) True if connection succeeded, false otherwise
         """
-        #        Raises:  <-  Not true
-        #            sqlite3.Error if the connection fails
         self.__dbname = database
-        """ full path to database file"""
         return_value = False
         try:
             self.__connection = sqlite3.connect(
@@ -86,16 +79,14 @@ class Dbal:
             self.sql_query('PRAGMA encoding = "UTF-8"', [])
         return return_value
 
-        # end sql_connect()
-
     def sql_query(self, query: str, values: dict = {}) -> sqlite3.Cursor:
         """
         Execute a sql database query.
 
         Parameters:
-            query: (str) Contains the SQL query statement which shall be
+            query (str): Contains the SQL query statement which shall be
                 executed.
-            values: (dict) The name: values to inserted into the query;
+            values (dict): The name: values to inserted into the query;
                 not all statements require this; default is empty dict.
 
         Returns:
@@ -116,26 +107,21 @@ class Dbal:
             raise sqlite3.OperationalError
         return query_result
 
-        # end sql_query()
-
     def _sql_error(self, sql_text: str = "") -> None:
         """
         Display the error.
 
         Parameters:
-            sql_text: (str) the sql command in error
+            sql_text (str): the sql command in error
         """
         print(sql_text)
         print_exc()
-
-        # end _sql_error()
 
     def sql_close(self) -> None:
         """Close sql connection."""
         if self.__connection:
             self.__connection.close()
             self.__connection = None
-        # end sql_close()
 
     def sql_is_connected(self) -> bool:
         """
@@ -145,8 +131,6 @@ class Dbal:
             (bool) True if connected, False if not
         """
         return bool(self.__connection)
-
-        # end is_connected()
 
     def sql_validate_value(self, var: Any) -> Any:
         """
@@ -170,8 +154,6 @@ class Dbal:
             return_value = var
         return return_value
 
-        # end sql_validate_value()
-
     def sql_nextid(self, query_result: sqlite3.Cursor) -> int:
         """
         Get last inserted id after an insert statement.
@@ -179,7 +161,7 @@ class Dbal:
         This is only valid after Insert queries.
 
         Parameters:
-            query_result: (sqlite3.Cursor) The result of a previous
+            query_result (sqlite3.Cursor): The result of a previous
                 query operation.
 
         Returns:
@@ -190,8 +172,6 @@ class Dbal:
         if query_result:
             nextid = query_result.lastrowid
         return nextid
-
-        # end sql_nextid()
 
     def sql_fetchrow(self, query_result: sqlite3.Cursor) -> dict:
         """
@@ -210,14 +190,12 @@ class Dbal:
             row = query_result.fetchone()
         return row
 
-        # end sql_fetchrow()
-
     def sql_fetchrowset(self, query_result: sqlite3.Cursor) -> list:
         """
         Fetch all rows from a query result.
 
         Parameters:
-            query_result (Sqlite3.Cursor) The result of the previous
+            query_result (Sqlite3.Cursor): The result of the previous
                 query operation.
 
         Returns:
@@ -230,8 +208,6 @@ class Dbal:
             rows = query_result.fetchall()
         return rows
 
-        # end sql_fetchrowset()
-
     def sql_query_from_array(self, query: dict, value_set: dict = {}) -> str:
         """
         Build parameterized sql statement from array.
@@ -239,7 +215,7 @@ class Dbal:
         Only DELETE, INSERT, UPDATE and SELECT statements are handled.
 
         Parameters:
-            query: (dict) {
+            query (dict): {
                 ['type'] -> (str) one of 'DELETE', 'INSERT', 'SELECT',
                             or 'UPDATE'
                 ['table'] -> (str) name of table to access
@@ -261,7 +237,7 @@ class Dbal:
                             Optional for SELECT statements, not used by
                             other statements
                 }
-            value_set: (dict) holds the key => value pairs for all the
+            value_set (dict): holds the key => value pairs for all the
                 parameters needed in building the sql statement.
 
         Returns:
@@ -285,8 +261,6 @@ class Dbal:
                 sql = ""  # Bad type, not one of DELETE, INSERT, SELECT, or UPDATE
         return sql
 
-        # end sql_query_from_array()
-
     def __sql_delete_statement(self, query: dict) -> str:
         """
         Build the sql DELETE statement.
@@ -294,10 +268,11 @@ class Dbal:
         Statement Form:  DELETE FROM table WHERE x = y
 
         Parameter:
-            query (dict)<br/>&emsp;&emsp;['type'] - (str) 'DELETE'
-            <br/>&emsp;&emsp;['table'] - (str) name of table to access
-            <br/>&emsp;&emsp;['where'] - (str) the sql where_clause
-                contents (without the 'WHERE').
+            query (dict): {
+                ['type'] -> (str) 'DELETE',
+                ['table'] -> (str) name of table to access
+                ['where'] -> (str) the sql where_clause contents
+                    (without the 'WHERE').
 
         Returns:
             (str) the fully formed DELETE statement.
@@ -310,8 +285,6 @@ class Dbal:
             sql += " WHERE "  # illegal where clause
         return sql
 
-        # end __sql_delete_statement()
-
     def __sql_insert_statement(self, query: dict, value_set: dict[str, Any]) -> str:
         """
         Build the sql INSERT query statement.
@@ -320,10 +293,12 @@ class Dbal:
             VALUES (value1, value2,...valueN)
 
         Parameters:
-            query: (dict)<br/>&emsp;&emsp;['type'] - (str) 'INSERT'
-                <br/>&emsp;&emsp;['table'] - (str) name of table
-            value_set: (dict) set of key->value pairs to insert into
+            query (dict): {
+                ['type'] -> (str) 'INSERT'
+                ['table'] -> (str) name of table
+                value_set -> (dict) set of key->value pairs to insert into
                 table
+            }
 
         Returns:
             (str) INSERT sql statement.
@@ -338,8 +313,6 @@ class Dbal:
         sql += columns + " VALUES " + placeholder
         return sql
 
-        # end __sql_insert_statement()
-
     def __sql_select_statement(self, query: dict) -> str:
         """
         Build the sql SELECT query statement.
@@ -351,23 +324,21 @@ class Dbal:
                     LIMIT 5 OFFSET 0
 
         Parameters:
-            query: (dict) {
-                <br/>&emsp;&emsp;['type'] -> (str) 'SELECT'
-                <br/>&emsp;&emsp;['table'] -> (str) name of table
-                <br/>&emsp;&emsp;['columns'] -> (list) column names for
-                    SELECT statement. Statement may use just '[*]' or
-                    '*' to select all columns. If omitted, defaults to
-                    '*'.
-                <br/>&emsp;&emsp;['where'] -> (str) providing the sql
-                    where_clause contents (without the 'WHERE").
-                    Optional, if not present, selects all rows.]
-                <br/>&emsp;&emsp;['order_by'] -> string providing the
-                    sql 'order by' clause (without the "ORDER_BY").
-                    Optional
-                <br/>&emsp;&emsp;['limit'] -> (list)
-                    [0] = (int)limit value,
-                    [1] = (int)offset value. Optional
-                <br/>&emsp;&emsp;}
+            query (dict): {
+                ['type'] -> (str) 'SELECT'
+                ['table'] -> (str) name of table
+                ['columns'] -> (list) column names for SELECT statement.
+                    Statement may use just '[*]' or '*' to select all columns.
+                    If omitted, defaults to '*'.
+                ['where'] -> (str) providing the sql where_clause contents
+                    (without the 'WHERE"). Optional, if not present, selects
+                    all rows.
+                ['order_by'] -> (str) providing the sql 'order by' clause
+                    (without the "ORDER_BY"). Optional
+                ['limit'] -> (list)
+                    [0] = (int) limit value,
+                    [1] = (int) offset value. Optional
+            }
 
         Returns:
             (str) resultant sql query statement
@@ -403,8 +374,6 @@ class Dbal:
 
         return sql
 
-        # end __sql_select_statement()
-
     def __sql_update_statement(self, query: dict, value_set: dict) -> str:
         """
         Build the sql UPDATE query statement.
@@ -415,13 +384,13 @@ class Dbal:
             WHERE [condition];
 
         Paraeters:
-            query: (dict) {
-                <br/>&emsp;&emsp;['type']  -> (str) 'UPDATE'
-                <br/>&emsp;&emsp;['table'] -> (str) name of table
-                <br/>&emsp;&emsp;['where'] -> (str) providing the sql
-                    here_clause contents selecting a specific row
-                }
-            value_set: (dict) holding the set of values to update
+            query (dict): {
+                ['type']  -> (str) 'UPDATE'
+                ['table'] -> (str) name of table
+                ['where'] -> (str) providing the sql where_clause contents
+                    selecting a specific row
+            }
+            value_set (dict): holding the set of values to update
 
         Return;
             (str) resultant sql query statement
@@ -438,16 +407,9 @@ class Dbal:
             sql += " WHERE " + query["where"]
         return sql
 
-        # end __sql_update_statement()
-
     def __dict_factory(self, cursor: sqlite3.Cursor, row: list[Any]) -> dict:
         """Set the return from a fetchrow function to be a dict object."""
         dict_row: dict[str, Any] = {}
         for idx, col in enumerate(cursor.description):
             dict_row[col[0]] = row[idx]
         return dict_row
-
-        # end __dict_factory()
-
-
-# end class Dbal

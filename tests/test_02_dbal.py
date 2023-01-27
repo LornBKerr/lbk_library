@@ -24,6 +24,7 @@ create_table = (
     + ' "installed" BOOLEAN)'
 )
 
+
 def close_database(dbref):
     dbref.sql_close()
 
@@ -344,5 +345,3 @@ def test_19_new_db_file(tmpdir):
     for col in column_names:
         assert col["name"] in expected_names
 
-
-# end lbk_library_02_dbal.py
