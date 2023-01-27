@@ -79,7 +79,6 @@ class IniFileParser:
             # build the absolute file name.
         self.config_file = os.path.join(config_dir, filename)
 
-
     def read_config(self) -> dict[str, Any]:
         """
         Read the configuration file.
