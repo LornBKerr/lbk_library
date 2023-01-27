@@ -3,8 +3,8 @@ Implement the base class for types of information in the database.
 
 File:       element.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022 Lorn B Kerr
-License:    see License
+Copyright:  (c) 2022, 2023 Lorn B Kerr
+License:    MIT, see file License
 """
 
 from copy import deepcopy
@@ -30,13 +30,12 @@ class Element:
         Initialize a new Element object.
 
         Parameters:
-            dbref: (Dbal) reference to the database holding the element
-            table_name: (str) database table to search for the element
+            dbref (Dbal): reference to the database holding the element
+            table_name (str): database table to search for the element
                 values.
-            default_values: (dict[str, Any]) the set of default values
-                for this element, default is None. If not given,
-                built-in defaults of {'record_id': 0, 'remarks': ''}
-                will be used.
+            default_values (dict[str, Any]): the set of default values for this
+                element, default is None. If not given, built-in defaults of
+                {'record_id': 0, 'remarks': ''} will be used.
         """
         self.validate: Validate = Validate()
         """ reference to the Validate class for value validation """
@@ -62,7 +61,6 @@ class Element:
         if default_values:  # set the current default values
             self._defaults = default_values
         self.set_initial_values(deepcopy(self._defaults))
-        # end __init__()
 
     def get_properties_from_db(
         self, column_name: str, column_value: Any
@@ -74,12 +72,12 @@ class Element:
         the key column value designated.
 
         Parameters:
-            column_name: (str) within the table containing the key values
-            column_value: (Any) Key value requested
+            column_name (str): within the table containing the key values
+            column_value (Any) Key value requested
 
         Returns:
-            (dict) Row containing requested element if successful or
-            an empty dict object if not.
+            (dict) Row containing requested element if successful or an empty
+            dict object if not.
         """
         self.__properties = {}
         if column_name and column_value:
@@ -98,15 +96,13 @@ class Element:
             if self.__properties is None:
                 self.__properties = {}
         return self.__properties
-        # end get_properties_from_db()
 
     def add(self) -> int:
         """
         Add an element to the database.
 
         Returns:
-            (int) unique id of the newly added element or False if
-                add failed
+            (int) unique id of the newly added element or False if add failed.
         """
         return_value = False
         property_set = self.get_properties()
@@ -120,9 +116,7 @@ class Element:
         if result:
             return_value = self.__dbref.sql_nextid(result)
             property_set["record_id"] = return_value
-
         return return_value
-        # end add_element()
 
     def delete(self) -> bool:
         """
@@ -145,7 +139,6 @@ class Element:
         if result:
             return_value = True
         return return_value
-        # end delete_element()
 
     def update(self) -> bool:
         """
@@ -169,16 +162,15 @@ class Element:
             return_value = True
 
         return return_value
-        # end update()
 
     def get_properties(self) -> dict[str, Any]:
         """
         Get the element properties as a dict() of property_names->values.
 
-        Return (dict) The element properties.
+        Returns:
+            (dict) The element properties.
         """
         return self.__properties
-        # end get_properties()
 
     def set_properties(self, properties: dict[str, Any]) -> None:
         """
@@ -195,9 +187,9 @@ class Element:
         are discarded.
 
         Parameters:
-            properties: (dict) object holding the element values. Keys
-            must match the required keys of the element being modified,
-            properties may be sparse.
+            properties (dict): object holding the element values. Keys must
+                match the required keys of the element being modified,
+                properties may be sparse.
         """
         if properties is not None and isinstance(properties, dict):
             for key in properties.keys():
@@ -205,14 +197,13 @@ class Element:
                     self.set_record_id(properties[key])
                 elif key == "remarks":
                     self.set_remarks(properties[key])
-        # end set_properties()
 
     def _get_property(self, name: str) -> Any:
         """
         Get an individual property value by Name.
 
         Parameters:
-            name: (str) name of property to retrieve
+            name (str): name of property to retrieve.
 
         Returns:
             (Any) value of property if property is defined.
@@ -221,7 +212,6 @@ class Element:
             KeyError: if name is not a valid property name.
         """
         return self.__properties[name]
-        # end _get_property()
 
     def _set_property(self, name: str, value: Any) -> None:
         """
@@ -230,11 +220,36 @@ class Element:
         This is a low level function with no error checking.
 
         Parameters:
-            name: (str) property name
-            value: (Any) value of this property
+            name (str): property name
+            value (Any): value of this property
         """
         self.__properties[name] = value
-        # end _set_property()
+
+    def set_validated_property(
+        self,
+        property_name: str,
+        is_valid: bool,
+        validated_value: Any,
+        default_value: Any,
+    ) -> None:
+        """
+        Store a validated value in the property set.
+
+        If the value is valid, store the provided value, otherwise store
+        the given default value.
+
+        Parameters:
+            property_name (str): the name of the property to store.
+            is_valid (bool): is the validated value acceptable.
+            validated_value (Any): the value to store if the validated value
+                is valid.
+            default_value (Any): the value to store if the validated value is
+                not valid.
+        """
+        if is_valid:
+            self._set_property(property_name, validated_value)
+        else:
+            self._set_property(property_name, default_value)
 
     def get_record_id(self) -> int:
         """
@@ -248,25 +263,24 @@ class Element:
         if record_id is None:
             record_id = self._defaults["record_id"]
         return record_id
-        # end get_record_id()
 
     def set_record_id(self, record_id: int) -> dict[str, Any]:
         """
         Set the Element's entry index.
 
         Parameters:
-            record_id: (int)  the new record_id for the Element.
-                Must be an integer greater than 0 and must be unique
-                when Element is stored to the database (not checked).
-                If the supplied record_id is not valid, the
-                record_id is set to __defaults['record_id'].
+            record_id (int):  the new record_id for the Element. Must be an
+                integer greater than 0 and must be unique when Element is
+                stored to the database (not checked). If the supplied record_id
+                is not valid, the record_id is set to __defaults['record_id'].
 
         Returns:
-            (dict)<br>&emsp;&emsp;['entry'] - (int) the updated
-                record_id
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise
-            <br>&emsp;&emsp;['msg'] - (str) Error message if not valid
+            (dict) {
+                ['entry'] - (int) the updated record_id.
+                ['valid'] - (bool) True if the operation suceeded, False
+                    otherwise.
+                ['msg'] - (str) Error message if not valid.
+            }
         """
         result = self.validate.integer_field(record_id, self.validate.REQUIRED, 1)
         if result["valid"]:
@@ -275,15 +289,14 @@ class Element:
             self._set_property("record_id", self._defaults["record_id"])
         self.update_property_flags("record_id", result["entry"], result["valid"])
         return result
-        # end set_record_id()
 
     def get_remarks(self) -> str:
         """
         Get the remarks for this Element.
 
         Returns:
-            (str) The remarks for this Element, the default value if no
-            remarks are assigned.
+            (str) The remarks for this Element, the default value if no remarks
+                are assigned.
         """
         remarks = self._get_property("remarks")
         if remarks is None:
@@ -301,11 +314,12 @@ class Element:
             remarks: (str) For this Element, may be empty.
 
         Returns:
-        (dict)<br>&emsp;&emsp;['entry'] - the updated remarks for this
-            Element
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise
-            <br>&emsp;&emsp;['msg'] - (str) Error message if not valid
+            (dict) {
+                ['entry'] - (int) the updated remarks for this Element.
+                ['valid'] - (bool) True if the operation suceeded, False
+                    otherwise.
+                ['msg'] - (str) Error message if not valid.
+            }
         """
         if remarks is None:
             remarks = ""
@@ -316,38 +330,33 @@ class Element:
             self._set_property("remarks", "")
         self.update_property_flags("remarks", result["entry"], result["valid"])
         return result
-        # end set_remarks()
 
     def get_dbref(self) -> Dbal:
         """
         Get the database reference for this element.
 
         Returns:
-            (Dbal) A reference to the current database
+            (Dbal) A reference to the current database.
         """
         return self.__dbref
-        # end get_dbref()
 
     def get_table(self) -> str:
         """
         Get the name of the database table for the child.
 
         Returns:
-        (str) The table name for this element.
+            (str) The table name for this element.
         """
         return self.__table
-        # end get_table()
 
     def get_initial_values(self) -> dict[str, Any]:
         """
         Get the intial values for the element.
 
         Returns:
-            (dict) the initial values assigned to the element's
-            properties.
+            (dict) the initial values assigned to the element's properties.
         """
         return self.__initial_values
-        # end get_initial_values()
 
     def set_initial_values(self, initial_value_set: dict[str, Any]) -> None:
         """
@@ -358,8 +367,8 @@ class Element:
         valid flags are initialized to True, otherwise, False.
 
         Parameters:
-            initial_value_set (dict) holds the intial values assigned to
-            the element's properties.
+            initial_value_set (dict): holds the intial values assigned to
+                the element's properties.
 
         Raises:
             TypeError if 'initial_value_set' is not a dict
@@ -371,7 +380,6 @@ class Element:
                 "Initial_value set must be a dict with the initial"
                 + " values for the element"
             )
-        # end set_initial_values()
 
     def update_property_flags(self, name: str, value: Any, valid: bool) -> None:
         """
@@ -381,13 +389,12 @@ class Element:
         property member.
 
         Parameters:
-            name: (str) the name of the specific property member
-            value: (Any) the new property value
-            valid: (bool) True if new value is valid, false if not
+            name (str): the name of the specific property member.
+            value (Any): the new property value.
+            valid (bool): True if new value is valid, false if not.
         """
         self.set_value_changed_flag(name, value)
         self.set_value_valid_flag(name, valid)
-        # end update_property_flags()
 
     def get_value_changed_flag(self, entry_name: str) -> bool:
         """
@@ -397,7 +404,7 @@ class Element:
         initial value, False if not.
 
         Parameters:
-            entry_name: (str) name of entry to check
+            entry_name (str): name of entry to check.
 
         Returns:
             (bool) The state of the entry changed flag
@@ -406,7 +413,6 @@ class Element:
             KeyError if entry_name is not a valid name
         """
         return self.__changed_properties[entry_name]
-        # end get_value_changed_flag()
 
     def set_value_changed_flag(self, entry_name: str, entry_value: Any) -> bool:
         """
@@ -416,17 +422,16 @@ class Element:
         changed from the initial value, False if not.
 
         Parameters:
-            entry_name (str) name of entry that changed
-            entry_value: (Any) value of the entry that changed
+            entry_name (str): name of entry that changed.
+            entry_value: (Any): value of the entry that changed.
 
         Returns:
-            (bool) The updated state of the entry changed flag
+            (bool) The updated state of the entry changed flag.
         """
         self.__changed_properties[entry_name] = (
             self.__initial_values[entry_name] != entry_value
         )
         return self.__changed_properties[entry_name]
-        # end set_value_changed_flag()
 
     def have_values_changed(self) -> bool:
         """
@@ -445,57 +450,53 @@ class Element:
                 entries_changed = True
                 break
         return entries_changed
-        # end have_values_changed()
 
     def clear_value_changed_flags(self) -> None:
         """Clear the set of 'value changed' flags."""
         self.__changed_properties.clear()
-        # end clear_value_changed_flags()
 
     def get_value_valid_flag(self, entry_name: str) -> bool:
         """
         Get a value valid flag.
 
-        Parameteres:
-            entry_name (str) entry to get validation flag
+        Parameters:
+            entry_name (str): entry to get validation flag.
 
         Returns:
-            (bool) the resulting flag value
+            (bool) the resulting flag value.
 
         Raises:
             KeyError if entry_name is not in the value valid flag set
         """
         return self.__properties_valid[entry_name]
-        # end get_value_valid_flag()
 
     def set_value_valid_flag(self, entry_name: str, entry_valid: bool) -> bool:
         """
         Set a entry valid flag.
 
         Parameters:
-            entry_name: (str) entry to set validation flag
-            entry_valid: (bool) True if entry is valid, False if not
+            entry_name (str): entry to set validation flag.
+            entry_valid (bool): True if entry is valid, False if not.
 
         Returns:
-            (bool) the resulting flag value
+            (bool) the resulting flag value.
         """
         self.__properties_valid[entry_name] = entry_valid
         return self.__properties_valid[entry_name]
-        # end set_value_valid_flag()
 
     def is_element_valid(self) -> bool:
         """
         Check the Element validity.
 
-        Implicit here is that all properties have been checked for
-        validity. This should be done as part of the element
-        construction.
+        Implicit here is that all properties have been checked for validity.
+        This should be done as part of the element construction and
+        modification.
 
         Returns:
             (bool) True if all element values are valid, False otherwise.
 
         Raises:
-            KeyError if entry_name is not a valid name
+            KeyError if entry_name is not a valid name.
         """
         element_valid = True
         if not self.get_properties():
@@ -510,6 +511,3 @@ class Element:
         """Clear the set of 'valid' flags."""
         self.__properties_valid.clear()
         # end clear_value_valid_flags()
-
-
-# end Class Element
