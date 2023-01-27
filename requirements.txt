@@ -7,6 +7,7 @@ PyQt6
 # Testing Requirements
 black
 coverage
+flake8
 isort
 pytest
 pytest_cover
