@@ -344,4 +344,3 @@ def test_19_new_db_file(tmpdir):
     expected_names = ["record_id", "remarks", "installed"]
     for col in column_names:
         assert col["name"] in expected_names
-
