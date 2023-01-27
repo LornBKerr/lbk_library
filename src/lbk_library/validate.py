@@ -3,7 +3,7 @@ Validate types of information in the database.
 
 File:       validate.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022 Lorn B Kerr
+Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    see License
 """
 
@@ -17,13 +17,13 @@ class Validate:
     """
     Provides various methods to validate variables.
 
-    Validations are provided for Booleans, Dates, Floats, Integers, and
-    Text fields.
+    Validations are provided for Booleans, Dates, Floats, Integers, Text fields
+    and arbitrary regular expressions.
     """
 
     REQUIRED = True
     """ (bool) variable is required and must satisfy the validation
-    requirements """
+    requirements. """
     OPTIONAL = False
     """ (bool) variable is optional but, if present, must satisfy
     requirements. """
@@ -49,22 +49,22 @@ class Validate:
         valid integer value or a string convertable to a integer; the
         empty string ("") is accepted and converted  to int(0).
 
-        Paramters:
-            value: (int) number to be checked, an integer, a string
+        Parameters:
+            value (int | str): number to be checked, an integer, a string
                 representation of an integer, or "". The empty string is
                 only accepted if the value is optional.
-            required: (bool) one of the Validate.REQUIRED or
-                Validate.OPTIONAL constants
-            min_value: (int) minimum integer value, default is 0.
-            max_value: (int) maximum integer value, default is the
+            required (bool): one of the constants Validate.REQUIRED or
+                Validate.OPTIONAL.
+            min_value (int): minimum integer value, default is 0.
+            max_value (int): maximum integer value, default is the
                 system maximum value for an int.
 
         Returns:
-            (dict)<br>&emsp;&emsp;['entry'] - (int) validated version
-                of input value.
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise.
-            <br>&emsp;&emsp;['msg']   - (str) Error message if not valid
+            (dict)
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
         """
         result = {
             "entry": value,  # start with entered value
@@ -113,7 +113,6 @@ class Validate:
                     + str(max_value)
                 )
         return result
-        # end integer_field()
 
     def float_field(self, value, required, min_value=-1.0e8, max_value=1.0e8):
         """
@@ -131,24 +130,23 @@ class Validate:
         ("") is accepted and converted to float(0).
 
         Parameters:
-            value: (int) number to be checked, an integer, a string
-                representationof an integer, or "". The empty string is
+            value (int): number to be checked, an integer, a string
+                representation of an integer, or "". The empty string is
                 only accepted if the value is optional.
-        required: bool) one of the Validate.REQUIRED or
+            required (bool): one of the constants Validate.REQUIRED or
                 Validate.OPTIONAL constants
-        min_value: (float) the minimum acceptable value, default is
-            float(-100,000,000.0)
-        max_value: (float the maximum acceptable value, default is
-            float(+100,000,000.0)
+            min_value (float): the minimum acceptable value, default is
+                float(-100,000,000.0)
+            max_value (float): the maximum acceptable value, default is
+                float(+100,000,000.0)
 
         Returns:
-            (dict)<br>&emsp;&emsp;['entry']  - (float) validated version
-                of input value.
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise.
-            <br>&emsp;&emsp;['msg'] - (str) Error message if not valid.
+            (dict)
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
         """
-        # initialize results array
         result = {
             "entry": value,  # start with entered value
             "valid": True,  # assume success
@@ -196,7 +194,6 @@ class Validate:
                     + str(max_value)
                 )
         return result
-        # end float_field()
 
     def text_field(
         self, text: str, required: bool, min_length: int = 1, max_length: int = 255
@@ -204,40 +201,37 @@ class Validate:
         """
         Validate a text field.
 
-        The field needs a valid alphnumeric string, and optional minimum
-        and maximum lengths of the field. Default values of 1 and 255
-        are supplied for the minimum and maximum lengths. If the entry
-        is marked as required, the entry must be present and match the
-        length parameters. If not rquired (required = OPTIONAL), then
-        the entry may be empty. If not empty, it must match the
-        length parameters.
+        The field needs a valid alphnumeric string, and optional minimum and
+        maximum lengths of the field. Default values of 1 and 255 are supplied
+        for the minimum and maximum lengths. If the entry is marked as
+        required, the entry must be present and match the length parameters.
+        If not rquired (required = OPTIONAL), then the entry may be empty. If
+        not empty, it must match the length parameters.
 
-        The entered value should have all HTML tags including script
-        tags and comments removed and all whitespace at the front and
-        back of the string removed.
+        The entered value should have all HTML tags including script tags and
+        comments removed and all whitespace at the front and back of the string removed.
 
-        Parameteres:
-            text: (str) test to be checked.
-        required: bool) one of the Validate.REQUIRED or
+        Parameters:
+            text (str): test to be checked.
+            required (bool): one of the constants Validate.REQUIRED or
                 Validate.OPTIONAL constants
-        min_length: (int) minimum length in characters, optional,
-            default is 1.
-        max_length: (int) maximum length in characters, optional,
-            default is 255.
+            min_length: (int) minimum length in characters, optional, default
+                is 1.
+            max_length: (int) maximum length in characters, optional, default
+                is 255.
 
         Returns:
-            (dict)<br>&emsp;&emsp;['entry'] (int) cleaned version of
-                input text.
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise
-            <br>&emsp;&emsp;['msg']   - (str) Error message if not valid
+            (dict)
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
         """
-        # initialize results array
         result = {
             "entry": text,  # start with empty text value
             "valid": True,  # assume success
             "msg": "",
-        }  # with no error message
+        }
 
         if not isinstance(text, str):
             result["valid"] = False
@@ -273,9 +267,8 @@ class Validate:
                     + " characters allowed"
                 )
         return result
-        # end text_field()
 
-    def boolean(self, state: Any) -> dict[str, Any]:
+    def boolean(self, state: Union[str, int, bool]) -> dict[str, Any]:
         """
         Validate a boolean value.
 
@@ -291,11 +284,11 @@ class Validate:
                 (str) '0', (int) 0 or (str) 'off' are accepted as False.
 
         Returns:
-            (dict)<br>&emsp;&emsp;['entry'] (bool) state converted to
-                True or False
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                 suceeded, False otherwise
-            <br>&emsp;&emsp;['msg'] - (str) Error message if not valid
+            (dict)
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
         """
         # initialize results array
         result = {
@@ -313,7 +306,6 @@ class Validate:
             result["msg"] = "Invalid entry for boolean"
 
         return result
-        # end boolean()
 
     def date_field(self, date_input: str, required: bool) -> dict[str, Any]:
         """
@@ -321,29 +313,24 @@ class Validate:
 
         The field is a string representing a date. the representations
         accepted are:
-        <br>&emsp;&emsp;mm/dd/yyyy such as '02/23/2015' or '2/3/2003'
-        <br>&emsp;&emsp;yyyy-mm-dd such as '2015-23-03'
-        <br>&emsp;&emsp;<strike>'Feb 23, 2015'</strike> (not Implemented)
-        <br>&emsp;&emsp;<strike>'23 Feb, 2015'</strike> (not Implemented)
-
-        The string input is converted to a date object and validated
-        to be a valid date.
+            mm/dd/yyyy such as '02/23/2015' or '2/3/2003'
+            yyyy-mm-dd such as '2015-23-03'
+            'Feb 23, 2015'  (not Implemented)
+            '23 Feb, 2015'(not Implemented)
 
         Parameters:
             date_input: (str) date to be checked, may be an empty string
                 if not REQUIRED
-        required: bool) one of the Validate.REQUIRED or
+            required (bool): one of the constants Validate.REQUIRED or
                 Validate.OPTIONAL constants
 
-        Return:
+        Returns:
             (dict)
-            <br>&emsp;&emsp;['entry'] (str) the validated date if valid,
-                 otherwise an empty string.
-            <br>&emsp;&emsp;['valid'] - (bool) True if the operation
-                suceeded, False otherwise.
-            <br>&emsp;&emsp;['msg'] - (str) Error message if not valid.
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
         """
-        # initialize results array
         result = {
             "entry": date_input,  # start with supplied value
             "valid": True,  # assume success
@@ -362,6 +349,8 @@ class Validate:
                     result["valid"] = False
                     result["msg"] = "A date value is required" " and cannot be empty"
 
+        # The string input is converted to a date object and validated
+        # to be a valid date.
         if result["valid"]:
             # build a datatime object to check things
             # mm/dd/yyyy; month and day either single or double digits
@@ -398,7 +387,52 @@ class Validate:
                 result["valid"] = False
                 result["msg"] = date_input + " is not recognizable as a valid date"
         return result
-        # end date_field()
 
+    def reg_exp_field(
+        self, entry_value: str, reg_exp: str, required: bool
+    ) -> dict[str, Any]:
+        """
+        Validate an entry_value defined by a regular expression.
 
-# end class Validate
+        This will match an entry_value against a given regular expression and
+        return a standard validation result set. The reg_exp value must be a
+        valid regular expression with all special characters handled (normally
+        a raw string such as r"some pattern".
+
+        Parameters:
+            value (str): The entry_value to be validated.
+            reg_exp (str): The regular expression to be matched.
+            required (bool): one of the constants Validate.REQUIRED or
+                Validate.OPTIONAL constants
+
+        Returns:
+            (dict)
+                ['entry'] - the inital value to be validated.
+                ['valid'] - (bool) True if the operation suceeded,
+                    False otherwise.
+                ['msg'] - (str) Error message if not valid.
+        """
+        result = {
+            "entry": entry_value,  # start with supplied value
+            "valid": True,  # assume success
+            "msg": "",
+        }
+
+        try:
+            pattern = re.compile(reg_exp)
+        finally:
+            pass
+
+        if not isinstance(entry_value, str):
+            result["valid"] = False
+            result["msg"] = "The entry value must be a valid string"
+
+        if result["valid"]:
+            if required == self.REQUIRED and entry_value == "":
+                result["valid"] = False
+                result["msg"] = "Value must be supplied"
+
+            if required == self.REQUIRED and not re.match(reg_exp, entry_value):
+                result["valid"] = False
+                result["msg"] = "Value format is incorrect."
+        return result
