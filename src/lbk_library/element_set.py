@@ -3,8 +3,8 @@ Implement the base class for sets of types of information in the database.
 
 File:       element_set.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022 Lorn B Kerr
-License:    see License
+Copyright:  (c) 2022, 2023 Lorn B Kerr
+License:    MIT see file License
 """
 
 from collections.abc import Iterator
@@ -46,19 +46,19 @@ class ElementSet:
         (zero based) given in 'offset'.
 
         Parameters:
-            dbref: (Dbal) reference to the database holding the element.
-            table_name: (str) database table to search for the element
+            dbref (Dbal): reference to the database holding the element.
+            table_name (str): database table to search for the element
                 values.
-            element_type: (type) the type of element in the set,
-            where_column: (str) The key column of the table containing
+            element_type (type): the type of element in the set,
+            where_column (str): The key column of the table containing
                 the key value to determine the elements being retrieved.
                 If null, all rows are retrieved.
-            where_value: (Any) The key value to retrieve. Required if
+            where_value (Any): The key value to retrieve. Required if
                 where_column is set.
-            order_by_column: (str) one or more column names separated
+            order_by_column (str): one or more column names separated
                 by commas to order the resulting set of elements.
-            limit: (int) number of rows to retrieve, defaults to all.
-            offset: (int) row number to start retrieval, 0 based,
+            limit (int): number of rows to retrieve, defaults to all.
+            offset (int): row number to start retrieval, 0 based,
                 defaults to row 0.
         """
         self.__dbref: Dbal = dbref
@@ -77,8 +77,8 @@ class ElementSet:
         values: dict[str, Any] = {}
         query["where"] = ""
 
-        # case 2 - selection case: get all elements from table matching column
-        #          name and value
+        # case 2 - selection case: get all elements from table matching
+        #    column name and value
         if where_column is not None and where_value is not None:
             query["where"] = where_column + " = :" + where_column
             values[where_column] = where_value
@@ -113,51 +113,46 @@ class ElementSet:
             element.set_properties(row)
             element_set.append(element)
         self.set_property_set(element_set)
-        # end __init__()
 
     def append(self, element: Element) -> None:
         """
         Append an element to the end of the property set.
 
         Parameters:
-            element: (Element) the element to append to the property set
+            element (Element): the element to append to the property set
         """
         self.insert(len(self.get_property_set()), element)
-        # end append()
 
     def insert(self, index: int, element: Element) -> None:
         """
         Insert an element into the property set at a specific index.
 
         Parameters:
-            index: (int) location to insert the element (zero based)
-            element: (Element) the element to insert into the
+            index (int): location to insert the element (zero based)
+            element (Element): the element to insert into the
                 property set
         """
         self.get_property_set().insert(index, element)
-        # end insert()
 
     def get(self, location: int) -> Element:
         """
         Get an element from the property set at the given index.
 
         Parameters:
-            location: (int) index of the element to be retrieved
+            location (int): index of the element to be retrieved
                 (zero based)
         """
         return self.get_property_set()[location]
-        # end delete()
 
     def delete(self, location: int) -> None:
         """
         Delete an element from the property set at the given index.
 
         Parameters:
-            location: (int) index of the element to be deleted
+            location (int): index of the element to be deleted
                 (zero based)
         """
         del self.get_property_set()[location]
-        # end delete()
 
     def get_dbref(self) -> Dbal:
         """
@@ -167,7 +162,6 @@ class ElementSet:
             (Dbal) The database reference for this element set.
         """
         return self.__dbref
-        # end get_dbref()
 
     def get_table(self) -> str:
         """
@@ -177,17 +171,15 @@ class ElementSet:
             (str) The table name for this element set.
         """
         return self.__table
-        # end get_table()
 
     def set_table(self, table: str) -> None:
         """
         Set the database table name.
 
         Parameters:
-            table (str) The table name for this element set.
+            table (str): The table name for this element set.
         """
         self.__table = table
-        # end set_table()
 
     def get_property_set(self) -> list[Element]:
         """
@@ -197,21 +189,19 @@ class ElementSet:
             (list) The property set for this element set.
         """
         return self.__property_set
-        # end get_property_set()
 
     def set_property_set(self, property_set: list[Element]) -> None:
         """
         Set the property set array for this element set.
 
         Parameters:
-            property_set: (list) property set for this element set. The
+            property_set (list): property set for this element set. The
             list may be empty
         """
         if isinstance(property_set, list):
             self.__property_set = property_set
         else:
             self.__property_set = []
-        # end set_property_set()
 
     def get_number_elements(self) -> int:
         """
@@ -221,7 +211,6 @@ class ElementSet:
             (int) Number of elements in the element set.
         """
         return len(self.get_property_set())
-        # end get_number_elements()
 
     def build_option_list(self, key: str) -> list[str]:
         """
@@ -231,7 +220,7 @@ class ElementSet:
         use primarily in setting ComboBox selection lists.
 
         Parameters:
-            key: (str) the element property to display in the
+            key (str): the element property to display in the
                 option list
 
         Return:
@@ -241,7 +230,6 @@ class ElementSet:
         for element in self.get_property_set():
             option_list.append(str(element.get_properties()[key]))
         return option_list
-        # end build_option_list()
 
     # ***** Iterator Interface *****
 
@@ -253,7 +241,6 @@ class ElementSet:
             (Iterator) This ElementSet reference as the Iterator Object.
         """
         return self
-        # end __iter__()
 
     def __next__(self) -> Element:
         """
@@ -271,11 +258,7 @@ class ElementSet:
             self.__reset__()
             raise StopIteration  # signals "the end"
         return self.get_property_set()[self.__position]
-        # end __next__()
 
     def __reset__(self) -> None:
         """Reset the iterator position to the beginning."""
         self.__position = -1
-        # end __reset__()
-
-# end class ElementSet
