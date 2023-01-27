@@ -34,8 +34,8 @@ class IniFileParser:
         Initialize the configuration file parser.
 
         This sets the configuration file location in the standard config
-        directory, either '{HOME}/.config' for linux or '{HOME}/AppData'
-        for Windows
+        directory, either '{HOME}/.config/lbk_software' for linux or
+        '{HOME}/AppData/lbk_software' for Windows
 
         The resulting path to the config file is created if it does not
         already exist.
@@ -61,10 +61,12 @@ class IniFileParser:
         # set the full path to the program config file directiory
         if not config_dir:
             if sys.platform.startswith("linux"):
-                config_dir = os.path.join(home_dir, ".config", program_config_subdir)
+                config_dir = os.path.join(
+                    home_dir, ".config", "lbk_software", program_config_subdir
+                )
             elif sys.platform.startswith("win"):
                 config_dir = os.path.join(
-                    home_dir, "AppData", "Local", program_config_subdir
+                    home_dir, "AppData", "Local", "lbk_software", program_config_subdir
                 )
 
         else:
@@ -77,7 +79,6 @@ class IniFileParser:
             # build the absolute file name.
         self.config_file = os.path.join(config_dir, filename)
 
-    # end __init()
 
     def read_config(self) -> dict[str, Any]:
         """

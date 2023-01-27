@@ -19,13 +19,13 @@ CONFIG_DIR = ""
 
 if sys.platform.startswith("linux"):
     if "XDG_CONFIG_HOME" in os.environ:
-        CONFIG_DIR = os.environ["XDG_CONFIG_HOME"]
+        CONFIG_DIR = os.path.join(os.environ["XDG_CONFIG_HOME"], "lbk_software")
     else:
-        CONFIG_DIR = os.path.join(HOME, ".config")
+        CONFIG_DIR = os.path.join(HOME, ".config", "lbk_software")
 
 elif sys.platform.startswith("win"):
     # force config dir to be in {APPDATA}\Local
-    CONFIG_DIR = os.path.join(HOME, "AppData", "Local")
+    CONFIG_DIR = os.path.join(HOME, "AppData", "Local", "lbk_software")
 
 
 sample_config = {
