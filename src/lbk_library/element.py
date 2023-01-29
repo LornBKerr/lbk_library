@@ -283,10 +283,9 @@ class Element:
             }
         """
         result = self.validate.integer_field(record_id, self.validate.REQUIRED, 1)
-        if result["valid"]:
-            self._set_property("record_id", result["entry"])
-        else:
-            self._set_property("record_id", self._defaults["record_id"])
+        self.set_validated_property(
+            "record_id", result["valid"], result["entry"], self._defaults["record_id"]
+        )
         self.update_property_flags("record_id", result["entry"], result["valid"])
         return result
 
@@ -324,10 +323,9 @@ class Element:
         if remarks is None:
             remarks = ""
         result = self.validate.text_field(remarks, self.validate.OPTIONAL, 0)
-        if result["valid"]:
-            self._set_property("remarks", result["entry"])
-        else:  # really no way to be here
-            self._set_property("remarks", "")
+        self.set_validated_property(
+            "remarks", result["valid"], result["entry"], self._defaults["remarks"]
+        )
         self.update_property_flags("remarks", result["entry"], result["valid"])
         return result
 
