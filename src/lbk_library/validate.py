@@ -209,7 +209,8 @@ class Validate:
         not empty, it must match the length parameters.
 
         The entered value should have all HTML tags including script tags and
-        comments removed and all whitespace at the front and back of the string removed.
+        comments removed and all whitespace at the front and back of the string
+        removed.
 
         Parameters:
             text (str): test to be checked.
