@@ -19,7 +19,8 @@ License:    see License
 from .dbal import Dbal
 from .element import Element
 from .element_set import ElementSet
-from .gui.dialog import Dialog
-from .gui.focus_combo_box import FocusComboBox
+
+# from .gui.dialog import Dialog
+# from .gui.focus_combo_box import FocusComboBox
 from .ini_file_parser import IniFileParser
 from .validate import Validate
