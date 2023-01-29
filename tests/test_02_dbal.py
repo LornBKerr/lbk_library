@@ -58,12 +58,12 @@ def close_database(dbref):
     dbref.sql_close()
 
 
-def test_01_dbal_constructor():
+def test_02_01_dbal_constructor():
     dbref = Dbal()
     assert isinstance(dbref, Dbal)
 
 
-def test_02_sql_connect_invalid():
+def test_02_02_sql_connect_invalid():
     dbref = Dbal()
     # invalid connection because of invalid path
     connection = dbref.sql_connect("./database/nn.db")
@@ -71,13 +71,13 @@ def test_02_sql_connect_invalid():
     close_database(dbref)
 
 
-def test_03_sql_connect_valid(dbal_open_database):
+def test_02_03_sql_connect_valid(dbal_open_database):
     dbref = dbal_open_database
     assert dbref.sql_is_connected()
     close_database(dbref)
 
 
-def test_04_sql_close(dbal_open_database):
+def test_02_04_sql_close(dbal_open_database):
     dbref = dbal_open_database
     assert dbref.sql_is_connected()
     dbref.sql_close()
@@ -85,7 +85,7 @@ def test_04_sql_close(dbal_open_database):
     close_database(dbref)
 
 
-def test_05_sql_bad_statement(dbal_open_database):
+def test_02_05_sql_bad_statement(dbal_open_database):
     dbref = dbal_open_database
     with pytest.raises(sqlite3.Error) as exc_info:
         sql = "SELECT * FROM"  # missing table name
@@ -95,14 +95,14 @@ def test_05_sql_bad_statement(dbal_open_database):
     close_database(dbref)
 
 
-def test_06_sql_validate_value_none(dbal_open_database):
+def test_02_06_sql_validate_value_none(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_validate_value(None)
     assert result is None
     close_database(dbref)
 
 
-def test_07_sql_validate_value_bool(dbal_open_database):
+def test_02_07_sql_validate_value_bool(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_validate_value(True)
     assert isinstance(result, int)
@@ -113,7 +113,7 @@ def test_07_sql_validate_value_bool(dbal_open_database):
     close_database(dbref)
 
 
-def test_08_sql_validate_value_string(dbal_open_database):
+def test_02_08_sql_validate_value_string(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_validate_value("a string")
     assert isinstance(result, str)
@@ -121,14 +121,14 @@ def test_08_sql_validate_value_string(dbal_open_database):
     close_database(dbref)
 
 
-def test_09_sql_nextid_none(dbal_open_database):
+def test_02_09_sql_nextid_none(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_nextid(None)
     assert result == 0
     close_database(dbref)
 
 
-def test_10_sql_validate(dbal_open_database):
+def test_02_10_sql_validate(dbal_open_database):
     dbref = dbal_open_database
     assert dbref.sql_validate_value(None) is None
     assert dbref.sql_validate_value("test") == "'test'"
@@ -138,21 +138,21 @@ def test_10_sql_validate(dbal_open_database):
     close_database(dbref)
 
 
-def test_11_sql_fetchrow_none(dbal_open_database):
+def test_02_11_sql_fetchrow_none(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_fetchrow(None)
     assert not result
     close_database(dbref)
 
 
-def test_12_sql_fetchrowset_none(dbal_open_database):
+def test_02_12_sql_fetchrowset_none(dbal_open_database):
     dbref = dbal_open_database
     result = dbref.sql_fetchrowset(None)
     assert len(result) == 0
     close_database(dbref)
 
 
-def test_13_sql_query_from_array_none(open_create_table):
+def test_02_13_sql_query_from_array_none(open_create_table):
     # No data should return empty string
     dbref = open_create_table
     assert dbref
@@ -161,7 +161,7 @@ def test_13_sql_query_from_array_none(open_create_table):
     close_database(dbref)
 
 
-def test_14_sql_query_from_array_bad_query(open_create_table):
+def test_02_14_sql_query_from_array_bad_query(open_create_table):
     # query not a dict should return false
     dbref = open_create_table
     query = list()
@@ -170,14 +170,14 @@ def test_14_sql_query_from_array_bad_query(open_create_table):
     close_database(dbref)
 
 
-def test_15_sql_query_from_array_bad_type(open_create_table):
+def test_02_15_sql_query_from_array_bad_type(open_create_table):
     dbref = open_create_table
     query = {"type": "GiveMe"}
     assert not dbref.sql_query_from_array(query)
     close_database(dbref)
 
 
-def test_16_sql_query_from_array_delete(open_create_table):
+def test_02_16_sql_query_from_array_delete(open_create_table):
     dbref = open_create_table
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query = {"type": "insert", "table": "test_table"}
@@ -209,7 +209,7 @@ def test_16_sql_query_from_array_delete(open_create_table):
     close_database(dbref)
 
 
-def test_17_sql_query_from_array_update(open_create_table):
+def test_02_17_sql_query_from_array_update(open_create_table):
     dbref = open_create_table
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query = {"type": "insert", "table": "test_table"}
@@ -227,7 +227,7 @@ def test_17_sql_query_from_array_update(open_create_table):
     close_database(dbref)
 
 
-def test_18_sql_query_from_array_select(open_create_table):
+def test_02_18_sql_query_from_array_select(open_create_table):
     dbref = open_create_table
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query_insert = {"type": "insert", "table": "test_table"}
@@ -321,7 +321,7 @@ def test_18_sql_query_from_array_select(open_create_table):
     close_database(dbref)
 
 
-def test_19_new_db_file(tmpdir):
+def test_02_19_new_db_file(tmpdir):
     # create a new database with the given name and table structure.
     path = tmpdir.mkdir("new_database").join("test.db")
     Dbal.new_file(path, [create_table])

@@ -38,7 +38,7 @@ sample_config = {
 }
 
 
-def test_01_bare_constructor_get_config_dir_path():
+def test_05_01_bare_constructor_get_config_dir_path():
     # Verify the config path exists
     filename = "testfile.ini"
     sub_dir = os.path.splitext(filename)[0]
@@ -49,7 +49,7 @@ def test_01_bare_constructor_get_config_dir_path():
     # end test_01_get_config_dir_path()
 
 
-def test_02_constructor(tmpdir):
+def test_05_02_constructor(tmpdir):
     """Test constructor with file name and config_sub_dir"""
     filename = "testfile.ini"
     config_sub_dir = tmpdir.join("testfile")
@@ -60,7 +60,7 @@ def test_02_constructor(tmpdir):
     # end test_02_constructor()
 
 
-def test_03_constructor(tmpdir):
+def test_05_03_constructor(tmpdir):
     """
     Test constructor with file name, config_sub_dir and config dir
     """
@@ -74,7 +74,7 @@ def test_03_constructor(tmpdir):
     # end test_03_constructor()
 
 
-def test_04_read_empty_config(tmpdir):
+def test_05_04_read_empty_config(tmpdir):
     filename = "testfile.ini"
     subdir = tmpdir.join("testfile")
     parser = IniFileParser(filename, subdir)
@@ -84,7 +84,7 @@ def test_04_read_empty_config(tmpdir):
     # end test_04_read_empty_config()
 
 
-def test_05_write_empty_config(tmpdir):
+def test_05_05_write_empty_config(tmpdir):
     filename = "testfile.ini"
     subdir = tmpdir.join("testfile")
     # write and check empty file
@@ -101,7 +101,7 @@ def test_05_write_empty_config(tmpdir):
     # end test_05_write_empty_config()
 
 
-def test_06_write_config(tmpdir):
+def test_05_06_write_config(tmpdir):
     filename = "testfile.ini"
     subdir = tmpdir.join("testfile")
     # write and check sample file

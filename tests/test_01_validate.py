@@ -12,7 +12,7 @@ import pytest
 from lbk_library import Validate
 
 
-def test_01_integer_field():
+def test_01_01_integer_field():
     validate = Validate()
     number = 10  # good number
     result = validate.integer_field(number, validate.REQUIRED, 1, 30)
@@ -57,7 +57,7 @@ def test_01_integer_field():
     assert result["entry"] == int(number)
 
 
-def test_03_float_field():
+def test_01_02_float_field():
     validate = Validate()
     number = None
     result = validate.float_field(number, validate.REQUIRED)
@@ -94,7 +94,7 @@ def test_03_float_field():
     assert result["entry"] == 20.0
 
 
-def test_04_text_field():
+def test_01_03_text_field():
     validate = Validate()
     text = None  # required, 1 <= len(text) <=255
     result = validate.text_field(text, validate.REQUIRED)
@@ -125,7 +125,7 @@ def test_04_text_field():
     assert not result["valid"]
 
 
-def test_05_boolean():
+def test_01_04_boolean():
     validate = Validate()
     # ON values
     assert validate.boolean(True)["valid"]
@@ -153,7 +153,7 @@ def test_05_boolean():
     assert not validate.boolean(2)["valid"]
 
 
-def test_06_date_field():
+def test_01_05_date_field():
     validate = Validate()
     # Valid date
     assert validate.date_field("02/28/2020", validate.REQUIRED)["valid"]
@@ -167,7 +167,7 @@ def test_06_date_field():
     assert not validate.date_field("2021-02-29", validate.REQUIRED)["valid"]
 
 
-def test_07_reg_exp_field():
+def test_01_06_reg_exp_field():
     validate = Validate()
     reg_exp = r"\d\d-\d\d\d"
     value = "01-123"

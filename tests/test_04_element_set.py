@@ -51,28 +51,28 @@ def create_table(open_database):
     return dbref
 
 
-def test_01_ElementSet_constr(create_table):
+def test_04_01_ElementSet_constr(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)
     assert isinstance(element_set, ElementSet)
     close_database(dbref)
 
 
-def test_02_ElementSet_get_dbref(create_table):
+def test_04_02_ElementSet_get_dbref(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)
     assert element_set.get_dbref() == dbref
     close_database(dbref)
 
 
-def test_03_ElementSet_get_table(create_table):
+def test_04_03_ElementSet_get_table(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)
     assert element_set.get_table() == table_name
     close_database(dbref)
 
 
-def test_04_ElementSet_set_table(create_table):
+def test_04_04_ElementSet_set_table(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)
     element_set.set_table("parts")
@@ -80,7 +80,7 @@ def test_04_ElementSet_set_table(create_table):
     close_database(dbref)
 
 
-def test_05_ElementSet_get_properties_type(create_table):
+def test_04_05_ElementSet_get_properties_type(create_table):
     dbref = create_table
     element_set = ElementSet(dbref, table_name, Element)
     element_set.set_property_set(None)
@@ -90,7 +90,7 @@ def test_05_ElementSet_get_properties_type(create_table):
     close_database(dbref)
 
 
-def test_06_Element_set_constructor(create_table):
+def test_04_06_Element_set_constructor(create_table):
     dbref = create_table
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -135,7 +135,7 @@ def test_06_Element_set_constructor(create_table):
     close_database(dbref)
 
 
-def test_07_insert_element(create_table):
+def test_04_07_insert_element(create_table):
     dbref = create_table
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -154,7 +154,7 @@ def test_07_insert_element(create_table):
     close_database(dbref)
 
 
-def test_08_append_element(create_table):
+def test_04_08_append_element(create_table):
     dbref = create_table
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -173,7 +173,7 @@ def test_08_append_element(create_table):
     close_database(dbref)
 
 
-def test_09_get_element(create_table):
+def test_04_09_get_element(create_table):
     dbref = create_table
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -190,7 +190,7 @@ def test_09_get_element(create_table):
     close_database(dbref)
 
 
-def test_10_delete_element(create_table):
+def test_04_10_delete_element(create_table):
     dbref = create_table
     length = 5
     remark = "Remark # "
@@ -209,7 +209,7 @@ def test_10_delete_element(create_table):
     close_database(dbref)
 
 
-def test_11_build_option_list(create_table):
+def test_04_11_build_option_list(create_table):
     dbref = create_table
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -231,7 +231,7 @@ def test_11_build_option_list(create_table):
     close_database(dbref)
 
 
-def test_12_iterator(create_table):
+def test_04_12_iterator(create_table):
     dbref = create_table
     element = Element(dbref, table_name)
     remark = "Remark # "
