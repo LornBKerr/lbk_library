@@ -15,7 +15,7 @@ with open(path.join(HERE, "README.md"), encoding="utf-8") as f:
 # This call to setup() does all the work
 setup(
     name="lbk_library",
-    version="0.3.17",
+    version="0.4.0",
     description="A Personal Project Support Library",
     long_description=long_description,
     long_description_content_type="text/markdown",
