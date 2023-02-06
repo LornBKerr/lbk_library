@@ -5,7 +5,7 @@ enviroment_list.*
 github_token
 *~
 *.bak
-
+_version.py
 pending*/
 
 # Byte-compiled / optimized / DLL files
