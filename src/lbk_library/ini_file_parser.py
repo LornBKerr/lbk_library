@@ -119,7 +119,7 @@ class IniFileParser:
 
     def config_path(self) -> str:
         """
-        Provide the absolute path to the config file
+        Provide the absolute path to the config file.
 
         Returns:
             (str) The absolute path to the config file.

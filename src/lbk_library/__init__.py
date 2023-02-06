@@ -1,7 +1,7 @@
 """
 The Project Library Collection.
 
-This contains a set of common classes that support several projects. 
+This contains a set of common classes that support several projects.
 
 This package contains the following classes:
     Dbal           A database abstraction layer for SQLite3.

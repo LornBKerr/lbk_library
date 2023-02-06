@@ -46,14 +46,11 @@ element_values = {
     "remarks": "test",
 }
 
-# Initialize 'elements' table
+
 def test_03_01_new_database(create_table):
     dbref = create_table
     assert dbref.sql_is_connected()
     close_database(dbref)
-
-
-# end test_01_new_database()
 
 
 def test_03_02_element_constr(open_database):
@@ -63,17 +60,11 @@ def test_03_02_element_constr(open_database):
     close_database(dbref)
 
 
-# end test_02_element_constr()
-
-
 def test_03_03_element_get_dbref(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
     assert element.get_dbref() == dbref
     close_database(dbref)
-
-
-# end test_03_element_get_dbref()
 
 
 def test_03_04_element_get_table(open_database):
@@ -83,17 +74,11 @@ def test_03_04_element_get_table(open_database):
     close_database(dbref)
 
 
-# end test_04_element_get_table()
-
-
 def test_03_05_element_get_validate(open_database):
     dbref = open_database
     element = Element(dbref, "elements")
     assert isinstance(element.validate, Validate)
     close_database(dbref)
-
-
-# end test_05_element_get_validate()
 
 
 def test_03_06_element_get_set_initial_values(open_database):
