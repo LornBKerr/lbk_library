@@ -31,7 +31,7 @@ fi
 pip install wheel twine
 
 # build library distribution
-python ./setup.py sdist bdist_wheel
+python -m build
 
 # upload to test.pypi.org
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*
