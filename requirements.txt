@@ -1,7 +1,7 @@
 # Requirements file for lbk_library virtual environment
 
 # Run time requirements
-# None
+# setuptools_scm  # uncomment this to enable version info from the library
 
 # Testing Requirements
 black
@@ -12,3 +12,4 @@ isort
 pydocstyle
 pytest
 pytest_cover
+
