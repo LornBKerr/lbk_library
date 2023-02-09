@@ -1,14 +1,14 @@
 # Requirements file for lbk_library virtual environment
 
-# --extra-index-url https://test.pypi.org/simple/
-
-PyQt6
+# Run time requirements
+# None
 
 # Testing Requirements
 black
 coverage
 flake8
+flake8-pyproject
 isort
+pydocstyle
 pytest
 pytest_cover
-pytest_qt
