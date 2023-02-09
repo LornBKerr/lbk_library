@@ -27,11 +27,10 @@ from .element_set import ElementSet
 from .ini_file_parser import IniFileParser
 from .validate import Validate
 
-#import ._version
-from setuptools_scm import get_version
 
 def version():
     """
     Return the current version of the library.
     """
+    from setuptools_scm import get_version
     return get_version()
