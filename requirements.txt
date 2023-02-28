@@ -1,4 +1,13 @@
-# Requirements file for lbk_library virtual environment
+# ########################################################
+#
+# Requirements for the lbk_library virtual environment. 
+#
+# File:       requirements.txt
+# Author:     Lorn B Kerr
+# Copyright:  (c) 2022, 2023 Lorn B Kerr
+# License:    MIT, see file LICENSE
+#
+# ########################################################
 
 # Run time requirements
 # setuptools_scm  # uncomment this to enable version info from the library
@@ -10,6 +19,7 @@ flake8
 flake8-pyproject
 isort
 pydocstyle
+pydocstyle[toml]
 pytest
 pytest_cover
 

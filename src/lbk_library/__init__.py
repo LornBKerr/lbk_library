@@ -29,8 +29,7 @@ from .validate import Validate
 
 
 def version():
-    """
-    Return the current version of the library.
-    """
+    """Return the current version of the library."""
     from setuptools_scm import get_version
+
     return get_version()
