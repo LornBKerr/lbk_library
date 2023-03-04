@@ -220,22 +220,21 @@ class Dbal:
                             or 'UPDATE'
                 ['table'] -> (str) name of table to access
                 ['where'] -> (str) providing the sql where_clause
-                            contents (without the 'WHERE").Required
-                            for DELETE statements, Optional for SELECT
-                            statements, not used by other statements.
+                    contents (without the 'WHERE").Required for DELETE
+                    statements, Optional for SELECT statements, not used
+                    by other statements.
                 ['columns'] -> (list) column names for INSERT and SELECT
-                            statements. SELECT statement may use just [*]
-                            to select all columns. If ommitted, defaults
-                            to '*'.
+                    statements. SELECT statement may use just [*] to
+                    select all columns. If ommitted, defaults to '*'.
                 ['values'] -> (list) The set of values to insert or
-                            update. Order must match ['keys']
-                ['order_by'] -> (str) providing the sql 'order by' clause
-                            (without the "ORDER_BY"). Optional for the
-                            SELECT statement, not used by other statments
+                    update. Order must match ['keys']
+                ['order_by'] -> (str) providing the sql 'order by'
+                    clause (without the "ORDER_BY"). Optional for the
+                    SELECT statement, not used by other statments
                 ['limit'] -> list: [0] =int(limit value)
                                    [1] = int(offset value)
-                            Optional for SELECT statements, not used by
-                            other statements
+                    Optional for SELECT statements, not used by
+                    other statements
                 }
             value_set (dict): holds the key => value pairs for all the
                 parameters needed in building the sql statement.
@@ -296,8 +295,8 @@ class Dbal:
             query (dict): {
                 ['type'] -> (str) 'INSERT'
                 ['table'] -> (str) name of table
-                value_set -> (dict) set of key->value pairs to insert into
-                table
+                value_set -> (dict) set of key->value pairs to insert
+                    into table
             }
 
         Returns:
@@ -328,13 +327,13 @@ class Dbal:
                 ['type'] -> (str) 'SELECT'
                 ['table'] -> (str) name of table
                 ['columns'] -> (list) column names for SELECT statement.
-                    Statement may use just '[*]' or '*' to select all columns.
-                    If omitted, defaults to '*'.
-                ['where'] -> (str) providing the sql where_clause contents
-                    (without the 'WHERE"). Optional, if not present, selects
-                    all rows.
-                ['order_by'] -> (str) providing the sql 'order by' clause
-                    (without the "ORDER_BY"). Optional
+                    Statement may use just '[*]' or '*' to select all
+                    columns. If omitted, defaults to '*'.
+                ['where'] -> (str) providing the sql where_clause
+                    contents (without the 'WHERE"). Optional, if not
+                    present, selects all rows.
+                ['order_by'] -> (str) providing the sql 'order by'
+                    clause (without the "ORDER_BY"). Optional
                 ['limit'] -> (list)
                     [0] = (int) limit value,
                     [1] = (int) offset value. Optional
@@ -387,8 +386,8 @@ class Dbal:
             query (dict): {
                 ['type']  -> (str) 'UPDATE'
                 ['table'] -> (str) name of table
-                ['where'] -> (str) providing the sql where_clause contents
-                    selecting a specific row
+                ['where'] -> (str) providing the sql where_clause
+                    contents selecting a specific row
             }
             value_set (dict): holding the set of values to update
 

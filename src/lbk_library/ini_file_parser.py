@@ -17,14 +17,14 @@ class IniFileParser:
     """
     Exposes the stored configuation file (*.ini) as a standard dict.
 
-    This uses the python 'configparser' object to provide 2 simple methods
-    to read and write the full ini file. It initializes the config file
-    directories and reads and writes ini files to and from the
-    designated directories. For other needs, the full capabilities of
-    the 'configparser' should be used.
+    This uses the python 'configparser' object to provide 2 simple
+    methods to read and write the full ini file. It initializes the
+    config file directories and reads and writes ini files to and from
+    the designated directories. For other needs, the full capabilities
+    of the 'configparser' should be used.
 
-    By default, it uses the standard Linux (Fedora) or Windows configuration
-    locations.
+    By default, it uses the standard Linux (Fedora) or Windows
+    configuration locations.
     """
 
     def __init__(
@@ -46,8 +46,8 @@ class IniFileParser:
                 config directory location for this config file. If not
                 given, defaults to filename minus the suffix.
             config_dir: (str) Used if the standard, platform dependent,
-                config directory location is not desired for ssome reason
-                (testing primarily)
+                config directory location is not desired for some
+                reason. (testing primarily)
         """
         home_dir = os.path.expanduser("~")
 

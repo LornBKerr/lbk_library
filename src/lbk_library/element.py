@@ -72,12 +72,12 @@ class Element:
         the key column value designated.
 
         Parameters:
-            column_name (str): within the table containing the key values
-            column_value (Any) Key value requested
+            column_name (str): within the table containing the key
+                values column_value (Any) Key value requested
 
         Returns:
-            (dict) Row containing requested element if successful or an empty
-            dict object if not.
+            (dict) Row containing requested element if successful or an
+                empty dict object if not.
         """
         self.__properties = {}
         if column_name and column_value:
@@ -102,7 +102,8 @@ class Element:
         Add an element to the database.
 
         Returns:
-            (int) unique id of the newly added element or False if add failed.
+            (int) unique id of the newly added element or False if
+                add failed.
         """
         return_value = False
         property_set = self.get_properties()
@@ -187,9 +188,9 @@ class Element:
         are discarded.
 
         Parameters:
-            properties (dict): object holding the element values. Keys must
-                match the required keys of the element being modified,
-                properties may be sparse.
+            properties (dict): object holding the element values. Keys
+                must match the required keys of the element being
+                modified, properties may be sparse.
         """
         if properties is not None and isinstance(properties, dict):
             for key in properties.keys():
@@ -241,10 +242,10 @@ class Element:
         Parameters:
             property_name (str): the name of the property to store.
             is_valid (bool): is the validated value acceptable.
-            validated_value (Any): the value to store if the validated value
-                is valid.
-            default_value (Any): the value to store if the validated value is
-                not valid.
+            validated_value (Any): the value to store if the validated
+                value is valid.
+            default_value (Any): the value to store if the validated
+                value is not valid.
         """
         if is_valid:
             self._set_property(property_name, validated_value)
@@ -269,10 +270,11 @@ class Element:
         Set the Element's entry index.
 
         Parameters:
-            record_id (int):  the new record_id for the Element. Must be an
-                integer greater than 0 and must be unique when Element is
-                stored to the database (not checked). If the supplied record_id
-                is not valid, the record_id is set to __defaults['record_id'].
+            record_id (int):  the new record_id for the Element. Must be
+                an integer greater than 0 and must be unique when
+                Element is stored to the database (not checked). If the
+                supplied record_id is not valid, the record_id is set
+                to __defaults['record_id'].
 
         Returns:
             (dict) {
@@ -294,8 +296,8 @@ class Element:
         Get the remarks for this Element.
 
         Returns:
-            (str) The remarks for this Element, the default value if no remarks
-                are assigned.
+            (str) The remarks for this Element, the default value if no
+                remarks are assigned.
         """
         remarks = self._get_property("remarks")
         if remarks is None:
@@ -352,7 +354,8 @@ class Element:
         Get the intial values for the element.
 
         Returns:
-            (dict) the initial values assigned to the element's properties.
+            (dict) the initial values assigned to the element's
+                properties.
         """
         return self.__initial_values
 
@@ -486,12 +489,13 @@ class Element:
         """
         Check the Element validity.
 
-        Implicit here is that all properties have been checked for validity.
-        This should be done as part of the element construction and
-        modification.
+        Implicit here is that all properties have been checked for
+        validity. This should be done as part of the element
+        construction and modification.
 
         Returns:
-            (bool) True if all element values are valid, False otherwise.
+            (bool) True if all element values are valid,
+                False otherwise.
 
         Raises:
             KeyError if entry_name is not a valid name.

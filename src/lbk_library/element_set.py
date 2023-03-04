@@ -1,5 +1,5 @@
 """
-Implement the base class for sets of types of information in the database.
+Implement the base class for sets of information types in the database.
 
 File:       element_set.py
 Author:     Lorn B Kerr
