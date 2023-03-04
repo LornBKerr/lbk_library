@@ -17,16 +17,14 @@ class Validate:
     """
     Provides various methods to validate variables.
 
-    Validations are provided for Booleans, Dates, Floats, Integers, Text fields
-    and arbitrary regular expressions.
+    Validations are provided for Booleans, Dates, Floats, Integers,
+    Text fields and arbitrary regular expressions.
     """
 
     REQUIRED = True
-    """ (bool) variable is required and must satisfy the validation
-    requirements. """
+    """(bool) variable required, must satisfy requirements."""
     OPTIONAL = False
-    """ (bool) variable is optional but, if present, must satisfy
-    requirements. """
+    """(bool) variable optional, if present, must satisfy requirements."""
 
     def integer_field(
         self,
@@ -50,9 +48,9 @@ class Validate:
         empty string ("") is accepted and converted  to int(0).
 
         Parameters:
-            value (int | str): number to be checked, an integer, a string
-                representation of an integer, or "". The empty string is
-                only accepted if the value is optional.
+            value (int | str): number to be checked, an integer, a
+                string representation of an integer, or "". The empty
+                string is only accepted if the value is optional.
             required (bool): one of the constants Validate.REQUIRED or
                 Validate.OPTIONAL.
             min_value (int): minimum integer value, default is 0.
@@ -201,25 +199,26 @@ class Validate:
         """
         Validate a text field.
 
-        The field needs a valid alphnumeric string, and optional minimum and
-        maximum lengths of the field. Default values of 1 and 255 are supplied
-        for the minimum and maximum lengths. If the entry is marked as
-        required, the entry must be present and match the length parameters.
-        If not rquired (required = OPTIONAL), then the entry may be empty. If
-        not empty, it must match the length parameters.
+        The field needs a valid alphnumeric string, and optional minimum
+        and maximum lengths of the field. Default values of 1 and 255
+        are supplied for the minimum and maximum lengths. If the entry
+        is marked as required, the entry must be present and match the
+        length parameters. If not rquired (required = OPTIONAL), then
+        the entry may be empty. If not empty, it must match the length
+        parameters.
 
-        The entered value should have all HTML tags including script tags and
-        comments removed and all whitespace at the front and back of the string
-        removed.
+        The entered value should have all HTML tags including script
+        tags and comments removed and all whitespace at the front and
+        back of the string removed.
 
         Parameters:
             text (str): test to be checked.
             required (bool): one of the constants Validate.REQUIRED or
                 Validate.OPTIONAL constants
-            min_length: (int) minimum length in characters, optional, default
-                is 1.
-            max_length: (int) maximum length in characters, optional, default
-                is 255.
+            min_length: (int) minimum length in characters, optional,
+                default is 1.
+            max_length: (int) maximum length in characters, optional,
+                default is 255.
 
         Returns:
             (dict)
@@ -395,10 +394,11 @@ class Validate:
         """
         Validate an entry_value defined by a regular expression.
 
-        This will match an entry_value against a given regular expression and
-        return a standard validation result set. The reg_exp value must be a
-        valid regular expression with all special characters handled (normally
-        a raw string such as r"some pattern".
+        This will match an entry_value against a given regular
+        expression and return a standard validation result set. The
+        reg_exp value must be a valid regular expression with all
+        special characters handled (normally a raw string such as
+        r"some pattern".
 
         Parameters:
             value (str): The entry_value to be validated.
