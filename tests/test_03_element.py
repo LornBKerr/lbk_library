@@ -1,88 +1,55 @@
-# command --> pytest --cov-report term-missing --cov=lbk_library ../tests/
+"""
+Tests for the Element Class.
+
+File:       test_03_element.py
+Author:     Lorn B Kerr
+Copyright:  (c) 2022, 2023 Lorn B Kerr
+License:    MIT, see file License
+"""
 
 import os
 import sys
+import pytest
 
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-import pytest
+from test_setup import db_close, db_create, db_open, element_values
 
 from lbk_library import Dbal, Element, Validate
 
-database = "test.db"
 
-
-def close_database(dbref):
-    dbref.sql_close()
-
-
-@pytest.fixture
-def open_database(tmpdir):
-    path = tmpdir.join(database)
-    dbref = Dbal()
-    # valid connection
-    dbref.sql_connect(path)
-    return dbref
-
-
-@pytest.fixture
-def create_table(open_database):
-    dbref = open_database
-    dbref.sql_query("DROP TABLE IF EXISTS 'elements'")
-    create_table = (
-        'CREATE TABLE IF NOT EXISTS "elements"'
-        + '("record_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
-        + ' "remarks" TEXT DEFAULT NULL)'
-    )
-    dbref.sql_query(create_table)
-    return dbref
-
-
-# set element values from array of values
-element_values = {
-    "record_id": 9876,
-    "remarks": "test",
-}
-
-
-def test_03_01_new_database(create_table):
-    dbref = create_table
-    assert dbref.sql_is_connected()
-    close_database(dbref)
-
-
-def test_03_02_element_constr(open_database):
-    dbref = open_database
+def test_03_01_element_constr(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert isinstance(element, Element)
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_03_element_get_dbref(open_database):
-    dbref = open_database
+def test_03_02_element_get_dbref(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert element.get_dbref() == dbref
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_04_element_get_table(open_database):
-    dbref = open_database
+def test_03_03_element_get_table(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert element.get_table() == "elements"
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_05_element_get_validate(open_database):
-    dbref = open_database
+def test_03_04_element_get_validate(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert isinstance(element.validate, Validate)
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_06_element_get_set_initial_values(open_database):
-    dbref = open_database
+def test_03_05_element_get_set_initial_values(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     initial_values = element.get_initial_values()  # start with default values
     assert isinstance(initial_values, dict)
@@ -97,11 +64,11 @@ def test_03_06_element_get_set_initial_values(open_database):
         element.set_initial_values(10)
     except Exception as excp:
         assert isinstance(excp, TypeError)
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_07_element_set_default_values_constructor(open_database):
-    dbref = open_database
+def test_03_06_element_set_default_values_constructor(db_open):
+    dbref = db_open
     element = Element(dbref, "elements", element_values)
     initial_values = element.get_initial_values()
     assert isinstance(initial_values, dict)
@@ -112,11 +79,11 @@ def test_03_07_element_set_default_values_constructor(open_database):
         element.set_initial_values(10)
     except Exception as excp:
         assert isinstance(excp, TypeError)
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_08_value_changed_flags(open_database):
-    dbref = open_database
+def test_03_07_value_changed_flags(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     element.set_initial_values(element_values)
     assert not element.have_values_changed()
@@ -126,29 +93,29 @@ def test_03_08_value_changed_flags(open_database):
     assert element.have_values_changed()
     element.clear_value_changed_flags()
     assert not element.have_values_changed()
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_09_get_set_properties_valid_flags(open_database):
-    dbref = open_database
+def test_03_08_get_set_properties_valid_flags(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert not element.set_value_valid_flag("record_id", False)
     assert not element.get_value_valid_flag("record_id")
     assert element.set_value_valid_flag("remarks", True)
     assert element.get_value_valid_flag("remarks")
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_10_element_get_properties(open_database, create_table):
-    dbref = open_database
+def test_03_09_element_get_properties(db_create):
+    dbref = db_create
     element = Element(dbref, "elements")
     assert isinstance(element.get_properties(), dict)
     assert len(element.get_properties()) == 0
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_11_get_set_indiv_properties(open_database):
-    dbref = open_database
+def test_03_10_get_set_indiv_properties(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     with pytest.raises(KeyError) as exc_info:
         # Fails because no property values set yet.
@@ -165,11 +132,11 @@ def test_03_11_get_set_indiv_properties(open_database):
     assert element._get_property("remarks") == "remark 1"
     assert element.get_properties()["record_id"] == 10
     assert element.get_properties()["remarks"] == "remark 1"
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_12_is_element_valid(open_database):
-    dbref = open_database
+def test_03_11_is_element_valid(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     assert not element.is_element_valid()  # should be false because nothing is set
     element._set_property("record_id", 10)
@@ -189,11 +156,11 @@ def test_03_12_is_element_valid(open_database):
         value = element.is_element_valid()
     exc_raised = exc_info.value
     assert exc_info.typename == "KeyError"
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_13_update_property_flags(open_database):
-    dbref = open_database
+def test_03_12_update_property_flags(db_open):
+    dbref = db_open
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
     element._set_property("record_id", 1)
     element._set_property("remarks", "")
@@ -215,11 +182,11 @@ def test_03_13_update_property_flags(open_database):
         value = element.get_value_changed_flag("bad_key")
     exc_raised = exc_info.value
     assert exc_info.typename == "KeyError"
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_14_named_get_value(open_database):
-    dbref = open_database
+def test_03_13_named_get_value(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     with pytest.raises(KeyError) as exc_info:
         # not assigned so should raise KeyError
@@ -241,11 +208,11 @@ def test_03_14_named_get_value(open_database):
     assert element.get_record_id() == 10
     element._set_property("remarks", "remark 1")
     assert element.get_remarks() == "remark 1"
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_15_set_functions(open_database):
-    dbref = open_database
+def test_03_14_set_functions(db_open):
+    dbref = db_open
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
     # set element properties from 'element_values'
     #'record_id': 9876, required
@@ -269,21 +236,21 @@ def test_03_15_set_functions(open_database):
     # remarks: fail for non-text parameter
     result = element.set_remarks(100)
     assert not result["valid"]
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_16_element_set_properties(open_database):
-    dbref = open_database
+def test_03_15_element_set_properties(db_open):
+    dbref = db_open
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
     assert len(element.get_properties()) == 2
     assert element.get_record_id() == element_values["record_id"]
     assert element.get_remarks() == element_values["remarks"]
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_17_element_add(create_table):
-    dbref = create_table
+def test_03_16_element_add(db_create):
+    dbref = db_create
     element = Element(dbref, "elements")
     element.set_initial_values({"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
@@ -291,11 +258,11 @@ def test_03_17_element_add(create_table):
     assert element_id == 1
     assert element_id == element.get_record_id()
     assert element_values["remarks"] == element.get_remarks()
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_18_element_read_db(create_table):
-    dbref = create_table
+def test_03_17_element_read_db(db_create):
+    dbref = db_create
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
     element_id = element.add()
@@ -314,11 +281,11 @@ def test_03_18_element_read_db(create_table):
     # Try direct read thru Element
     element2.set_properties(element2.get_properties_from_db(None, None))
     assert not element2.get_properties()
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_19_element_update(create_table):
-    dbref = create_table
+def test_03_18_element_update(db_create):
+    dbref = db_create
     element = Element(dbref, "elements")
     element.set_initial_values({"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
@@ -333,11 +300,11 @@ def test_03_19_element_update(create_table):
     assert element.get_properties() is not None
     assert element.get_record_id() == 1
     assert remarks == element.get_remarks()
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_20_element_delete(create_table):
-    dbref = create_table
+def test_03_19_element_delete(db_create):
+    dbref = db_create
     element = Element(dbref, "elements", {"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
     element_id = element.add()
@@ -350,11 +317,11 @@ def test_03_20_element_delete(create_table):
     element2 = Element(dbref, "elements")
     element2.get_properties_from_db("record_id", 1)
     assert len(element2.get_properties()) == 0
-    close_database(dbref)
+    db_close(dbref)
 
 
-def test_03_21_set_validated_property(open_database):
-    dbref = open_database
+def test_03_20_set_validated_property(db_open):
+    dbref = db_open
     element = Element(dbref, "elements")
     element.set_validated_property("test", True, "is_valid", "not_valid")
     assert element._get_property("test") == "is_valid"
