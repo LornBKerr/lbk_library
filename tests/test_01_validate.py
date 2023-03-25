@@ -1,4 +1,11 @@
-# command --> pytest --cov-report term-missing --cov=lbk_library ../tests/
+"""
+Tests for the Validate Class.
+
+File:       test_01_validate.py
+Author:     Lorn B Kerr
+Copyright:  (c) 2022, 2023 Lorn B Kerr
+License:    MIT, see file License
+"""
 
 import os
 import sys
