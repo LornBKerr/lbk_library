@@ -10,16 +10,22 @@
 # ########################################################
 
 # Run time requirements
+PyQt6
 # setuptools_scm  # uncomment this to enable version info from the library
 
 # Testing Requirements
+
+# Pytest Requirements
+pytest
+pytest_cover
+pytest-mock
+pytest-qt
+
+# Style and Linting requirements
 black
-coverage
 flake8
 flake8-pyproject
 isort
 pydocstyle
 pydocstyle[toml]
-pytest
-pytest_cover
 
