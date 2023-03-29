@@ -9,6 +9,7 @@ License:    MIT, see file License
 
 import os
 import sys
+
 import pytest
 
 src_path = os.path.join(os.path.realpath("."), "src")
