@@ -10,7 +10,7 @@ License:    MIT, see file License
 import os
 import sys
 
-from PyQt6.QtWidgets import QDialog, QMainWindow, QMessageBox
+from PyQt6.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
 from pytestqt import qtbot
 
 # from pytestqt.qt_compat import qt_api
@@ -250,3 +250,21 @@ def test_06_12_action_cancel(qtbot, mocker):
     mocker.patch.object(Dialog, "message_box_exec")
     dialog.message_box_exec.return_value = QMessageBox.StandardButton.Yes
     assert not dialog.action_cancel(save_something, 0)
+
+
+def test_06_13_set_combo_box_selections(qtbot, db_create):
+    dbref = db_create
+    main = QMainWindow()
+    dialog = Dialog(main, dbref)
+    dialog.form = A_Form(dialog)
+    ids = ["1", "3", "7", "10", "15", "60"]
+    entry = "7"
+    dialog.set_combo_box_selections(dialog.form.record_id_combo, ids, entry)
+    assert dialog.form.record_id_combo.currentIndex() == ids.index(entry)
+    assert dialog.form.record_id_combo.currentText() == entry
+    assert dialog.form.record_id_combo.count() == len(ids)
+
+    dialog.set_combo_box_selections(dialog.form.record_id_combo, ids)
+    assert dialog.form.record_id_combo.currentIndex() == -1
+    assert dialog.form.record_id_combo.currentText() == ""
+    assert dialog.form.record_id_combo.count() == len(ids)

@@ -10,20 +10,9 @@ License:    MIT, see file License
 
 from typing import Callable
 
-from PyQt6.QtWidgets import QDialog, QMainWindow, QMessageBox, QWidget
+from PyQt6.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox, QWidget
 
 from lbk_library import Dbal, Element
-
-# Constants for all dialogs
-ADD_ELEMENT = 1
-"""Add a new Element."""
-EDIT_ELEMENT = 2
-"""Edit an existing Element."""
-
-SAVE_NEW = 1
-"""Save the form contents, then clear form for new element."""
-SAVE_DONE = 2
-"""Save the form contents, then close form."""
 
 
 class Dialog(QDialog):
@@ -33,6 +22,17 @@ class Dialog(QDialog):
     Holds common functions used by all the editing dialog
     forms.
     """
+
+    # Constants for all dialogs
+    ADD_ELEMENT = 1
+    """Add a new Element."""
+    EDIT_ELEMENT = 2
+    """Edit an existing Element."""
+
+    SAVE_NEW = 1
+    """Save the form contents, then clear form for new element."""
+    SAVE_DONE = 2
+    """Save the form contents, then close form."""
 
     def __init__(self, parent: QMainWindow, dbref: Dbal) -> None:
         """
@@ -119,6 +119,26 @@ class Dialog(QDialog):
         widget.setFont(font)
         widget.setStyleSheet(widget_type + " {color: black;}")
         return True
+
+    def set_combo_box_selections(
+        self, combo_box: QComboBox, selections: list[str], selected: int | None = None
+    ) -> None:
+        """
+        Fill the combo box selection set.
+
+        Add the 'selections' to the combo box, optionally selecting the
+        'selected' item if given.
+
+        Paramters:
+            combo_box (QComboBox): the combo box to initialize.
+            selections (list[str]): available selections.
+            selected (str): (Optional) the inital selection.
+        """
+        self.form.record_id_combo.clear()
+        self.form.record_id_combo.addItems(selections)
+        self.form.record_id_combo.setCurrentIndex(
+            self.form.record_id_combo.findText(selected)
+        )
 
     def action_cancel(self, save_action: Callable, action: int) -> bool:
         """
