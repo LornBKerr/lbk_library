@@ -120,7 +120,7 @@ class Dialog(QDialog):
         widget.setStyleSheet(widget_type + " {color: black;}")
         return True
 
-    def set_combo_box_selections(
+    def set_combo_box_selections(    
         self, combo_box: QComboBox, selections: list[str], selected: int | None = None
     ) -> None:
         """
@@ -134,11 +134,9 @@ class Dialog(QDialog):
             selections (list[str]): available selections.
             selected (str): (Optional) the inital selection.
         """
-        self.form.record_id_combo.clear()
-        self.form.record_id_combo.addItems(selections)
-        self.form.record_id_combo.setCurrentIndex(
-            self.form.record_id_combo.findText(selected)
-        )
+        combo_box.clear()
+        combo_box.addItems(selections)
+        combo_box.setCurrentIndex(combo_box.findText(selected))
 
     def action_cancel(self, save_action: Callable, action: int) -> bool:
         """
