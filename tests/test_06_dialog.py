@@ -38,7 +38,7 @@ from lbk_library.gui import Dialog
 def test_06_01_class_type(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     assert isinstance(dialog, Dialog)
     assert isinstance(dialog, QDialog)
@@ -47,7 +47,7 @@ def test_06_01_class_type(qtbot):
 def test_06_02_get_dbref(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     assert dialog.get_dbref() == dbref
 
@@ -55,12 +55,11 @@ def test_06_02_get_dbref(qtbot):
 def test_06_03_get_set_element(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     assert dialog.get_element() is None
     dialog.set_element(new_element(dbref))
     qtbot.addWidget(main)
     assert isinstance(dialog.get_element(), Element)
-    #    assert isinstance(dialog.get_element(), Element)
     dialog.set_element(better_element(dbref))
     assert isinstance(dialog.get_element(), Element)
 
@@ -68,7 +67,7 @@ def test_06_03_get_set_element(qtbot):
 def test_06_04_msg_info_close(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     msg = "Testing Information Box"
     msg_box = dialog.message_information_close(msg)
@@ -84,7 +83,7 @@ def test_06_04_msg_info_close(qtbot):
 def test_06_05_msg_quest_changed_close(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     changed_name = "description"
     msg = "Do you want to save the current changes before closing form?"
@@ -103,7 +102,7 @@ def test_06_05_msg_quest_changed_close(qtbot):
 def test_06_06_msg_quest_changed(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     changed_name = "description"
     msg = "Do you want to save the current changes before reloading form?"
@@ -122,7 +121,7 @@ def test_06_06_msg_quest_changed(qtbot):
 def test_06_07_msg_quest_no_changes(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     title = "Form Entries Have Not Changed"
     msg = "Nothing has changed, so nothing to save"
@@ -136,7 +135,7 @@ def test_06_07_msg_quest_no_changes(qtbot):
 def test_06_08_msg_warning_selection(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     name = "Source"
     action = "Save"
@@ -151,7 +150,7 @@ def test_06_08_msg_warning_selection(qtbot):
 def test_06_09_msg_warning_failed(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     operation = "Add"
     msg = "The " + operation + " operation failed for some reason."
@@ -165,7 +164,7 @@ def test_06_09_msg_warning_failed(qtbot):
 def test_06_10_msg_warning_invalid(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     error_msg = "3 Entries Missing"
     msg_box = dialog.message_warning_invalid()
@@ -183,7 +182,7 @@ def test_06_10_msg_warning_invalid(qtbot):
 def test_06_11_set_invalid_indicator(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     font = dialog.form.record_id_label.font()
@@ -198,7 +197,7 @@ def test_06_11_set_invalid_indicator(qtbot):
 def test_06_11_set_valid_indicator(qtbot):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     dialog.set_invalid__indicator(dialog.form.record_id_label)
@@ -214,14 +213,14 @@ def test_06_11_set_valid_indicator(qtbot):
 def test_06_12_action_cancel(qtbot, mocker):
     dbref = Dbal()
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     dialog.set_element(new_element(dbref, element_values))
     # dialog is unchanged, just close
     assert dialog.action_cancel(save_something, 0)
 
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     dialog.set_element(new_element(dbref, element_values))
@@ -231,7 +230,7 @@ def test_06_12_action_cancel(qtbot, mocker):
     dialog.message_box_exec.return_value = QMessageBox.StandardButton.No
     assert dialog.action_cancel(save_something, 0)
 
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     dialog.set_element(new_element(dbref, element_values))
@@ -241,7 +240,7 @@ def test_06_12_action_cancel(qtbot, mocker):
     dialog.message_box_exec.return_value = QMessageBox.StandardButton.Yes
     assert dialog.action_cancel(save_something, 0)
 
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     dialog.set_element(new_element(dbref, element_values))
@@ -255,7 +254,7 @@ def test_06_12_action_cancel(qtbot, mocker):
 def test_06_13_set_combo_box_selections(qtbot, db_create):
     dbref = db_create
     main = QMainWindow()
-    dialog = Dialog(main, dbref)
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     dialog.form = A_Form(dialog)
     ids = ["1", "3", "7", "10", "15", "60"]
     entry = "7"
@@ -268,3 +267,16 @@ def test_06_13_set_combo_box_selections(qtbot, db_create):
     assert dialog.form.record_id_combo.currentIndex() == -1
     assert dialog.form.record_id_combo.currentText() == ""
     assert dialog.form.record_id_combo.count() == len(ids)
+
+
+def test_06_03_get_set_operation(qtbot):
+    dbref = Dbal()
+    main = QMainWindow()
+    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
+    assert dialog.get_operation() == Dialog.VIEW_ELEMENT
+    dialog.set_operation(Dialog.ADD_ELEMENT)
+    assert dialog.get_operation() == Dialog.ADD_ELEMENT
+    dialog = Dialog(main, dbref, Dialog.EDIT_ELEMENT)
+    assert dialog.get_operation() == Dialog.EDIT_ELEMENT
+    dialog.set_operation(10)
+    assert dialog.get_operation() == Dialog.VIEW_ELEMENT

@@ -24,6 +24,8 @@ class Dialog(QDialog):
     """
 
     # Constants for all dialogs
+    VIEW_ELEMENT = 0
+    """View an existing element, no editing allowed"""
     ADD_ELEMENT = 1
     """Add a new Element."""
     EDIT_ELEMENT = 2
@@ -34,21 +36,25 @@ class Dialog(QDialog):
     SAVE_DONE = 2
     """Save the form contents, then close form."""
 
-    def __init__(self, parent: QMainWindow, dbref: Dbal) -> None:
+    def __init__(self, parent: QMainWindow, dbref: Dbal, operation: int) -> None:
         """
         Initialize the form common elements.
 
         Parameters:
             parent (QMainWindow): The parent window owning this dialog.
             dbref (Dbal): A reference to the current database
+            operation (int): the editing operation, one of ADD_ELEMENT,
+                EDIT_ELEMENT or VIEW_ELEMENT.
         """
         super().__init__(parent)
 
         self.__dbref = dbref
         """The database for this dialog."""
         self.__element = None
-        """ The element being displayed/processed by the dialog."""
-
+        """The element being displayed/processed by the dialog."""
+        self.__operation = operation
+        """The current editing operation, one of ADD_ELEMENT,
+            EDIT_ELEMENT or VIEW_ELEMENT."""
         self.form: QDialog
         """The gui form for this dialog."""
 
@@ -78,6 +84,30 @@ class Dialog(QDialog):
             element (Element): for this form
         """
         self.__element = element
+
+    def get_operation(self) -> Dbal:
+        """
+        Get the current editing operation.
+
+        Returns:
+            (int) One of ADD_ELEMENT, EDIT_ELEMENT or VIEW_ELEMENT.
+        """
+        return self.__operation
+
+    def set_operation(self, operation: int = VIEW_ELEMENT) -> None:
+        """
+        Set the operation for this dialog.
+
+        Parameters:
+            operation (int): The current editing operation, one of
+                Dialog.ADD_ELEMENT, Dialog.EDIT_ELEMENT or
+                Dialog.VIEW_ELEMENT. Default operation is VIEW_ELEMENT
+                (i.e. read only)
+        """
+        if operation in (Dialog.ADD_ELEMENT, Dialog.EDIT_ELEMENT, Dialog.VIEW_ELEMENT):
+            self.__operation = operation
+        else:
+            self.__operation = Dialog.VIEW_ELEMENT
 
     def set_invalid__indicator(self, widget: QWidget) -> bool:
         """
@@ -120,7 +150,7 @@ class Dialog(QDialog):
         widget.setStyleSheet(widget_type + " {color: black;}")
         return True
 
-    def set_combo_box_selections(    
+    def set_combo_box_selections(
         self, combo_box: QComboBox, selections: list[str], selected: int | None = None
     ) -> None:
         """
