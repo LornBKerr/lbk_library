@@ -113,8 +113,7 @@ class Dialog(QDialog):
         """
         Flag the invalid entry in a widget.
 
-        Errors are noted by setting the label font to 'Bold', 'Red'
-        and larger.
+        Errors are noted by setting the label to 'Bold' and 'Red'.
 
         Parameters:
             widget (QWidget): the widget's label to flag.
@@ -126,7 +125,7 @@ class Dialog(QDialog):
         widget_type = str(type(widget))[:-2].rsplit(".", maxsplit=1)[-1]
         font = widget.font()
         font.setBold(True)
-        font.setPointSize(font.pointSize() + 2)
+        # font.setPointSize(font.pointSize() + 2)
         widget.setFont(font)
         widget.setStyleSheet(widget_type + " {color: red;}")
         return False
@@ -145,7 +144,7 @@ class Dialog(QDialog):
         widget_type = str(type(widget))[:-2].rsplit(".", maxsplit=1)[-1]
         font = widget.font()
         font.setBold(False)
-        font.setPointSize(font.pointSize() - 2)
+        # font.setPointSize(font.pointSize() - 2)
         widget.setFont(font)
         widget.setStyleSheet(widget_type + " {color: black;}")
         return True
