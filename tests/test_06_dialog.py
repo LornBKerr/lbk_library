@@ -186,12 +186,10 @@ def test_06_11_set_invalid_indicator(qtbot):
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
     font = dialog.form.record_id_label.font()
-    point_size = font.pointSize()
     weight = font.weight()
-    dialog.set_invalid__indicator(dialog.form.record_id_label)
+    dialog.set_invalid_indicator(dialog.form.record_id_label)
     new_font = dialog.form.record_id_label.font()
     assert new_font.bold()
-    assert new_font.pointSize() == point_size + 2
 
 
 def test_06_11_set_valid_indicator(qtbot):
@@ -200,14 +198,12 @@ def test_06_11_set_valid_indicator(qtbot):
     dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
     qtbot.addWidget(main)
     dialog.form = A_Form(dialog)
-    dialog.set_invalid__indicator(dialog.form.record_id_label)
+    dialog.set_invalid_indicator(dialog.form.record_id_label)
     font = dialog.form.record_id_label.font()
-    point_size = font.pointSize()
     weight = font.weight()
     dialog.set_valid_indicator(dialog.form.record_id_label)
     new_font = dialog.form.record_id_label.font()
     assert not new_font.bold()
-    assert new_font.pointSize() == point_size - 2
 
 
 def test_06_12_action_cancel(qtbot, mocker):

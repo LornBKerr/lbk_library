@@ -109,7 +109,7 @@ class Dialog(QDialog):
         else:
             self.__operation = Dialog.VIEW_ELEMENT
 
-    def set_invalid__indicator(self, widget: QWidget) -> bool:
+    def set_invalid_indicator(self, widget: QWidget) -> bool:
         """
         Flag the invalid entry in a widget.
 
