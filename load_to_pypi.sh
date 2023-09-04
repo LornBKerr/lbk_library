@@ -28,7 +28,7 @@ then
 fi
 
 # load required files to venv
-pip install wheel twine
+pip install wheel twine build
 
 # build library distribution
 python -m build

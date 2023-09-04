@@ -7,8 +7,8 @@ Copyright:  (c) 2022 Lorn B Kerr
 License:    MIT, see file License
 """
 
-from PyQt6.QtGui import QFocusEvent
-from PyQt6.QtWidgets import QComboBox, QWidget
+from PyQt5.QtGui import QFocusEvent
+from PyQt5.QtWidgets import QComboBox, QWidget
 
 
 class FocusComboBox(QComboBox):

@@ -10,7 +10,7 @@ License:    MIT, see file License
 
 from typing import Callable
 
-from PyQt6.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox, QWidget
 
 from lbk_library import Dbal, Element
 

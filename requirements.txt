@@ -10,7 +10,7 @@
 # ########################################################
 
 # Run time requirements
-PyQt6
+PyQt5
 # setuptools_scm  # uncomment this to enable version info from the library
 
 # Testing Requirements
