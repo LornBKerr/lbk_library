@@ -264,7 +264,7 @@ class Validate:
                 result["msg"] = (
                     "The entered value is too long (no more than "
                     + str(max_length)
-                    + " characters allowed"
+                    + " characters allowed)"
                 )
         return result
 
