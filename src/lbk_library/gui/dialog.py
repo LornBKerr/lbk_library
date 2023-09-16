@@ -10,7 +10,7 @@ License:    MIT, see file License
 
 from typing import Callable
 
-from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
 
 from lbk_library import Dbal, Element
 
@@ -108,46 +108,6 @@ class Dialog(QDialog):
             self.__operation = operation
         else:
             self.__operation = Dialog.VIEW_ELEMENT
-
-    def set_invalid_indicator(self, widget: QWidget) -> bool:
-        """
-        Flag the invalid entry in a widget.
-
-        Errors are noted by setting the label to 'Bold' and 'Red'.
-
-        Parameters:
-            widget (QWidget): the widget's label to flag.
-
-        Returns:
-            (bool) False indicating an invalid entry in a widget
-        """
-        # used to be 'set_invalid_format()'
-        widget_type = str(type(widget))[:-2].rsplit(".", maxsplit=1)[-1]
-        font = widget.font()
-        font.setBold(True)
-        # font.setPointSize(font.pointSize() + 2)
-        widget.setFont(font)
-        widget.setStyleSheet(widget_type + " {color: red;}")
-        return False
-
-    def set_valid_indicator(self, widget: QWidget) -> bool:
-        """
-        Clear the error indication of the form widget.
-
-        Parameters:
-            widget (QWidget) the form widget to flag.
-
-        Returns:
-            (bool) True indicating a valid entry.
-        """
-        # used to be 'set_valid_format()'
-        widget_type = str(type(widget))[:-2].rsplit(".", maxsplit=1)[-1]
-        font = widget.font()
-        font.setBold(False)
-        # font.setPointSize(font.pointSize() - 2)
-        widget.setFont(font)
-        widget.setStyleSheet(widget_type + " {color: black;}")
-        return True
 
     def set_combo_box_selections(
         self, combo_box: QComboBox, selections: list[str], selected: int | None = None

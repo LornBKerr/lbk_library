@@ -10,7 +10,7 @@ License:    MIT, see file License
 import os
 import sys
 
-from PyQt6.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
 from pytestqt import qtbot
 
 # from pytestqt.qt_compat import qt_api
@@ -179,34 +179,7 @@ def test_06_10_msg_warning_invalid(qtbot):
     assert msg_box.standardButtons() == QMessageBox.StandardButton.Ok
 
 
-def test_06_11_set_invalid_indicator(qtbot):
-    dbref = Dbal()
-    main = QMainWindow()
-    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
-    qtbot.addWidget(main)
-    dialog.form = A_Form(dialog)
-    font = dialog.form.record_id_label.font()
-    weight = font.weight()
-    dialog.set_invalid_indicator(dialog.form.record_id_label)
-    new_font = dialog.form.record_id_label.font()
-    assert new_font.bold()
-
-
-def test_06_11_set_valid_indicator(qtbot):
-    dbref = Dbal()
-    main = QMainWindow()
-    dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
-    qtbot.addWidget(main)
-    dialog.form = A_Form(dialog)
-    dialog.set_invalid_indicator(dialog.form.record_id_label)
-    font = dialog.form.record_id_label.font()
-    weight = font.weight()
-    dialog.set_valid_indicator(dialog.form.record_id_label)
-    new_font = dialog.form.record_id_label.font()
-    assert not new_font.bold()
-
-
-def test_06_12_action_cancel(qtbot, mocker):
+def test_06_11_action_cancel(qtbot, mocker):
     dbref = Dbal()
     main = QMainWindow()
     dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
@@ -247,7 +220,7 @@ def test_06_12_action_cancel(qtbot, mocker):
     assert not dialog.action_cancel(save_something, 0)
 
 
-def test_06_13_set_combo_box_selections(qtbot, db_create):
+def test_06_12_set_combo_box_selections(qtbot, db_create):
     dbref = db_create
     main = QMainWindow()
     dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
@@ -265,7 +238,7 @@ def test_06_13_set_combo_box_selections(qtbot, db_create):
     assert dialog.form.record_id_combo.count() == len(ids)
 
 
-def test_06_03_get_set_operation(qtbot):
+def test_06_13_get_set_operation(qtbot):
     dbref = Dbal()
     main = QMainWindow()
     dialog = Dialog(main, dbref, Dialog.VIEW_ELEMENT)
