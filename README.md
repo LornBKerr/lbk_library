@@ -17,8 +17,10 @@ This module contains the following classes
 Package lbk_library.gui has the gui related classes |
 | Class | Description |
 | --- | --- |
-| gui.Dialog | A basic dialog with a number of general support fuctions |
-| gui.FocusComboBox | Extend the QCombBox to emit the 'activate' signal<BR>on the focus lost event |
+| gui.Dialog | Extend QDialog with a number of general support fuctions |
+| gui.ErrorFrame | Extend QFrame to provide a selectable empty border or Red border for errors. |
+| gui.FocusComboBox | Extend QCombBox to emit the 'activate' signal<BR>on the focus lost event |
+| gui.LineEdit | Extend QLineEdit to emit the 'editingFinished' signal<BR>on the focus lost event |
 |  |  |
 
 Future updates will include supporting classes for dialogs and tables.
@@ -49,7 +51,16 @@ the 'record_index' and 'remarks' fields used in all database records,
 element default values and validity checks for dialog entries, and a
 number of canned message box dialogs.
 
+The **gui.ErrorFram** extends the standard QFrame to provide a simple
+container for a QLineEdit or QComboBox to indicate an entry error with a
+2px Red Border on error without dealing with stylesheets or palette
+changes on the contained widget. 
+
 The **gui.FocusComboBox** extends the standard QComboBox to include
 handling the "FocusOut' event to emit the 'activated' signal to enable
 error checking on lost of focus.
+
+The **gui.LineEdit** extends the standard QLineEdit to include
+handling the "FocusOut' event to emit the 'editingFinished' signal to
+enable error checking on lost of focus.
 
