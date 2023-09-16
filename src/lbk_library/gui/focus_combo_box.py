@@ -4,7 +4,7 @@ Extend QComboBox to emit the activate signal when the focus is lost.
 File:       focus_combo_box.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 from PyQt5.QtGui import QFocusEvent

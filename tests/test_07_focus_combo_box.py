@@ -10,7 +10,7 @@ License:    MIT, see file License
 import os
 import sys
 
-from PyQt6.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QComboBox
 from pytestqt import qtbot
 
 src_path = os.path.join(os.path.realpath("."), "src")

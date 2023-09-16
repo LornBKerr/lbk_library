@@ -11,7 +11,7 @@ import os
 import sys
 
 import pytest
-from PyQt6 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
