@@ -7,13 +7,14 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
-from PyQt5.QtCore import QObject, pyqtProperty
+from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtWidgets import QFrame, QWidget
+
 
 class ErrorFrame(QFrame):
     """An error indicating frame holding a single widget."""
-    
-    def __init__(self, parent: QWidget = None) -> None:    
+
+    def __init__(self, parent: QWidget = None) -> None:
         self._error = False
         """Is the contained entry valid."""
 
@@ -26,7 +27,7 @@ class ErrorFrame(QFrame):
 
     @pyqtProperty(bool)
     def error(self) -> bool:
-        """Get the error status."""        
+        """Get the error status."""
         return self._error
 
     @error.setter
@@ -37,4 +38,3 @@ class ErrorFrame(QFrame):
             self.setStyleSheet(self._frame_style_error)
         else:
             self.setStyleSheet(self._frame_style_normal)
-  
