@@ -7,8 +7,9 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
+from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFocusEvent
-from PyQt5.QtWidgets import QLineEdit, QWidget
+from PyQt5.QtWidgets import QFrame, QLineEdit, QWidget
 
 
 class LineEdit(QLineEdit):
@@ -23,6 +24,8 @@ class LineEdit(QLineEdit):
                 default is None.
         """
         super().__init__(parent)
+        self.error_frame = None
+        self._error = False
 
     def focusOutEvent(self, evt: QFocusEvent) -> None:
         """
@@ -31,7 +34,23 @@ class LineEdit(QLineEdit):
         Parameters:
             evt (QFocusEvent): event triggered whe the focus is lost
         """
-        if len(self.text()) == 0:
+        if len(self.text()) == 0 or self.error:
             self.editingFinished.emit()
 
         super().focusOutEvent(evt)
+
+    @pyqtProperty(bool)
+    def error(self) -> bool:
+        """Get the error status."""
+        return self._error
+
+    @error.setter
+    def error(self, value: bool) -> None:
+        """Set the error status."""
+        self._error = value
+        self.error_frame.error = value
+
+    def set_frame(self, frame: QFrame = None) -> None:
+        """Set the related ErrorFrame."""
+        self.error_frame = frame
+        
