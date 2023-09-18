@@ -53,4 +53,3 @@ class LineEdit(QLineEdit):
     def set_frame(self, frame: QFrame = None) -> None:
         """Set the related ErrorFrame."""
         self.error_frame = frame
-        
