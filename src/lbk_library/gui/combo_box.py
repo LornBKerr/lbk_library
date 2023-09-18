@@ -7,8 +7,9 @@ Copyright:  (c) 2022 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
+from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFocusEvent
-from PyQt5.QtWidgets import QComboBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QFrame, QWidget
 
 
 class ComboBox(QComboBox):
