@@ -32,3 +32,5 @@ class FocusComboBox(QComboBox):
             evt (QFocusEvent): event triggered whe the focus is lost
         """
         self.activated.emit(self.currentIndex())
+        super().focusOutEvent(evt)
+
