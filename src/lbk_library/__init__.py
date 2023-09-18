@@ -23,6 +23,6 @@ License:    see License
 from .dbal import Dbal
 from .element import Element
 from .element_set import ElementSet
-from .gui import Dialog, ErrorFrame, FocusComboBox, LineEdit
+from .gui import Dialog, ErrorFrame, ComboBox, LineEdit
 from .ini_file_parser import IniFileParser
 from .validate import Validate
