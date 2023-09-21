@@ -17,7 +17,7 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
+from .combo_box import ComboBox
 from .dialog import Dialog
 from .error_frame import ErrorFrame
-from .combo_box import ComboBox
 from .line_edit import LineEdit

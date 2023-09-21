@@ -24,8 +24,14 @@ class ComboBox(QComboBox):
                 empty.
         """
         super().__init__(parent)
+        
+        # error Handling
         self.error_frame = None
         self._error = False
+        
+        # common stylings
+        self.setStyleSheet("combobox-popup: 0;")
+        self.setMaxVisibleItems(20)
 
     def focusOutEvent(self, evt: QFocusEvent) -> None:
         """
