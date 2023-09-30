@@ -248,7 +248,7 @@ class Dialog(QDialog):
         """
         return QMessageBox(
             QMessageBox.Icon.Warning,
-            name + " has not been selected",
+            name + " not selected",
             "Nothing to " + action,
             QMessageBox.StandardButton.Ok,
             self,
