@@ -1,7 +1,7 @@
 """
-Test the FocusComboBox class.
+Test the ComboBox class.
 
-File:       test_07_focus>combo_box.py
+File:       test_07_combo_box.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
@@ -18,18 +18,18 @@ if src_path not in sys.path:
     sys.path.append(src_path)
 
 
-from lbk_library.gui.focus_combo_box import FocusComboBox
+from lbk_library.gui.combo_box import ComboBox, ErrorFrame
 
 
 def test_01_class_type(qtbot):
-    box = FocusComboBox()
+    box = ComboBox()
     qtbot.addWidget(box)
-    assert isinstance(box, FocusComboBox)
+    assert isinstance(box, ComboBox)
     assert isinstance(box, QComboBox)
 
 
 def test_02_focus_lost(qtbot):
-    box = FocusComboBox()
+    box = ComboBox()
 
     def got_focus():
         assert box.hasFocus()
@@ -46,3 +46,26 @@ def test_02_focus_lost(qtbot):
     # check that the focusOut event is handled.
     box.clearFocus()
     qtbot.waitSignal(box.activated)
+
+
+def test_03_set_frame(qtbot):
+    box = ComboBox()
+    qtbot.addWidget(box)
+    assert not box.error_frame
+    box.set_frame(ErrorFrame())
+    assert isinstance(box.error_frame, ErrorFrame)
+
+
+def test_04_error_property(qtbot):
+    box = ComboBox()
+    box.set_frame(ErrorFrame())
+    qtbot.addWidget(box)
+    assert not box._error
+    assert not box.error
+
+    box.error = True
+    assert box.error
+
+    box.error = False
+    assert not box.error
+    assert not box._error
