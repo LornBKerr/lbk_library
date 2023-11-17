@@ -29,14 +29,12 @@ class LineEdit(QLineEdit):
 
     def focusOutEvent(self, evt: QFocusEvent) -> None:
         """
-        Emit the line edit 'editingFinished' signal when the focus is lost.
+        Emit the line edit 'editingFinished' signal when focus is lost.
 
         Parameters:
             evt (QFocusEvent): event triggered whe the focus is lost
         """
-        if len(self.text()) == 0 or self.error:
-            self.editingFinished.emit()
-
+        self.editingFinished.emit()
         super().focusOutEvent(evt)
 
     @pyqtProperty(bool)
