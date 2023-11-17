@@ -11,7 +11,9 @@ License:    MIT, see file LICENSE
 
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFocusEvent
-from PyQt5.QtWidgets import QComboBox, QFrame, QWidget
+from PyQt5.QtWidgets import QComboBox, QWidget
+
+from .error_frame import ErrorFrame
 
 
 class ComboBox(QComboBox):
@@ -56,6 +58,6 @@ class ComboBox(QComboBox):
         self._error = value
         self.error_frame.error = value
 
-    def set_frame(self, frame: QFrame = None) -> None:
+    def set_frame(self, frame: ErrorFrame = None) -> None:
         """Set the related ErrorFrame."""
         self.error_frame = frame
