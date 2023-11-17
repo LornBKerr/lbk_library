@@ -1,9 +1,11 @@
 """
 Extend QComboBox to emit the activate signal when the focus is lost.
 
-File:       focus_combo_box.py
+Error indication is added thru the use of ErrorFrame.
+
+File:       combo_box.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022 Lorn B Kerr
+Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
@@ -13,7 +15,7 @@ from PyQt5.QtWidgets import QComboBox, QFrame, QWidget
 
 
 class ComboBox(QComboBox):
-    """Initialize the Focus Combo Box."""
+    """Initialize the Combo Box."""
 
     def __init__(self, parent: QWidget = None) -> None:
         """
@@ -24,11 +26,11 @@ class ComboBox(QComboBox):
                 empty.
         """
         super().__init__(parent)
-        
+
         # error Handling
         self.error_frame = None
         self._error = False
-        
+
         # common stylings
         self.setStyleSheet("combobox-popup: 0;")
         self.setMaxVisibleItems(20)
