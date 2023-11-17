@@ -12,16 +12,19 @@ This package contains the following classes:
 
     gui.ComboBox extends QComboBox - Emits the 'activate' signal when
         the focus is lost.
-     gui.Dialog extends QDialog - Base class for various dialogs used in projects.
-     gui.ErrorFrame extends QFrame - Provides a red border around a dialog
+    gui.Dialog extends QDialog - Base class for various dialogs used in
+        projects.
+    gui.ErrorFrame extends QFrame - Provides a red border around a dialog
         member to indicate an error.
-     gui.LineEdit extends QLineEdit - Emits the 'editingFinished' signal when
-        the focus is lost.
-     gui.RowState -Enumerates the various states a table row may have.
-     gui.TableComboBox - Encapsules a ComboBox and an ErrorFrame into a
+    gui.LineEdit extends QLineEdit - Emits the 'editingFinished' signal
+        when the focus is lost.
+    gui.RowState -Enumerates the various states a table row may have.
+    gui.TableButtonGroup - Contains a group of TablePushButtons.
+    gui.TableComboBox - Encapsules a ComboBox and an ErrorFrame into a
         widget to place in a QtableWidget row.
-     gui.TableLineEdit - Encapsules a LineEdit and an ErrorFrame into a
+    gui.TableLineEdit - Encapsules a LineEdit and an ErrorFrame into a
         widget to place in a QtableWidget row.
+    gui.TablePushButton - Extends a QPushButton to be used in a Table.
 
 File:       __init__.py
 Author:     Lorn B Kerr
@@ -38,8 +41,10 @@ from .gui import (
     ErrorFrame,
     LineEdit,
     RowState,
+    TableButtonGroup,
     TableComboBox,
     TableLineEdit,
+    TablePushButton,
 )
 from .ini_file_parser import IniFileParser
 from .validate import Validate
