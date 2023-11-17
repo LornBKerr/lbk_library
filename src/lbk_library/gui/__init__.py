@@ -6,7 +6,8 @@ This contains a set of common classes that support several projects.
 This package contains the following classes:
     ComboBox extends QComboBox - Emits the 'activate' signal when
         the focus is lost.
-    Dialog extends QDialog - Base class for various dialogs used in projects.
+    Dialog extends QDialog - Base class for various dialogs used
+        in projects.
     ErrorFrame extends QFrame - Provides a red border around a dialog
         member to indicate an error.
     LineEdit extends QLineEdit - Emits the 'editingFinished' signal when
@@ -28,5 +29,5 @@ from .dialog import Dialog
 from .error_frame import ErrorFrame
 from .line_edit import LineEdit
 from .row_state import RowState
-from .table_line_edit import TableLineEdit
 from .table_combo_box import TableComboBox
+from .table_line_edit import TableLineEdit
