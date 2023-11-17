@@ -142,7 +142,7 @@ def test_06_08_msg_warning_selection(qtbot):
     msg = "Nothing to "
     msg_box = dialog.message_warning_selection(name, action)
     assert msg_box.icon() == QMessageBox.Icon.Warning
-    assert msg_box.windowTitle() == name + " has not been selected"
+    assert msg_box.windowTitle() == name + " not selected"
     assert msg_box.text() == msg + action
     assert msg_box.standardButtons() == QMessageBox.StandardButton.Ok
 
