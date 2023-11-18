@@ -78,6 +78,16 @@ class TableLineEdit(QWidget):
         """
         return self.line_edit.text()
 
+    def set_read_only(self, read_only: bool) -> None:
+        """
+        Set the readOnly property of the QLineEdit.
+
+        Parameters:
+            read_only (bool): True if the line edit is to be read only,
+                False if not.
+        """
+        self.line_edit.setReadOnly(read_only)
+
     def resizeEvent(self, event):
         """
         Size the TableLineEdit to the size of the cell.
