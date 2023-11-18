@@ -18,7 +18,7 @@ if src_path not in sys.path:
     sys.path.append(src_path)
 
 
-from lbk_library.gui.combo_box import ComboBox, ErrorFrame
+from lbk_library.gui import ComboBox, ErrorFrame
 
 
 def test_01_class_type(qtbot):
