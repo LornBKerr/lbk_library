@@ -6,6 +6,7 @@ Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
+
 from enum import Enum
 
 
@@ -15,8 +16,8 @@ class RowState(Enum):
     NoState = 0
     """The row entries have not been changed."""
     Update = 1
-    """The row is flagged by updating."""
+    """The row is flagged by updating the database."""
     Save = 2
     """The row is flagged by insertion into the database."""
     Delete = 4
-    """The row is flagged for deletion."""
+    """The row is flagged for deletion from the database."""
