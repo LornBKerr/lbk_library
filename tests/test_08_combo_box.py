@@ -1,7 +1,7 @@
 """
 Test the ComboBox class.
 
-File:       test_07_combo_box.py
+File:       test_08_combo_box.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
