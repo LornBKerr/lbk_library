@@ -8,7 +8,7 @@ License:    MIT, see file LICENSE
 """
 
 from PyQt5.QtCore import pyqtProperty
-from PyQt5.QtWidgets import QTableWidget, QWidget
+from PyQt5.QtWidgets import QFrame, QTableWidget, QWidget
 
 from .combo_box import ComboBox
 from .error_frame import ErrorFrame
@@ -16,11 +16,11 @@ from .error_frame import ErrorFrame
 
 class TableComboBox(QWidget):
     """
-     An error indicating ComboBox widget for QTableWidget use.
+    An error indicating ComboBox widget for QTableWidget use.
 
-     This will place a CmboBox widget inside an ErrorFramewidget with
+    This will place a CmboBox widget inside an ErrorFramewidget with
     necessary functionality to cleanly operate as part of a QTableWidget
-     cell.
+    cell.
     """
 
     def __init__(
@@ -45,13 +45,14 @@ class TableComboBox(QWidget):
         self._column = column
 
         self.error_frame = ErrorFrame(self)
+        self.error_frame.setFrameShape(QFrame.NoFrame)
         self.combo_box = ComboBox(self.error_frame)
-        self.combo_box.setFrame(False)
         self.combo_box.clear()
         self.combo_box.addItems(selection_list)
         self.combo_box.setCurrentIndex(-1)
+        self.combo_box.setFrame(False)
 
-        self.line_edit.activated.connect(self.activated)
+        self.combo_box.activated.connect(self.activated)
 
     def activated(self):
         """
@@ -87,7 +88,7 @@ class TableComboBox(QWidget):
         Parameters:
             index (int): the index to set in the ComboBox.
         """
-        self.combo_box.setCurrentText(index)
+        self.combo_box.setCurrentIndex(index)
 
     def currentIndex(self) -> str:
         """
@@ -96,7 +97,7 @@ class TableComboBox(QWidget):
         Returns:
             (int) The current index in the ComboBox.
         """
-        return self.line_edit.text()
+        return self.combo_box.currentIndex()
 
     def resizeEvent(self, event):
         """
@@ -104,9 +105,8 @@ class TableComboBox(QWidget):
 
         The ErrorFrame component is set to the size of the cell. The
         ComboBox component is centered within the ErrorFrame with a
-        2 pixel margin to allow the ErrorFrame border to show.
-
-        After the event is handled, it is passed to the super class.
+        2 pixel margin on all sides to allow the ErrorFrame border
+        to show.
 
         Parameters:
             event (ResizeEvent): event triggered whenever the cell is
