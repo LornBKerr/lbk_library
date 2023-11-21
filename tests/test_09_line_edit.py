@@ -11,7 +11,6 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QLineEdit
-
 from pytestqt import qtbot
 
 src_path = os.path.join(os.path.realpath("."), "src")
