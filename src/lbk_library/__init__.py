@@ -18,7 +18,7 @@ This package contains the following classes:
         member to indicate an error.
     gui.LineEdit extends QLineEdit - Emits the 'editingFinished' signal
         when the focus is lost.
-    gui.RowState -Enumerates the various states a table row may have.
+    gui.RowState - Enumerates the various states a table row may have.
     gui.TableButtonGroup - Contains a group of TablePushButtons.
     gui.TableComboBox - Encapsules a ComboBox and an ErrorFrame into a
         widget to place in a QtableWidget row.
