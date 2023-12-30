@@ -72,12 +72,12 @@ class TableComboBox(QWidget):
         """
         self.combo_box.setCurrentText(text)
 
-    def currentText(self) -> int:
+    def currentText(self) -> str:
         """
         Get the currentText property of the ComboBox.
 
         Returns:
-            (int) The current text in the ComboBox.
+            (str) The current text in the ComboBox.
         """
         return self.combo_box.currentText()
 
@@ -90,7 +90,7 @@ class TableComboBox(QWidget):
         """
         self.combo_box.setCurrentIndex(index)
 
-    def currentIndex(self) -> str:
+    def currentIndex(self) -> int:
         """
         Get the currentIndex property of the ComboBox.
 
@@ -98,6 +98,24 @@ class TableComboBox(QWidget):
             (int) The current index in the ComboBox.
         """
         return self.combo_box.currentIndex()
+
+    def setToolTip(self, tool_tip: str) -> None:
+        """
+        Set the tooltip property of the ComboBox.
+
+        Parameters:
+            (str) The tool tip to assign to the ComboBox.
+        """
+        self.combo_box.setToolTip(tool_tip)
+
+    def toolTip(self) -> str:
+        """
+        Get the tooltip property of the ComboBox.
+
+        Returns:
+            (str) The current tooltip in the ComboBox.
+        """
+        return self.combo_box.toolTip()
 
     def resizeEvent(self, event):
         """
