@@ -56,10 +56,22 @@ class TableButtonGroup(QFrame):
             button_id (int) the id number for this button.
 
         Returns:
-            (QPushButton) the newly created button.
+            (TablePushButton) the newly created button.
         """
         button = TablePushButton(self.table, self.row, button_id)
         button.setText(text)
         self.buttons[button_id] = button
         self.frame_layout.addWidget(button)
         return button
+
+    def get_button(self, button_id: int) -> TablePushButton:
+        """
+        Retrieve a TablePushButton fromthe Button Group.
+
+        Parameters:
+            button_id (int) the id number for this button.
+
+        Returns:
+            (TablePushButton) the requested button.
+        """
+        return self.buttons[button_id]
