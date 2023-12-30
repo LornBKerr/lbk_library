@@ -60,7 +60,7 @@ class TableLineEdit(QWidget):
         """
         self.table.cellChanged.emit(self._row, self._column)
 
-    def set_text(self, text: str) -> None:
+    def setText(self, text: str) -> None:
         """
         Set the text property of the LineEdit.
 
@@ -78,7 +78,7 @@ class TableLineEdit(QWidget):
         """
         return self.line_edit.text()
 
-    def set_read_only(self, read_only: bool) -> None:
+    def setReadOnly(self, read_only: bool) -> None:
         """
         Set the readOnly property of the QLineEdit.
 

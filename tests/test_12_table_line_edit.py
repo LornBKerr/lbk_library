@@ -83,7 +83,7 @@ def test_04_set_get_text(qtbot):
     box = TableLineEdit(table, row_0, col_0, alignment)
     qtbot.addWidget(box)
     string = "test text"
-    box.set_text(string)
+    box.setText(string)
     assert box.text() == string
 
 
@@ -92,9 +92,9 @@ def test_05_set_read_only(qtbot):
     box = TableLineEdit(table, row_0, col_0, alignment)
     qtbot.addWidget(box)
     assert not box.line_edit.isReadOnly()
-    box.set_read_only(True)
+    box.setReadOnly(True)
     assert box.line_edit.isReadOnly()
-    box.set_read_only(False)
+    box.setReadOnly(False)
     assert not box.line_edit.isReadOnly()
 
 
