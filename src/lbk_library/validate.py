@@ -188,7 +188,7 @@ class Validate:
                 result["valid"] = False
                 result["msg"] = (
                     "The entry is greater than the required"
-                    + " maximum value of"
+                    + " maximum value of "
                     + str(max_value)
                 )
         return result
