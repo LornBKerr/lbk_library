@@ -14,6 +14,9 @@ from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
 
 from lbk_library import Dbal, Element
 
+from .combo_box import ComboBox
+from .line_edit import LineEdit
+
 
 class Dialog(QDialog):
     """
@@ -158,6 +161,66 @@ class Dialog(QDialog):
                 return self.close()  # just close dialog
         else:
             return self.close()
+
+    def validate_dialog_entry(
+        self, set_function: callable, form_entry: (LineEdit | ComboBox), tooltip: str
+    ) -> dict:
+        """
+        Validate the text/selection in a dialog entry.
+
+        Parameters:
+            set_function (Callable): The element function to set the
+                dialog entry.
+            form_entry (QLineEdit | QComboBox): The dialog entry widget
+                to check.
+            tooltip {str): the test fo the tooltip for the entry being
+                validated.
+
+        Returns:
+            (dict)
+                ['entry'] - (str) the updated remark
+                ['valid'] - (bool) True if the entered value is valid,
+                    False otherwise
+                ['msg'] - (str) Error message if not valid
+        """
+        result = {"entry": "", "valid": False, "msg": ""}
+
+        if isinstance(form_entry, LineEdit):
+            result = set_function(form_entry.text())
+        elif isinstance(form_entry, ComboBox):
+            result = set_function(form_entry.currentText())
+
+        self.error_flag(result, form_entry, tooltip)
+        return result
+
+    def error_flag(self, result, dialog_widget, tooltip):
+        """
+        Set or remove error flag for dialog entry.
+
+        If test result for a dialog entry is valid, clear the dialog's
+        error flag, decrement the error count if previously incremented,
+        and set the tool tip to default value. If not valid,
+        set the error flag and add the error message to the tooltip.
+
+        Parameters:
+            result (dict) the validation results for the dialog entry.
+            dialog_widget (QWidget): the dialog entry widget.
+            tooltip (str): the pre-defined tool tip for the widget,
+
+        Returns:
+            (dict) the provided result value.
+        """
+        if result["valid"]:
+            if dialog_widget.error:
+                self.error_count -= 1
+            dialog_widget.error = False
+            dialog_widget.setToolTip(tooltip)
+        else:
+            if not dialog_widget.error:
+                self.error_count += 1
+            dialog_widget.error = True
+            dialog_widget.setToolTip(result["msg"] + "; " + tooltip)
+        return result
 
     def message_information_close(self, msg_text: str) -> None:
         """
