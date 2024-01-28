@@ -48,17 +48,17 @@ def test_02_focus_lost(qtbot):
     qtbot.waitSignal(box.editingFinished)
 
 
-def test_03_set_frame(qtbot):
+def test_03_set_error_frame(qtbot):
     box = LineEdit()
     qtbot.addWidget(box)
     assert not box.error_frame
-    box.set_frame(ErrorFrame())
+    box.set_error_frame(ErrorFrame())
     assert isinstance(box.error_frame, ErrorFrame)
 
 
 def test_04_error_property(qtbot):
     box = LineEdit()
-    box.set_frame(ErrorFrame())
+    box.set_error_frame(ErrorFrame())
     qtbot.addWidget(box)
     assert not box._error
     assert not box.error
