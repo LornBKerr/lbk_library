@@ -87,3 +87,19 @@ def test_05_set_get_current_index(qtbot):
     assert box.combo_box.currentIndex() == 0
     assert box.currentText() == selections[0]
     assert box.currentIndex() == 0
+
+
+def test_06_error_property(qtbot):
+    table = QTableWidget(rows, cols)
+    box = TableComboBox(table, row_0, col_0, selections)
+    qtbot.addWidget(box)
+
+    assert not box.error
+    assert not box.combo_box.error
+
+    box.error = True
+    assert box.error
+    assert box.combo_box.error
+
+    box.error = False
+    assert not box.error

@@ -47,6 +47,8 @@ class TableComboBox(QWidget):
         self.error_frame = ErrorFrame(self)
         self.error_frame.setFrameShape(QFrame.NoFrame)
         self.combo_box = ComboBox(self.error_frame)
+        self.combo_box.set_error_frame(self.error_frame)
+
         self.combo_box.clear()
         self.combo_box.addItems(selection_list)
         self.combo_box.setCurrentIndex(-1)
@@ -154,3 +156,14 @@ class TableComboBox(QWidget):
     def column(self, value: int) -> None:
         """Set the table column."""
         self._column = value
+
+    @pyqtProperty(bool)
+    def error(self) -> bool:
+        """Get the error status."""
+        return self.combo_box.error
+
+    @error.setter
+    def error(self, value: bool) -> None:
+        """Set the error status."""
+        self.combo_box.error = value
+        self.error_frame.error = value
