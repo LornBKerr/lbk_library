@@ -184,7 +184,6 @@ class Dialog(QDialog):
                 ['msg'] - (str) Error message if not valid
         """
         result = {"entry": "", "valid": False, "msg": ""}
-
         if isinstance(form_entry, LineEdit):
             result = set_function(form_entry.text())
         elif isinstance(form_entry, ComboBox):
