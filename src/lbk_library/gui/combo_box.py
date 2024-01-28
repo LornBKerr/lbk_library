@@ -11,7 +11,7 @@ License:    MIT, see file LICENSE
 
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFocusEvent
-from PyQt5.QtWidgets import QComboBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QFrame, QWidget
 
 from .error_frame import ErrorFrame
 
@@ -36,6 +36,10 @@ class ComboBox(QComboBox):
         # common stylings
         self.setStyleSheet("combobox-popup: 0;")
         self.setMaxVisibleItems(20)
+
+    def set_error_frame(self, frame: QFrame = None) -> None:
+        """Set the related ErrorFrame."""
+        self.error_frame = frame
 
     def focusOutEvent(self, evt: QFocusEvent) -> None:
         """
