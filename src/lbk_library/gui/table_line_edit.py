@@ -46,7 +46,7 @@ class TableLineEdit(QWidget):
 
         self.error_frame = ErrorFrame(self)
         self.line_edit = LineEdit(self.error_frame)
-        self.line_edit.setFrame(False)
+        self.line_edit.set_error_frame(self.error_frame)
 
         self.line_edit.setAlignment(alignment)
         self.line_edit.editingFinished.connect(self.editing_finished)
@@ -88,6 +88,24 @@ class TableLineEdit(QWidget):
         """
         self.line_edit.setReadOnly(read_only)
 
+    def setToolTip(self, tool_tip: str) -> None:
+        """
+        Set the tooltip property of the LineEdit.
+
+        Parameters:
+            (str) The tool tip to assign to the LineEdit.
+        """
+        self.line_edit.setToolTip(tool_tip)
+
+    def toolTip(self) -> str:
+        """
+        Get the tooltip property of the LineEdit.
+
+        Returns:
+            (str) The current tooltip in the LineEdit.
+        """
+        return self.line_edit.toolTip()
+
     def resizeEvent(self, event):
         """
         Size the TableLineEdit to the size of the cell.
@@ -126,3 +144,13 @@ class TableLineEdit(QWidget):
     def column(self, value: int) -> None:
         """Set the table column."""
         self._column = value
+
+    @pyqtProperty(bool)
+    def error(self) -> bool:
+        """Get the error status."""
+        return self.line_edit.error
+
+    @error.setter
+    def error(self, value: bool) -> None:
+        """Set the error status."""
+        self.line_edit.error = value

@@ -98,4 +98,20 @@ def test_05_set_read_only(qtbot):
     assert not box.line_edit.isReadOnly()
 
 
+def test_06_error_property(qtbot):
+    table = QTableWidget(rows, cols)
+    box = TableLineEdit(table, row_0, col_0, alignment)
+    qtbot.addWidget(box)
+
+    assert not box.error
+    assert not box.line_edit.error
+
+    box.error = True
+    assert box.error
+    assert box.line_edit.error
+
+    box.error = False
+    assert not box.error
+
+
 #
