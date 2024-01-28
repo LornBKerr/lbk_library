@@ -27,6 +27,10 @@ class LineEdit(QLineEdit):
         self.error_frame = None
         self._error = False
 
+    def set_error_frame(self, frame: QFrame = None) -> None:
+        """Set the related ErrorFrame."""
+        self.error_frame = frame
+
     def focusOutEvent(self, evt: QFocusEvent) -> None:
         """
         Emit the line edit 'editingFinished' signal when focus is lost.
@@ -47,7 +51,3 @@ class LineEdit(QLineEdit):
         """Set the error status."""
         self._error = value
         self.error_frame.error = value
-
-    def set_frame(self, frame: QFrame = None) -> None:
-        """Set the related ErrorFrame."""
-        self.error_frame = frame
