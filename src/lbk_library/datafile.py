@@ -12,54 +12,54 @@ from traceback import print_exc
 from typing import Any
 
 
-class Dbal:
+class DataFile:
     """
     Database Abstraction Layer Implementation.
 
     This supplies the required minimum functionality to use the Sqlite3
-    database.
+    datafile.
 
-    This is inspired by and modeled on the Dbal of PHPBB3, much
+    This is inspired by and modeled on the DataFile of PHPBB3, much
     simplified and implemented in python.
     """
 
     @classmethod
     def new_file(cls, filename: str, sql_statements: list[str]) -> None:
         """
-        Create and initialize the new database File.
+        Create and initialize the new datafile File.
 
         Parameters:
-            filename (str): full path to the database file to be created.
+            filename (str): full path to the datafile file to be created.
             sql_statements (list[str]): the sql definition of the
-                database as a list of one or more SQL commands.
+                datafile as a list of one or more SQL commands.
         """
-        dbref = Dbal()
+        dbref = DataFile()
         dbref.sql_connect(filename)
         for sql in sql_statements:
             dbref.sql_query(sql)
         dbref.sql_close()
 
     def __init__(self) -> None:
-        """Create a new Dbal object."""
+        """Create a new DataFile object."""
         self.__dbname: str = ""
-        """ full path to the database in use """
+        """ full path to the datafile in use """
         self.__connection: sqlite3.Connection = None
-        """ sqlite3 database connection object """
+        """ sqlite3 datafile connection object """
 
-    def sql_connect(self, database: str) -> bool:
+    def sql_connect(self, datafile: str) -> bool:
         """
-        Connect to a specific Sqlite3 database.
+        Connect to a specific Sqlite3 datafile.
 
         The class variable __connection holds the connection object.
 
         Parameters:
-            database (str): path to database from program root
+            datafile (str): path to datafile from program root
                 directory.
 
         Returns:
             (bool) True if connection succeeded, false otherwise
         """
-        self.__dbname = database
+        self.__dbname = datafile
         return_value = False
         try:
             self.__connection = sqlite3.connect(
@@ -74,14 +74,14 @@ class Dbal:
             self._sql_error("Database Connection Error")
 
         if return_value:
-            # Set the encoding for new databases,
-            # ignored for existing databases.
+            # Set the encoding for new datafiles,
+            # ignored for existing datafiles.
             self.sql_query('PRAGMA encoding = "UTF-8"', [])
         return return_value
 
     def sql_query(self, query: str, values: dict = {}) -> sqlite3.Cursor:
         """
-        Execute a sql database query.
+        Execute a sql datafile query.
 
         Parameters:
             query (str): Contains the SQL query statement which shall be
@@ -125,7 +125,7 @@ class Dbal:
 
     def sql_is_connected(self) -> bool:
         """
-        Check the status of the database connection.
+        Check the status of the datafile connection.
 
         Returns:
             (bool) True if connected, False if not

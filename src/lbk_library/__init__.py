@@ -32,7 +32,7 @@ Copyright:  (c) 2022 Lorn B Kerr
 License:    see License
 """
 
-from .dbal import Dbal
+from .datafile import DataFile
 from .element import Element
 from .element_set import ElementSet
 from .gui import (

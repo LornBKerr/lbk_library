@@ -17,7 +17,7 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from lbk_library import Dbal, Element
+from lbk_library import DataFile, Element
 
 db_name = "library_test.db"
 
@@ -35,7 +35,7 @@ sql_statements = [
 @pytest.fixture
 def db_open(tmpdir):
     path = tmpdir.join(db_name)
-    dbref = Dbal()
+    dbref = DataFile()
     dbref.sql_connect(path)
     return dbref
 
