@@ -1,9 +1,9 @@
 """
-Implement a Database Abstraction Layer.
+Implement a DataFile for permanent storage of information.
 
-File:       dbal.py
+File:       datafile.py
 Author:     Lorn B Kerr
-Copyright:  (c) 2022, 2023 Lorn B Kerr
+Copyright:  (c) 202r Lorn B Kerr
 License:    MIT, see file License
 """
 
@@ -14,7 +14,7 @@ from typing import Any
 
 class DataFile:
     """
-    Database Abstraction Layer Implementation.
+    Implement a DataFile for permanent storage of information.
 
     This supplies the required minimum functionality to use the Sqlite3
     datafile.
@@ -33,24 +33,24 @@ class DataFile:
             sql_statements (list[str]): the sql definition of the
                 datafile as a list of one or more SQL commands.
         """
-        dbref = DataFile()
-        dbref.sql_connect(filename)
+        datafile = DataFile()
+        datafile.sql_connect(filename)
         for sql in sql_statements:
-            dbref.sql_query(sql)
-        dbref.sql_close()
+            datafile.sql_query(sql)
+        return datafile
 
     def __init__(self) -> None:
         """Create a new DataFile object."""
-        self.__dbname: str = ""
-        """ full path to the datafile in use """
+        self.__datafile_name: str = ""
+        """Full path to the datafile in use."""
         self.__connection: sqlite3.Connection = None
-        """ sqlite3 datafile connection object """
+        """Sqlite3 datafile connection object."""
 
     def sql_connect(self, datafile: str) -> bool:
         """
-        Connect to a specific Sqlite3 datafile.
+        Connect to a specific datafile.
 
-        The class variable __connection holds the connection object.
+        The variable connection holds the connection object.
 
         Parameters:
             datafile (str): path to datafile from program root
@@ -59,16 +59,16 @@ class DataFile:
         Returns:
             (bool) True if connection succeeded, false otherwise
         """
-        self.__dbname = datafile
+        self.datafile_name = datafile
         return_value = False
         try:
-            self.__connection = sqlite3.connect(
-                self.__dbname,
+            self.connection = sqlite3.connect(
+                self.datafile_name,
                 5.0,
                 sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES,
             )
             # set the row to be a dictionary (map or associative array)
-            self.__connection.row_factory = self.__dict_factory
+            self.connection.row_factory = self.__dict_factory
             return_value = True
         except sqlite3.Error:
             self._sql_error("Database Connection Error")
@@ -97,10 +97,10 @@ class DataFile:
         """
         query_result = None
         try:
-            if self.__connection:
-                query_result = self.__connection.cursor()
+            if self.connection:
+                query_result = self.connection.cursor()
                 query_result.execute(query, values)
-                self.__connection.commit()
+                self.connection.commit()
         except sqlite3.OperationalError:
             query_result = None  # sqlite3.Cursor()
             self._sql_error(query)
@@ -119,9 +119,9 @@ class DataFile:
 
     def sql_close(self) -> None:
         """Close sql connection."""
-        if self.__connection:
-            self.__connection.close()
-            self.__connection = None
+        if self.connection:
+            self.connection.close()
+            self.connection = None
 
     def sql_is_connected(self) -> bool:
         """
@@ -130,7 +130,7 @@ class DataFile:
         Returns:
             (bool) True if connected, False if not
         """
-        return bool(self.__connection)
+        return bool(self.connection)
 
     def sql_validate_value(self, var: Any) -> Any:
         """

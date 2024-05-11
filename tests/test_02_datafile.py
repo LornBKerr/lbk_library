@@ -7,21 +7,32 @@ Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
-""" Test file for lbk_library DataFile Object"""
-
 import os
 import sqlite3
 import sys
 
 import pytest
+from test_setup import datafile_definition, datafile_name
 
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from test_setup import db_close, db_create, db_name, db_open, sql_statements
-
 from lbk_library import DataFile
+from lbk_library.testing_support.core_setup import (
+    datafile_close,
+    datafile_create,
+    datafile_open,
+    directories,
+    filesystem,
+)
+
+
+def base_setup(filesystem):
+    datafile_name = directories[2] + "/test_data.data"
+    filename = filesystem + "/" + datafile_name
+    datafile = datafile_create(filename, datafile_definition)
+    return (filename, datafile)
 
 
 def test_02_01_datafile_constructor():
@@ -32,118 +43,116 @@ def test_02_01_datafile_constructor():
 def test_02_02_sql_connect_invalid():
     datafile = DataFile()
     # invalid connection because of invalid path
-    connection = datafile.sql_connect("./database/nn.db")
+    connection = datafile.sql_connect("./invalid_path/nn.db")
     assert not connection
 
 
-def test_02_03_sql_connect_valid(tmpdir):
-    path = tmpdir / db_name
-    datafile = DataFile()
-    datafile.sql_connect(path)
+def test_02_03_sql_connect_valid(filesystem):
+    filename, datafile = base_setup(filesystem)
+    datafile.sql_connect(filename)
     assert datafile.sql_is_connected()
+    datafile_close(datafile)
 
 
-def test_02_02_sql_close(db_open):
-    datafile = db_open
+def test_02_04_sql_close(filesystem):
+    filename, datafile = base_setup(filesystem)
     assert datafile.sql_is_connected()
     datafile.sql_close()
     assert not datafile.sql_is_connected()
 
 
-def test_02_05_sql_bad_statement(db_open):
-    datafile = db_open
+def test_02_05_sql_bad_statement(filesystem):
+    filename, datafile = base_setup(filesystem)
     with pytest.raises(sqlite3.Error) as exc_info:
         sql = "SELECT * FROM"  # missing table name
         result = datafile.sql_query(sql)
     exc_raised = exc_info.value
     assert exc_info.typename == "OperationalError"
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_06_sql_validate_value_none(db_open):
-    datafile = db_open
+def test_02_06_sql_validate_value_none(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_validate_value(None)
     assert result is None
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_07_sql_validate_value_bool(db_open):
-    datafile = db_open
+def test_02_07_sql_validate_value_bool(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_validate_value(True)
     assert isinstance(result, int)
     assert result == 1
     result = datafile.sql_validate_value(False)
     assert isinstance(result, int)
     assert result == 0
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_08_sql_validate_value_string(db_open):
-    datafile = db_open
+def test_02_08_sql_validate_value_string(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_validate_value("a string")
     assert isinstance(result, str)
     assert result == "'a string'"
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_09_sql_nextid_none(db_open):
-    datafile = db_open
+def test_02_09_sql_nextid_none(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_nextid(None)
     assert result == 0
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_10_sql_validate(db_open):
-    datafile = db_open
+def test_02_10_sql_validate(filesystem):
+    filename, datafile = base_setup(filesystem)
     assert datafile.sql_validate_value(None) is None
     assert datafile.sql_validate_value("test") == "'test'"
     assert datafile.sql_validate_value(10) == 10
     assert datafile.sql_validate_value(True) == 1
     assert datafile.sql_validate_value(False) == 0
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_11_sql_fetchrow_none(db_open):
-    datafile = db_open
+def test_02_11_sql_fetchrow_none(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_fetchrow(None)
     assert not result
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_12_sql_fetchrowset_none(db_open):
-    datafile = db_open
+def test_02_12_sql_fetchrowset_none(filesystem):
+    filename, datafile = base_setup(filesystem)
     result = datafile.sql_fetchrowset(None)
     assert len(result) == 0
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_13_sql_query_from_array_none(db_create):
-    # No data should return empty string
-    datafile = db_create
+def test_02_13_sql_query_from_array_none(filesystem):
+    filename, datafile = base_setup(filesystem)
     assert datafile
     result = datafile.sql_query_from_array(None)
     assert result == ""
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_14_sql_query_from_array_bad_query(db_create):
-    # query not a dict should return false
-    datafile = db_create
+def test_02_14_sql_query_from_array_bad_query(filesystem):
+    filename, datafile = base_setup(filesystem)
     query = list()
     result = datafile.sql_query_from_array(query)
     assert not result
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_15_sql_query_from_array_bad_type(db_create):
-    datafile = db_create
+def test_02_15_sql_query_from_array_bad_type(filesystem):
+    filename, datafile = base_setup(filesystem)
     query = {"type": "GiveMe"}
     assert not datafile.sql_query_from_array(query)
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_16_sql_query_from_array_delete(db_create):
-    datafile = db_create
+def test_02_16_sql_query_from_array_delete(filesystem):
+    filename, datafile = base_setup(filesystem)
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query = {"type": "insert", "table": "elements"}
     sql_insert = datafile.sql_query_from_array(query, value_set)
@@ -171,11 +180,11 @@ def test_02_16_sql_query_from_array_delete(db_create):
         result = datafile.sql_query(sql)
     exc_raised = exc_info.value
     assert exc_info.typename == "OperationalError"
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_17_sql_query_from_array_update(db_create):
-    datafile = db_create
+def test_02_17_sql_query_from_array_update(filesystem):
+    filename, datafile = base_setup(filesystem)
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query = {"type": "insert", "table": "elements"}
     sql = datafile.sql_query_from_array(query, value_set)
@@ -189,11 +198,11 @@ def test_02_17_sql_query_from_array_update(db_create):
     sql = datafile.sql_query_from_array(query, value_set)
     result = datafile.sql_query(sql, value_set)
     assert result
-    db_close(datafile)
+    datafile_close(datafile)
 
 
-def test_02_18_sql_query_from_array_select(db_create):
-    datafile = db_create
+def test_02_18_sql_query_from_array_select(filesystem):
+    filename, datafile = base_setup(filesystem)
     value_set = {"installed": False, "remarks": "another iffy remark"}
     query_insert = {"type": "insert", "table": "elements"}
     sql = datafile.sql_query_from_array(query_insert, value_set)
@@ -283,30 +292,30 @@ def test_02_18_sql_query_from_array_select(db_create):
     assert result
     new_row = datafile.sql_fetchrow(result)
     assert new_row["record_id"] == 2
-    db_close(datafile)
+    datafile_close(datafile)
 
 
 def test_02_19_new_db_file(tmpdir):
     # create a new database with the given name and table structure.
     path = tmpdir.mkdir("new_database").join("test.db")
-    DataFile.new_file(path, sql_statements)
+    DataFile.new_file(path, datafile_definition)
     assert os.path.exists(path)
 
+    # test that the new database file is correct.
+    datafile = DataFile()
+    datafile.sql_connect(path)
+    assert datafile.sql_is_connected()
 
-#    datafile = DataFile()
-#    datafile.sql_connect(path)
-#    assert datafile.sql_is_connected()
-#
-#    query = "SELECT name FROM  sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
-#    result = datafile.sql_query(query)
-#    table_names = datafile.sql_fetchrowset(result)
-#    assert len(table_names) == 1
-#    assert table_names[0]["name"] == "elements"
-#
-#    query = "PRAGMA table_info('elements');"
-#    result = datafile.sql_query(query)
-#    column_names = datafile.sql_fetchrowset(result)
-#    print(column_names)
-#    expected_names = ["record_id", "remarks", "installed"]
-#    for col in column_names:
-#        assert col["name"] in expected_names
+    query = "SELECT name FROM  sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
+    result = datafile.sql_query(query)
+    table_names = datafile.sql_fetchrowset(result)
+    assert len(table_names) == 1
+    assert table_names[0]["name"] == "elements"
+
+    query = "PRAGMA table_info('elements');"
+    result = datafile.sql_query(query)
+    column_names = datafile.sql_fetchrowset(result)
+    print(column_names)
+    expected_names = ["record_id", "remarks", "installed"]
+    for col in column_names:
+        assert col["name"] in expected_names
