@@ -1,5 +1,5 @@
 """
-Implement the base class for types of information in the database.
+Implement the base class for types of information in the data file.
 
 File:       element.py
 Author:     Lorn B Kerr
@@ -10,28 +10,28 @@ License:    MIT, see file License
 from copy import deepcopy
 from typing import Any
 
-from .dbal import Dbal
+from .datafile import DataFile
 from .validate import Validate
 
 
 class Element:
     """
-    This is the base class for types of information in the database.
+    This is the base class for types of information in the data file.
 
     Element contains methods to get, add, delete and update information
-    in the database. The set_properties() method must be overridden by
+    in the data file. The set_properties() method must be overridden by
     the child classes for the specific type of element being implemented.
     """
 
     def __init__(
-        self, dbref: Dbal, table_name: str, default_values: dict[str, Any] = None
+        self, datafile: DataFile, table_name: str, default_values: dict[str, Any] = None
     ) -> None:
         """
         Initialize a new Element object.
 
         Parameters:
-            dbref (Dbal): reference to the database holding the element
-            table_name (str): database table to search for the element
+            datafile (DataFile): reference to the data file holding the element
+            table_name (str): data file table to search for the element
                 values.
             default_values (dict[str, Any]): the set of default values for this
                 element, default is None. If not given, built-in defaults of
@@ -41,10 +41,10 @@ class Element:
         """ reference to the Validate class for value validation """
         self._defaults: dict[str, Any] = {"record_id": 0, "remarks": ""}
         """ Default values for the Element """
-        self.__dbref: Dbal = dbref
-        """ The database instance to use """
+        self.__datafile: DataFile = datafile
+        """ The data file instance to use """
         self.__table: str = table_name
-        """ The database table for this instance """
+        """ The data file table for this instance """
         self.__properties: dict[str, Any] = {}
         """ The current values of this instance """
         self.__initial_values: dict[str, Any] = {}
@@ -62,11 +62,11 @@ class Element:
             self._defaults = default_values
         self.set_initial_values(deepcopy(self._defaults))
 
-    def get_properties_from_db(
+    def get_properties_from_datafile(
         self, column_name: str, column_value: Any
     ) -> dict[str, Any]:
         """
-        Retrieve the properties of a single element from the database.
+        Retrieve the properties of a single element from the data file.
 
         The requested element is selected by the table column name and
         the key column value designated.
@@ -86,20 +86,22 @@ class Element:
             query["table"] = self.__table
             query["keys"] = ["*"]
             query["where"] = (
-                column_name + " = " + str(self.__dbref.sql_validate_value(column_value))
+                column_name
+                + " = "
+                + str(self.__datafile.sql_validate_value(column_value))
             )
-            query_sql = self.__dbref.sql_query_from_array(query, {})
-            query_result = self.__dbref.sql_query(query_sql, [])
+            query_sql = self.__datafile.sql_query_from_array(query, {})
+            query_result = self.__datafile.sql_query(query_sql, [])
 
             # get the row, if row not found, returns None
-            self.__properties = self.__dbref.sql_fetchrow(query_result)
+            self.__properties = self.__datafile.sql_fetchrow(query_result)
             if self.__properties is None:
                 self.__properties = {}
         return self.__properties
 
     def add(self) -> int:
         """
-        Add an element to the database.
+        Add an element to the data file.
 
         Returns:
             (int) unique id of the newly added element or False if
@@ -112,16 +114,16 @@ class Element:
             "type": "insert",
             "table": self.get_table(),
         }
-        sql = self.get_dbref().sql_query_from_array(query, property_set)
-        result = self.get_dbref().sql_query(sql, property_set)
+        sql = self.get_datafile().sql_query_from_array(query, property_set)
+        result = self.get_datafile().sql_query(sql, property_set)
         if result:
-            return_value = self.__dbref.sql_nextid(result)
+            return_value = self.__datafile.sql_nextid(result)
             property_set["record_id"] = return_value
         return return_value
 
     def delete(self) -> bool:
         """
-        Delete an element from the database.
+        Delete an element from the data file.
 
         This always uses the record_id column and value to identify
         the record to delete.
@@ -135,15 +137,15 @@ class Element:
             "table": self.get_table(),
             "where": "record_id =" + str(self.get_record_id()),
         }
-        sql = self.__dbref.sql_query_from_array(query, [])
-        result = self.get_dbref().sql_query(sql, [])
+        sql = self.__datafile.sql_query_from_array(query, [])
+        result = self.get_datafile().sql_query(sql, [])
         if result:
             return_value = True
         return return_value
 
     def update(self) -> bool:
         """
-        Update an element in the database.
+        Update an element in the data file.
 
         This always uses the record_id column and value to identify
         the record to update.
@@ -154,14 +156,13 @@ class Element:
         return_value = False
         # get the values to set, assume all but 'record_id'
         property_set = self.get_properties()
-        # query the database
+        # query the data file
         query = {"type": "update", "table": self.get_table()}
         query["where"] = "record_id = " + str(property_set["record_id"])
-        sql = self.get_dbref().sql_query_from_array(query, property_set)
-        result = self.get_dbref().sql_query(sql, property_set)
+        sql = self.get_datafile().sql_query_from_array(query, property_set)
+        result = self.get_datafile().sql_query(sql, property_set)
         if result:
             return_value = True
-
         return return_value
 
     def get_properties(self) -> dict[str, Any]:
@@ -272,7 +273,7 @@ class Element:
         Parameters:
             record_id (int):  the new record_id for the Element. Must be
                 an integer greater than 0 and must be unique when
-                Element is stored to the database (not checked). If the
+                Element is stored to the data file (not checked). If the
                 supplied record_id is not valid, the record_id is set
                 to __defaults['record_id'].
 
@@ -303,7 +304,6 @@ class Element:
         if remarks is None:
             remarks = self._defaults["remarks"]
         return remarks
-        # end get_remarks()
 
     def set_remarks(self, remarks: str) -> dict[str, Any]:
         """
@@ -331,18 +331,18 @@ class Element:
         self.update_property_flags("remarks", result["entry"], result["valid"])
         return result
 
-    def get_dbref(self) -> Dbal:
+    def get_datafile(self) -> DataFile:
         """
-        Get the database reference for this element.
+        Get the data file reference for this element.
 
         Returns:
-            (Dbal) A reference to the current database.
+            (DataFile) A reference to the current data file.
         """
-        return self.__dbref
+        return self.__datafile
 
     def get_table(self) -> str:
         """
-        Get the name of the database table for the child.
+        Get the name of the data file table for the child.
 
         Returns:
             (str) The table name for this element.
@@ -507,9 +507,7 @@ class Element:
         for key in self.get_properties():
             element_valid = element_valid and self.get_value_valid_flag(key)
         return element_valid
-        # end validate_dialog_entries()
 
     def clear_value_valid_flags(self) -> None:
         """Clear the set of 'valid' flags."""
         self.__properties_valid.clear()
-        # end clear_value_valid_flags()
