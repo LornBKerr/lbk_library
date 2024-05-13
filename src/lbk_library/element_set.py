@@ -10,7 +10,7 @@ License:    MIT see file License
 from collections.abc import Iterator
 from typing import Any
 
-from .dbal import Dbal
+from .datafile import DataFile
 from .element import Element
 
 
@@ -24,7 +24,7 @@ class ElementSet:
 
     def __init__(
         self,
-        dbref: Dbal,
+        datafile: DataFile,
         table_name: str,
         element_type: type,
         where_column: str = None,
@@ -34,9 +34,9 @@ class ElementSet:
         offset: int = None,
     ) -> None:
         """
-        Get a list of elements from the database table.
+        Manage a list of elements from the database table.
 
-        This will return a list of rows from the database table where
+        This will hold a list of rows from the database table where
         the 'where_column' contains the 'where_value'. The list can
         optionally be sorted ascending by the values in the
         'order_by_column'.
@@ -46,7 +46,7 @@ class ElementSet:
         (zero based) given in 'offset'.
 
         Parameters:
-            dbref (Dbal): reference to the database holding the element.
+            datafile (DataFile): reference to the database holding the element.
             table_name (str): database table to search for the element
                 values.
             element_type (type): the type of element in the set,
@@ -61,7 +61,7 @@ class ElementSet:
             offset (int): row number to start retrieval, 0 based,
                 defaults to row 0.
         """
-        self.__dbref: Dbal = dbref
+        self.__datafile: DataFile = datafile
         """ The database holding the element set """
         self.__table: str = table_name
         """ The database table for this element set """
@@ -97,18 +97,18 @@ class ElementSet:
                 query["limit"].append(str(offset))
                 values["offset"] = offset
 
-        query_str = self.__dbref.sql_query_from_array(query, values)
-        query_result = self.__dbref.sql_query(query_str, values)
+        query_str = self.__datafile.sql_query_from_array(query, values)
+        query_result = self.__datafile.sql_query(query_str, values)
 
         # get the rows, if rows not found, returns empty list
-        self.__property_set = self.__dbref.sql_fetchrowset(query_result)
+        self.__property_set = self.__datafile.sql_fetchrowset(query_result)
 
         # convert to a list of 'element_type'
         element_set = list()
         property_set = self.get_property_set()
 
         for row in property_set:
-            element = element_type(self.get_dbref(), row)
+            element = element_type(self.get_datafile(), row)
             element.set_initial_values(row)
             element.set_properties(row)
             element_set.append(element)
@@ -154,14 +154,14 @@ class ElementSet:
         """
         del self.get_property_set()[location]
 
-    def get_dbref(self) -> Dbal:
+    def get_datafile(self) -> DataFile:
         """
         Get the database reference.
 
         Returns:
-            (Dbal) The database reference for this element set.
+            (DataFile) The database reference for this element set.
         """
-        return self.__dbref
+        return self.__datafile
 
     def get_table(self) -> str:
         """
