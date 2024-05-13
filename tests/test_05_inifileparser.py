@@ -1,6 +1,10 @@
-# command --> pytest --cov-report term-missing --cov=lbk_library ../tests/
+"""Test the IniFileParser functions
 
-# Test the IniFileParser functions
+File:       test_05_inifileparser.py
+Author:     Lorn B Kerr
+Copyright:  (c) 2022, 2024 Lorn B Kerr
+License:    MIT, see file License
+"""
 
 import os
 import sys

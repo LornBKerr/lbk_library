@@ -102,8 +102,6 @@ class IniFileParser:
                     config[section][key] = config_parser[section].get(key)
         return config
 
-    # end get_config()
-
     def write_config(self, new_config: dict[str, Any]) -> None:
         """
         Save the config values to the file.
@@ -115,8 +113,6 @@ class IniFileParser:
         config_parser.read_dict(new_config)
         config_parser.write(open(self.config_file, "w"))
 
-    # end write_config()
-
     def config_path(self) -> str:
         """
         Provide the absolute path to the config file.
@@ -125,8 +121,3 @@ class IniFileParser:
             (str) The absolute path to the config file.
         """
         return self.config_file
-
-    # end config_path()
-
-
-# end class IniFileParser
