@@ -62,13 +62,13 @@ class DataFile:
         self.datafile_name = datafile
         return_value = False
         try:
-            self.connection = sqlite3.connect(
+            self.__connection = sqlite3.connect(
                 self.datafile_name,
                 5.0,
                 sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES,
             )
             # set the row to be a dictionary (map or associative array)
-            self.connection.row_factory = self.__dict_factory
+            self.__connection.row_factory = self.__dict_factory
             return_value = True
         except sqlite3.Error:
             self._sql_error("Database Connection Error")
@@ -97,10 +97,10 @@ class DataFile:
         """
         query_result = None
         try:
-            if self.connection:
-                query_result = self.connection.cursor()
+            if self.__connection:
+                query_result = self.__connection.cursor()
                 query_result.execute(query, values)
-                self.connection.commit()
+                self.__connection.commit()
         except sqlite3.OperationalError:
             query_result = None  # sqlite3.Cursor()
             self._sql_error(query)
@@ -119,9 +119,9 @@ class DataFile:
 
     def sql_close(self) -> None:
         """Close sql connection."""
-        if self.connection:
-            self.connection.close()
-            self.connection = None
+        if self.__connection:
+            self.__connection.close()
+            self.__connection = None
 
     def sql_is_connected(self) -> bool:
         """
@@ -130,7 +130,7 @@ class DataFile:
         Returns:
             (bool) True if connected, False if not
         """
-        return bool(self.connection)
+        return bool(self.__connection)
 
     def sql_validate_value(self, var: Any) -> Any:
         """
