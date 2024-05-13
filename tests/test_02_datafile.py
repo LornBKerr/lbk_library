@@ -12,11 +12,12 @@ import sqlite3
 import sys
 
 import pytest
-from test_setup import datafile_definition, datafile_name
 
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
+
+from test_setup import datafile_definition, datafile_name
 
 from lbk_library import DataFile
 from lbk_library.testing_support.core_setup import (
