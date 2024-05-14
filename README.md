@@ -7,7 +7,7 @@ frequently. It is set out in case anyone else may find it useful.
 This module **lbk_library** contains the following classes:
 | Class | Description |
 | --- | --- |
-| Dbal | A database abstraction layer for SQLite3 |
+| DataFile | Interface to a SQLite3 database file to hold the program data |
 | Element | Base class for types of information in a database |
 | ElementSet | Base class for a set of basic elements |
 | IniFileParser | Read and Write *.ini Files |
@@ -29,7 +29,7 @@ Package **lbk_library.gui** has the gui related classes:
 
 
 
-The **Dbal** class supplies the required minimum functionality to use
+The **DataFile** class supplies the required minimum functionality to use
 the sqlite3 database. This is inspired by and modeled on the Dbal of
 PHPBB 3.1, much simplified and implemented in python.
 
@@ -42,7 +42,8 @@ The **Validate** class provides validation functions for Booleans,
 Dates, Floats, Integers, and Text fields including minimum and maximum
 values and if required or optional.
 
-The **IniFileParser** exposes a stored configuation file (*.ini) as a
+The **IniFileParser** (*Deprecated*, use QSettings instead.) exposes a
+stored configuation file (*.ini) as a
 standard python dict object using the python configparser library. It
 provides 2 simple methods to read and write the full ini file and
 provides a method to get the config file directory path. It uses the
