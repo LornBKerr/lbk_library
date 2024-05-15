@@ -7,16 +7,8 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
-import os
-import sys
-
 from PyQt5.QtWidgets import QComboBox
 from pytestqt import qtbot
-
-src_path = os.path.join(os.path.realpath("."), "src")
-if src_path not in sys.path:
-    sys.path.append(src_path)
-
 
 from lbk_library.gui import ComboBox, ErrorFrame
 
@@ -52,7 +44,7 @@ def test_03_set_frame(qtbot):
     box = ComboBox()
     qtbot.addWidget(box)
     assert not box.error_frame
-    box.set_frame(ErrorFrame())
+    box.set_error_frame(ErrorFrame())
     assert isinstance(box.error_frame, ErrorFrame)
 
 
