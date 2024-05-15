@@ -42,8 +42,8 @@ The **Validate** class provides validation functions for Booleans,
 Dates, Floats, Integers, and Text fields including minimum and maximum
 values and if required or optional.
 
-The **IniFileParser** (*Deprecated*, use QSettings instead.) exposes a
-stored configuation file (*.ini) as a
+The **IniFileParser** (*Deprecated*, use PyQt5.QSettings instead.)
+exposes a stored configuation file (*.ini) as a
 standard python dict object using the python configparser library. It
 provides 2 simple methods to read and write the full ini file and
 provides a method to get the config file directory path. It uses the
