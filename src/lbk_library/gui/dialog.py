@@ -7,12 +7,11 @@ Copyright:  (c) 2020 - 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
-
 from typing import Callable
 
 from PyQt5.QtWidgets import QComboBox, QDialog, QMainWindow, QMessageBox
 
-from lbk_library import Dbal, Element
+from lbk_library import DataFile, Element
 
 from .combo_box import ComboBox
 from .line_edit import LineEdit
@@ -33,42 +32,41 @@ class Dialog(QDialog):
     """Add a new Element."""
     EDIT_ELEMENT = 2
     """Edit an existing Element."""
-
     SAVE_NEW = 1
     """Save the form contents, then clear form for new element."""
     SAVE_DONE = 2
     """Save the form contents, then close form."""
 
-    def __init__(self, parent: QMainWindow, dbref: Dbal, operation: int) -> None:
+    def __init__(self, parent: QMainWindow, datafile: DataFile, operation: int) -> None:
         """
         Initialize the form common elements.
 
         Parameters:
             parent (QMainWindow): The parent window owning this dialog.
-            dbref (Dbal): A reference to the current database
+            datafile (DataFile): A reference to the current database
             operation (int): the editing operation, one of ADD_ELEMENT,
                 EDIT_ELEMENT or VIEW_ELEMENT.
         """
         super().__init__(parent)
 
-        self.__dbref = dbref
+        self.__datafile: DataFile = datafile
         """The database for this dialog."""
-        self.__element = None
+        self.__element: Element = None
         """The element being displayed/processed by the dialog."""
-        self.__operation = operation
+        self.__operation: int = operation
         """The current editing operation, one of ADD_ELEMENT,
             EDIT_ELEMENT or VIEW_ELEMENT."""
         self.form: QDialog
         """The gui form for this dialog."""
 
-    def get_dbref(self) -> Dbal:
+    def get_datafile(self) -> DataFile:
         """
         Get the reference to the current database.
 
         Returns:
-            (Dbal) reference to current database
+            (DataFile) reference to current database
         """
-        return self.__dbref
+        return self.__datafile
 
     def get_element(self) -> Element:
         """
@@ -88,7 +86,7 @@ class Dialog(QDialog):
         """
         self.__element = element
 
-    def get_operation(self) -> Dbal:
+    def get_operation(self) -> DataFile:
         """
         Get the current editing operation.
 
@@ -163,7 +161,7 @@ class Dialog(QDialog):
             return self.close()
 
     def validate_dialog_entry(
-        self, set_function: callable, form_entry: (LineEdit | ComboBox), tooltip: str
+        self, set_function: callable, form_entry: LineEdit | ComboBox, tooltip: str
     ) -> dict:
         """
         Validate the text/selection in a dialog entry.
