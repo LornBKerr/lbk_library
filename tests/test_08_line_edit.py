@@ -1,11 +1,18 @@
 """
 Test the LineEdit class.
 
-File:       test_09_line_edit.py
+File:       test_08_line_edit.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
 """
+
+import os
+import sys
+
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
 from PyQt5.QtWidgets import QLineEdit
 from pytestqt import qtbot
@@ -13,14 +20,14 @@ from pytestqt import qtbot
 from lbk_library.gui import ErrorFrame, LineEdit
 
 
-def test_01_class_type(qtbot):
+def test_08_01_class_type(qtbot):
     box = LineEdit()
     qtbot.addWidget(box)
     assert isinstance(box, LineEdit)
     assert isinstance(box, QLineEdit)
 
 
-def test_02_focus_lost(qtbot):
+def test_08_02_focus_lost(qtbot):
     box = LineEdit()
 
     def got_focus():
@@ -40,7 +47,7 @@ def test_02_focus_lost(qtbot):
     qtbot.waitSignal(box.editingFinished)
 
 
-def test_03_set_error_frame(qtbot):
+def test_08_03_set_error_frame(qtbot):
     box = LineEdit()
     qtbot.addWidget(box)
     assert not box.error_frame
@@ -48,7 +55,7 @@ def test_03_set_error_frame(qtbot):
     assert isinstance(box.error_frame, ErrorFrame)
 
 
-def test_04_error_property(qtbot):
+def test_08_04_error_property(qtbot):
     box = LineEdit()
     box.set_error_frame(ErrorFrame())
     qtbot.addWidget(box)
