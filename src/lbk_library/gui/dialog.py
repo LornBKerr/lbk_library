@@ -21,8 +21,7 @@ class Dialog(QDialog):
     """
     Base class for the editing dialog forms.
 
-    Holds common functions used by all the editing dialog
-    forms.
+    Holds common functions used by all dialog forms.
     """
 
     # Constants for all dialogs
@@ -39,7 +38,7 @@ class Dialog(QDialog):
 
     def __init__(self, parent: QMainWindow, datafile: DataFile, operation: int) -> None:
         """
-        Initialize the form common elements.
+        Initialize the form's common elements.
 
         Parameters:
             parent (QMainWindow): The parent window owning this dialog.
