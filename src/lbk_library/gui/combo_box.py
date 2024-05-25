@@ -17,15 +17,15 @@ from .error_frame import ErrorFrame
 
 
 class ComboBox(QComboBox):
-    """Initialize the Combo Box."""
+    """Extend QComboBox to emit the activate signal if focus is lost."""
 
     def __init__(self, parent: QWidget = None) -> None:
         """
         Initialize the Combo Box.
 
         Parameters:
-            parent(QWidget) the parent widget holding the QComboBo, may be
-                empty.
+            parent(QWidget) the parent widget holding the QComboBo, may
+                be empty.
         """
         super().__init__(parent)
 
