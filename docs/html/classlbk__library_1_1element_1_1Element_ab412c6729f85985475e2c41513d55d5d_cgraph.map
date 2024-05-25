@@ -1,0 +1,17 @@
+<map id="lbk_library.element.Element.delete" name="lbk_library.element.Element.delete">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,196,226,223"/>
+<area shape="rect" id="Node000002" href="$classlbk__library_1_1element_1_1Element.html#a208e109ea98c5a907f19124151d57804" title=" " alt="" coords="274,5,477,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,194,184,129,226,91,272,58,281,53,284,57,275,62,229,95,187,133,129,197"/>
+<area shape="rect" id="Node000003" href="$classlbk__library_1_1element__set_1_1ElementSet.html#a67b83a9d5b86d29093370846c29b63ec" title=" " alt="" coords="305,72,446,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,193,273,140,290,133,292,138,275,145,150,198"/>
+<area shape="rect" id="Node000004" href="$classlbk__library_1_1gui_1_1dialog_1_1Dialog.html#a04ba60296527466775166df89b8f5b9e" title=" " alt="" coords="275,155,476,197"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,193,259,188,260,194,225,198"/>
+<area shape="rect" id="Node000005" href="$classlbk__library_1_1element_1_1Element.html#a905d974cf6ce59d1eb24042ec9cc17ca" title=" " alt="" coords="274,221,477,264"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="225,221,259,225,258,230,224,226"/>
+<area shape="rect" id="Node000007" href="$classlbk__library_1_1element_1_1Element.html#a1fe122f34f364b70da57f514cb9a8181" title=" " alt="" coords="274,288,477,331"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="148,221,275,274,292,280,291,285,273,278,146,226"/>
+<area shape="rect" id="Node000008" href="$classlbk__library_1_1element__set_1_1ElementSet.html#aa574a7822e01239301fa8b172b83acd6" title=" " alt="" coords="288,355,463,397"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="131,221,190,278,231,311,275,340,285,346,283,350,272,345,228,316,186,282,127,225"/>
+<area shape="rect" id="Node000006" href="$classlbk__library_1_1element_1_1Element.html#a7066fa5af14a5c9ee23ef40dc07f135c" title=" " alt="" coords="525,221,710,264"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="478,240,509,240,509,245,478,245"/>
+</map>
