@@ -53,6 +53,8 @@ class Dialog(QDialog):
         """The database for this dialog."""
         self.__element: Element = None
         """The element being displayed/processed by the dialog."""
+        self.error_count: int = 0
+        """ The count of outstanding errors on the dialog form."""
         self.__operation: int = operation
         """The current editing operation, one of ADD_ELEMENT,
             EDIT_ELEMENT or VIEW_ELEMENT."""
@@ -161,7 +163,7 @@ class Dialog(QDialog):
             return self.close()
 
     def validate_dialog_entry(
-        self, set_function: callable, form_entry: LineEdit | ComboBox, tooltip: str
+        self, set_function: Callable, form_entry: LineEdit | ComboBox, tooltip: str
     ) -> dict:
         """
         Validate the text/selection in a dialog entry.
@@ -169,7 +171,7 @@ class Dialog(QDialog):
         Parameters:
             set_function (Callable): The element function to set the
                 dialog entry.
-            form_entry (QLineEdit | QComboBox): The dialog entry widget
+            form_entry (LineEdit | ComboBox): The dialog entry widget
                 to check.
             tooltip {str): the test fo the tooltip for the entry being
                 validated.
@@ -178,7 +180,7 @@ class Dialog(QDialog):
             (dict)
                 ['entry'] - (str) the updated remark
                 ['valid'] - (bool) True if the entered value is valid,
-                    False otherwise
+                   False otherwise
                 ['msg'] - (str) Error message if not valid
         """
         result = {"entry": "", "valid": False, "msg": ""}
@@ -187,17 +189,18 @@ class Dialog(QDialog):
         elif isinstance(form_entry, ComboBox):
             result = set_function(form_entry.currentText())
 
-        self.error_flag(result, form_entry, tooltip)
+        self.update_error_flag(result, form_entry, tooltip)
         return result
 
-    def error_flag(self, result, dialog_widget, tooltip):
+    def update_error_flag(self, result, dialog_widget, tooltip):
         """
         Set or remove error flag for dialog entry.
 
         If test result for a dialog entry is valid, clear the dialog's
         error flag, decrement the error count if previously incremented,
         and set the tool tip to default value. If not valid,
-        set the error flag and add the error message to the tooltip.
+        set the error flag, increment the error count and add the error
+        message to the widget tooltip.
 
         Parameters:
             result (dict) the validation results for the dialog entry.
