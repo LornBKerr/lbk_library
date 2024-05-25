@@ -26,7 +26,7 @@ class DataFile:
     @classmethod
     def new_file(cls, filename: str, sql_statements: list[str]) -> None:
         """
-        Create and initialize the new datafile File.
+        Create and initialize the new DataFile.
 
         Parameters:
             filename (str): full path to the datafile file to be created.
@@ -50,7 +50,7 @@ class DataFile:
         """
         Connect to a specific datafile.
 
-        The variable connection holds the connection object.
+        The variable __connection holds the connection object.
 
         Parameters:
             datafile (str): path to datafile from program root
@@ -75,7 +75,7 @@ class DataFile:
 
         if return_value:
             # Set the encoding for new datafiles,
-            # ignored for existing datafiles.
+            # ignored by existing datafiles.
             self.sql_query('PRAGMA encoding = "UTF-8"', [])
         return return_value
 
@@ -86,8 +86,9 @@ class DataFile:
         Parameters:
             query (str): Contains the SQL query statement which shall be
                 executed.
-            values (dict): The name: values to inserted into the query;
-                not all statements require this; default is empty dict.
+            values (dict): The name: values pairs to inserted into the 
+                query; not all statements require this; default is
+                empty dict.
 
         Returns:
             (sqlite3.Cursor) the query result status if query succeeded,
