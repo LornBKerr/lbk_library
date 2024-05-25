@@ -1,30 +1,24 @@
 """
 The Project Library Collection.
 
-This contains a set of common classes that support several projects.
+This contains two packages and a set of a set of common classes that
+support several projects.
 
-This package contains the following classes:
-    Dbal           A database abstraction layer for SQLite3.
-    Element        Base class for types of information in a database.
-    ElementSet     Base class for a set of elements.
-    IniFileParser  Read and Write *.ini Files
+The set of common classes provide a group of commonly used abstractions.
+    DataFile       Implement a DataFile for permanent storage of information.
+    Element        Base class for types of information in the datafile.
+    ElementSet     Base class for sets of elements.
+    IniFileParser  Read and Write *.ini Files (Deprecated in favor of 
+        Qt.QtCore.QSettings
     Validate       Support validation of values going into the database.
 
-    gui.ComboBox extends QComboBox - Emits the 'activate' signal when
-        the focus is lost.
-    gui.Dialog extends QDialog - Base class for various dialogs used in
-        projects.
-    gui.ErrorFrame extends QFrame - Provides a red border around a dialog
-        member to indicate an error.
-    gui.LineEdit extends QLineEdit - Emits the 'editingFinished' signal
-        when the focus is lost.
-    gui.RowState - Enumerates the various states a table row may have.
-    gui.TableButtonGroup - Contains a group of TablePushButtons.
-    gui.TableComboBox - Encapsules a ComboBox and an ErrorFrame into a
-        widget to place in a QtableWidget row.
-    gui.TableLineEdit - Encapsules a LineEdit and an ErrorFrame into a
-        widget to place in a QtableWidget row.
-    gui.TablePushButton - Extends a QPushButton to be used in a Table.
+The included sub -packages support handling forms and common test
+functionallity.
+    gui             extendes the basic some Qt standard classes adding 
+        specific actions or combining seversl classes.
+    testing_support provides a number of values and functions to help
+        setup thegeneral test environment for different projects. All 
+        test modules draw on a varying selection of these values.
 
 File:       __init__.py
 Author:     Lorn B Kerr
@@ -35,16 +29,7 @@ License:    see License
 from .datafile import DataFile
 from .element import Element
 from .element_set import ElementSet
-from .gui import (
-    ComboBox,
-    Dialog,
-    ErrorFrame,
-    LineEdit,
-    RowState,
-    TableButtonGroup,
-    TableComboBox,
-    TableLineEdit,
-    TablePushButton,
-)
+from .gui import ComboBox, Dialog, ErrorFrame, LineEdit
 from .ini_file_parser import IniFileParser
+from .testing_support import core_setup
 from .validate import Validate
