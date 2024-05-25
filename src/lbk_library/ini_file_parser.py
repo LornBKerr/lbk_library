@@ -1,4 +1,8 @@
 """
+** DEPRECATED **:
+
+Use Qt.QCore.QSettigns fro new work.
+
 A Wrapper around configparser for ini files.
 
 File:       ini_file_parser.py
