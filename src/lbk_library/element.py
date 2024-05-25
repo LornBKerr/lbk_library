@@ -73,7 +73,8 @@ class Element:
 
         Parameters:
             column_name (str): within the table containing the key
-                values column_value (Any) Key value requested
+                values 
+            column_value (Any): Key value requested
 
         Returns:
             (dict) Row containing requested element if successful or an
