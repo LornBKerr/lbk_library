@@ -7,17 +7,15 @@ Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
+import os
+import sys
+
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
+
 from test_setup import datafile_definition, datafile_name, new_element
 
-# import os
-# import sys
-#
-# import pytest
-#
-# src_path = os.path.join(os.path.realpath("."), "src")
-# if src_path not in sys.path:
-#    sys.path.append(src_path)
-#
 from lbk_library import DataFile, Element, ElementSet
 from lbk_library.testing_support.core_setup import (
     datafile_close,

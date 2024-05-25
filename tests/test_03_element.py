@@ -7,8 +7,12 @@ Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
-# import os
-# import sys
+import os
+import sys
+
+src_path = os.path.join(os.path.realpath("."), "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
 import pytest
 from test_setup import datafile_definition, datafile_name, element_values
