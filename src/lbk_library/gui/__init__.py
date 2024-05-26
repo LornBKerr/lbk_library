@@ -13,6 +13,8 @@ This package contains the following modules:
         member to indicate an error.
     LineEdit extends QLineEdit - Emits the 'editingFinished' signal when
         the focus is lost.
+    TableWidgetIntItem extends QTableWidgetItem - Adds the capability of
+        sorting a table on an column of inteegers.
 
 File:       __init__.py
 Author:     Lorn B Kerr
