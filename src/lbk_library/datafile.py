@@ -86,7 +86,7 @@ class DataFile:
         Parameters:
             query (str): Contains the SQL query statement which shall be
                 executed.
-            values (dict): The name: values pairs to inserted into the 
+            values (dict): The name: values pairs to inserted into the
                 query; not all statements require this; default is
                 empty dict.
 
