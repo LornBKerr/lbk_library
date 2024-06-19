@@ -73,7 +73,7 @@ class Element:
 
         Parameters:
             column_name (str): within the table containing the key
-                values 
+                values
             column_value (Any): Key value requested
 
         Returns:
