@@ -69,6 +69,7 @@ class ElementSet:
         """ The set of elements in this element set """
         self.__position: int = -1
         """ The current iterator position in the property_set, """
+        self.__element_type: type = element_type
 
         # set the initial query array
         query: dict[str, Any] = {"type": "SELECT", "table": self.__table}
@@ -153,6 +154,15 @@ class ElementSet:
                 (zero based)
         """
         del self.get_property_set()[location]
+
+    def get_type(self) -> str:
+        """
+        Get the type of element in the data file.
+
+        Returns:
+            (str) The element type for this element set.
+        """
+        return self.__element_type
 
     def get_datafile(self) -> DataFile:
         """
