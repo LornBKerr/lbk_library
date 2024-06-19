@@ -226,3 +226,8 @@ def test_04_12_iterator(filesystem):
         assert row.get_record_id() == i
         i += 1
     datafile_close(datafile)
+
+
+def test_04_13_get_type(filesystem):
+    filename, datafile, element_set = base_setup(filesystem)
+    assert element_set.get_type() == Element
