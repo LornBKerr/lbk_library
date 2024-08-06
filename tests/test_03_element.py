@@ -26,10 +26,6 @@ from lbk_library.testing_support.core_setup import (
     filesystem,
 )
 
-# src_path = os.path.join(os.path.realpath("."), "src")
-# if src_path not in sys.path:
-#    sys.path.append(src_path)
-
 
 def base_setup(filesystem):
     filename = filesystem + "/" + datafile_name
@@ -250,10 +246,14 @@ def test_03_14_set_functions(filesystem):
 def test_03_15_element_set_properties(filesystem):
     element, datafile = base_setup(filesystem)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
-    element.set_properties(element_values)
+    set_results = element.set_properties(element_values)
     assert len(element.get_properties()) == 2
     assert element.get_record_id() == element_values["record_id"]
     assert element.get_remarks() == element_values["remarks"]
+    assert len(set_results) == 2
+    assert set_results["record_id"]["entry"] == element_values["record_id"]
+    assert set_results["record_id"]["valid"] == True
+    assert set_results["record_id"]["msg"] == ""
     datafile_close(datafile)
 
 

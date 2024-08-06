@@ -175,7 +175,9 @@ class Element:
         """
         return self.__properties
 
-    def set_properties(self, properties: dict[str, Any]) -> None:
+    def set_properties(
+        self, properties: dict[str, Any]
+    ) -> dict[str, list[str, bool, str]]:
         """
         Set the values of the Element properties array.
 
@@ -193,13 +195,20 @@ class Element:
             properties (dict): object holding the element values. Keys
                 must match the required keys of the element being
                 modified, properties may be sparse.
+
+        Returns:
+            (dict[str, list[str, bool, str]]) the results of setting the
+                values as key:validation_results pairs. May be empty or
+                sparse.
         """
+        set_results = {}
         if properties is not None and isinstance(properties, dict):
             for key in properties.keys():
                 if key == "record_id":
-                    self.set_record_id(properties[key])
+                    set_results[key] = self.set_record_id(properties[key])
                 elif key == "remarks":
-                    self.set_remarks(properties[key])
+                    set_results[key] = self.set_remarks(properties[key])
+        return set_results
 
     def _get_property(self, name: str) -> Any:
         """
