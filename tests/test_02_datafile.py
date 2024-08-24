@@ -154,12 +154,15 @@ def test_02_15_sql_query_from_array_bad_type(filesystem):
 
 def test_02_16_sql_query_from_array_delete(filesystem):
     filename, datafile = base_setup(filesystem)
-    value_set = {"installed": False, "remarks": "another iffy remark"}
+    value_set = {
+        "record_id": None,
+        "installed": False,
+        "remarks": "another iffy remark",
+    }
     query = {"type": "insert", "table": "elements"}
     sql_insert = datafile.sql_query_from_array(query, value_set)
     assert (
-        sql_insert
-        == "INSERT INTO elements (installed, remarks) VALUES (:installed, :remarks)"
+        sql_insert == "INSERT INTO elements VALUES (:record_id, :installed, :remarks)"
     )
     result = datafile.sql_query(sql_insert, value_set)
     assert isinstance(result, sqlite3.Cursor)
@@ -186,7 +189,11 @@ def test_02_16_sql_query_from_array_delete(filesystem):
 
 def test_02_17_sql_query_from_array_update(filesystem):
     filename, datafile = base_setup(filesystem)
-    value_set = {"installed": False, "remarks": "another iffy remark"}
+    value_set = {
+        "record_id": None,
+        "installed": False,
+        "remarks": "another iffy remark",
+    }
     query = {"type": "insert", "table": "elements"}
     sql = datafile.sql_query_from_array(query, value_set)
     result = datafile.sql_query(sql, value_set)
@@ -204,7 +211,11 @@ def test_02_17_sql_query_from_array_update(filesystem):
 
 def test_02_18_sql_query_from_array_select(filesystem):
     filename, datafile = base_setup(filesystem)
-    value_set = {"installed": False, "remarks": "another iffy remark"}
+    value_set = {
+        "record_id": None,
+        "installed": False,
+        "remarks": "another iffy remark",
+    }
     query_insert = {"type": "insert", "table": "elements"}
     sql = datafile.sql_query_from_array(query_insert, value_set)
     result = datafile.sql_query(sql, value_set)

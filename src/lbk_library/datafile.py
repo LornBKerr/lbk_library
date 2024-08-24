@@ -305,12 +305,12 @@ class DataFile:
         """
         sql = query["type"].upper() + " INTO " + query["table"] + " "
         keys = value_set.keys()
-        columns = "(" + ", ".join(keys) + ")"
         holder = []
         for key in keys:
             holder.append(":" + key)
         placeholder = "(" + ", ".join(holder) + ")"
-        sql += columns + " VALUES " + placeholder
+        sql += "VALUES " + placeholder
+
         return sql
 
     def __sql_select_statement(self, query: dict) -> str:
