@@ -110,7 +110,7 @@ class Element:
         """
         return_value = False
         property_set = self.get_properties()
-        del property_set["record_id"]  # new entry id will be assigned
+        property_set["record_id"] = None  # new entry id will be assigned
         query = {
             "type": "insert",
             "table": self.get_table(),

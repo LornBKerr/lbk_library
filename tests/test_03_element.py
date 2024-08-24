@@ -15,7 +15,7 @@ if src_path not in sys.path:
     sys.path.append(src_path)
 
 import pytest
-from test_setup import datafile_definition, datafile_name, element_values
+from test_setup import datafile_name, element_definition, element_values
 
 from lbk_library import DataFile, Element, Validate
 from lbk_library.testing_support.core_setup import (
@@ -29,7 +29,7 @@ from lbk_library.testing_support.core_setup import (
 
 def base_setup(filesystem):
     filename = filesystem + "/" + datafile_name
-    datafile = datafile_create(filename, datafile_definition)
+    datafile = datafile_create(filename, element_definition)
     element = Element(datafile, None)
     return (element, datafile)
 
