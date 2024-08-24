@@ -14,13 +14,12 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from test_setup import datafile_definition, datafile_name, new_element
+from test_setup import element_definition, new_element  # , datafile_name
 
 from lbk_library import DataFile, Element, ElementSet
-from lbk_library.testing_support.core_setup import (
+from lbk_library.testing_support.core_setup import (  # datafile_open,
     datafile_close,
     datafile_create,
-    datafile_open,
     directories,
     filesystem,
 )
@@ -29,7 +28,7 @@ from lbk_library.testing_support.core_setup import (
 def base_setup(filesystem):
     datafile_name = directories[2] + "/test_data.data"
     filename = filesystem + "/" + datafile_name
-    datafile = datafile_create(filename, datafile_definition)
+    datafile = datafile_create(filename, element_definition)
     element_set = ElementSet(datafile, "elements", Element)
     return (filename, datafile, element_set)
 
@@ -72,7 +71,7 @@ def test_04_05_ElementSet_get_properties_type(filesystem):
 def test_04_06_ElementSet_constructor(filesystem):
     filename, datafile, element_set = base_setup(filesystem)
     remark = "Remark # "
-    element_values = {"record_id": 1, "remarks": remark}
+    element_values = {"record_id": None, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(datafile, element_values)
@@ -136,7 +135,7 @@ def test_04_07_insert_element(filesystem):
 def test_04_08_append_element(filesystem):
     filename, datafile, element_set = base_setup(filesystem)
     remark = "Remark # "
-    element_values = {"record_id": 1, "remarks": remark}
+    element_values = {"record_id": None, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
         element_values["remarks"] = remark + str(5 - i)
         element = new_element(datafile, element_values)
@@ -144,7 +143,7 @@ def test_04_08_append_element(filesystem):
     element_set = ElementSet(datafile, "elements", Element)
     length = element_set.get_number_elements()
     assert length == len(element_set.get_property_set())
-    new_values = {"record_id": 0, "remarks": "Remark # 6"}
+    new_values = {"record_id": None, "remarks": "Remark # 6"}
     element = new_element(datafile, new_values)
     element_set.append(element)
     assert length + 1 == len(element_set.get_property_set())
