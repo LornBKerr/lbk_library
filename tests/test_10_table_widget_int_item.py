@@ -14,30 +14,10 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-# from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 
-# from test_setup import (
-#    DummyForm,
-#    better_element,
-#    datafile_definition,
-#    element_values,
-#    new_element,
-#    save_something,
-# )
-#
-# from lbk_library import DataFile, Element
 from lbk_library.gui import TableWidgetIntItem
-
-# from lbk_library.testing_support import (
-#    datafile_close,
-#    datafile_create,
-#    directories,
-#    filesystem,
-#    long_string,
-#    test_string,
-# )
 
 
 def test_10_01_constructor():

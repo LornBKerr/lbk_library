@@ -1,5 +1,5 @@
 """
-Extends QTableWidgetItem to properly handle sorting of integer field items.
+Extends QTableWidgetItem to handle sorting of integer field items.
 
 This overloads the 'less than' comparison function to properly handle
 integers instead of strings.
