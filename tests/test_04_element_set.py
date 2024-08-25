@@ -14,10 +14,10 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from test_setup import element_definition, new_element  # , datafile_name
+from test_setup import datafile_name, element_definition, new_element
 
 from lbk_library import DataFile, Element, ElementSet
-from lbk_library.testing_support.core_setup import (  # datafile_open,
+from lbk_library.testing_support.core_setup import (
     datafile_close,
     datafile_create,
     directories,
@@ -26,7 +26,6 @@ from lbk_library.testing_support.core_setup import (  # datafile_open,
 
 
 def base_setup(filesystem):
-    datafile_name = directories[2] + "/test_data.data"
     filename = filesystem + "/" + datafile_name
     datafile = datafile_create(filename, element_definition)
     element_set = ElementSet(datafile, "elements", Element)
