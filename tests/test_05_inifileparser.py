@@ -1,4 +1,7 @@
-"""Test the IniFileParser functions
+"""
+Test the IniFileParser functions
+
+** DEPRECATED **. Use Qt.QCore.QSettings for new work.
 
 File:       test_05_inifileparser.py
 Author:     Lorn B Kerr
