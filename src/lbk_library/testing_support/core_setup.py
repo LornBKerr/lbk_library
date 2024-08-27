@@ -116,8 +116,16 @@ def datafile_create(filepath: str, datafile_definition: str):
     return test_file
 
 
-def load_datafile_table(test_file, table_name, column_names, value_set):
-    """Load one of the database tables with a set of values."""
+def load_datafile_table(datafile, table_name, column_names, value_set):
+    """
+    Load one of the datafile tables with a set of values.
+    
+    Parameters:
+        datafile (DataFile): The file to load the information.
+        table_name (str): the name of the table to fill.
+        column_names (list[str]): the set of column named.
+        value_set list[dict[str, Any]]): the set of values.    
+    """
     sql_query = {"type": "INSERT", "table": table_name}
     for values in value_set:
         entries = {}
