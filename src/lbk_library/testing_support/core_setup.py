@@ -20,7 +20,7 @@ Data File Handling:
         reference to the new database.
     datafile_close: function to close the open datafile.
     load_datafile_table: Function to load a specific datafile table.
-    load_all_datafile_tables(test_file) : Function to load all datafile
+    load_all_datafile_tables(datafile) : Function to load all datafile
         tables.
 
 File:       core_setup.py
@@ -83,48 +83,48 @@ def datafile_open(filepath: str):
         filepath (str): full path to a data_file.
 
     Returns:
-        (DataFile) reference to the opened test_file.
+        (DataFile) reference to the opened datafile.
     """
-    test_file = DataFile()
-    test_file.sql_connect(filepath)
-    return test_file
+    datafile = DataFile()
+    datafile.sql_connect(filepath)
+    return datafile
 
 
-def datafile_close(test_file: DataFile):
+def datafile_close(datafile: DataFile):
     """
     Close an open database.
 
     Parameters:
-        test_file (DataFile): The open datafile to be closed.
+        datafile (DataFile): The open datafile to be closed.
     """
-    test_file.sql_close()
+    datafile.sql_close()
 
 
 def datafile_create(filepath: str, datafile_definition: str):
     """
-    Create a new, empty test_file.
+    Create a new, empty datafile.
 
     Parameters:
-        filepath (DataFile): The full path to the requested test_file.
+        filepath (DataFile): The full path to the requested datafile.
 
     Returns:
-         (DataFile) reference to the opened test_file.
+         (DataFile) reference to the opened datafile.
     """
-    test_file = datafile_open(filepath)
+    datafile = datafile_open(filepath)
     for sql in datafile_definition:
-        test_file.sql_query(sql)
-    return test_file
+        datafile.sql_query(sql)
+    return datafile
 
 
 def load_datafile_table(datafile, table_name, column_names, value_set):
     """
     Load one of the datafile tables with a set of values.
-    
+
     Parameters:
         datafile (DataFile): The file to load the information.
         table_name (str): the name of the table to fill.
         column_names (list[str]): the set of column named.
-        value_set list[dict[str, Any]]): the set of values.    
+        value_set list[dict[str, Any]]): the set of values.
     """
     sql_query = {"type": "INSERT", "table": table_name}
     for values in value_set:
@@ -133,5 +133,5 @@ def load_datafile_table(datafile, table_name, column_names, value_set):
         while i < len(column_names):
             entries[column_names[i]] = values[i]
             i += 1
-        sql = test_file.sql_query_from_array(sql_query, entries)
-        test_file.sql_query(sql, entries)
+        sql = datafile.sql_query_from_array(sql_query, entries)
+        datafile.sql_query(sql, entries)
