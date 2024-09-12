@@ -162,7 +162,8 @@ def test_02_16_sql_query_from_array_delete(filesystem):
     query = {"type": "insert", "table": "elements"}
     sql_insert = datafile.sql_query_from_array(query, value_set)
     assert (
-        sql_insert == "INSERT INTO elements VALUES (:record_id, :installed, :remarks)"
+        sql_insert
+        == "INSERT INTO elements (record_id, installed, remarks) VALUES (:record_id, :installed, :remarks)"
     )
     result = datafile.sql_query(sql_insert, value_set)
     assert isinstance(result, sqlite3.Cursor)
