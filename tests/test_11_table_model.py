@@ -15,7 +15,7 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PyQt5.QtCore import QAbstractTableModel, Qt  # QModelIndex,
 from PyQt5.QtGui import QBrush, QColor
 from test_setup import datafile_name
 
@@ -59,7 +59,6 @@ def setup_table_model(qtbot, filesystem):
     model = TableModel(
         deepcopy(test_value_set),
         header_names,
-        column_names,
         tool_tips,
         cell_alignments,
     )
@@ -72,20 +71,13 @@ def test_11_01_class_type(qtbot, filesystem):
     assert isinstance(model, TableModel)
     assert isinstance(model, QAbstractTableModel)
     assert len(model._data_set) == len(test_value_set)
-    for i in range(len(column_names)):
-        assert model._column_data_names[i] == column_names[i]
-    for i in range(len(header_names)):
-        assert model._header_titles[i] == header_names[i]
-    assert len(model._default_column_tooltips) == len(tool_tips)
-    assert model._default_column_tooltips == tool_tips
-    assert isinstance(model._cell_tooltips, list)
-    assert len(model._cell_tooltips) == 0
-    assert model._background == QBrush(QColor("White"))
-    assert model._error_background == QBrush(QColor(0xF0C0C0))
-    assert isinstance(model._cell_backgrounds, list)
-    assert len(model._cell_backgrounds) == 0
-    assert isinstance(model._default_column_alignments, list)
-    assert len(model._cell_alignments) == 0
+    for row in range(len(test_value_set)):
+        for column in range(len(test_value_set[0])):
+            assert model._data_set[row][column]["value"] == test_value_set[row][column]
+            assert model._data_set[row][column]["alignment"] == cell_alignments[column]
+            assert model._data_set[row][column]["background"] == model._background
+            assert model._data_set[row][column]["tooltip"] == tool_tips[column]
+
     datafile_close(datafile)
 
 
@@ -97,15 +89,15 @@ def test_11_02_rowCount(qtbot, filesystem):
 
 def test_11_03_columnCount(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
-    assert model.columnCount(QModelIndex()) == len(header_names)
+    assert model.columnCount() == len(header_names)
     datafile_close(datafile)
 
 
 def test_11_04_flags(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
 
-    for row in range(model.rowCount(QModelIndex())):
-        for column in range(model.columnCount(QModelIndex())):
+    for row in range(model.rowCount()):
+        for column in range(model.columnCount()):
             flags = model.flags(model.index(row, column))
             assert flags & Qt.ItemFlag.ItemIsSelectable
             assert flags & Qt.ItemFlag.ItemIsEnabled
@@ -116,7 +108,7 @@ def test_11_04_flags(qtbot, filesystem):
 
 def test_11_05_header_data(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
-    for column in range(model.columnCount(QModelIndex())):
+    for column in range(model.columnCount()):
         assert (
             model.headerData(column, Qt.Orientation.Horizontal)
             == model._header_titles[column]
@@ -141,143 +133,67 @@ def test_11_06_setHeaderData(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_07_set_default_background(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-    assert model._background == QBrush(QColor("White"))
-    new_background = QBrush(QColor("Blue"))
-    model.set_default_background(new_background)
-    assert model._background == new_background
-    datafile_close(datafile)
-
-
-def test_11_08_set_default_error_background(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-    assert model._error_background == QBrush(QColor(0xF0C0C0))
-    new_error_background = QBrush(QColor("Green"))
-    model.set_default_error_background(new_error_background)
-    assert model._error_background == new_error_background
-    datafile_close(datafile)
-
-
 def test_11_09_insert_rows(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
     current_rows = model.rowCount()
-    success = model.insertRows(model.rowCount(), 2)
+    success = model.insertRows(1, 2)
     assert model.rowCount() == current_rows + 2
     assert success
     datafile_close(datafile)
 
 
-def test_11_10_set_default_column_alignments(qtbot, filesystem):
+def test_11_09_remove_rows(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
+    model.insertRows(1, 2)
+    current_rows = model.rowCount()
+    assert model._data_set[1][0] == None
+    assert model._data_set[2][0] == None
+    assert not model._data_set[3][0] == None
 
-    assert len(model._cell_alignments) == 0
-    model.set_default_column_alignments(cell_alignments)
-    assert len(model._default_column_alignments) == len(cell_alignments)
-    for i in range(len(cell_alignments)):
-        assert model._default_column_alignments[i] == cell_alignments[i]
+    success = model.removeRows(1, 1)
+    assert model.rowCount() == current_rows - 1
+    assert model._data_set[1][0] == None
+    assert not model._data_set[2][0] == None
+    assert success
     datafile_close(datafile)
 
 
-def test_11_11_data_role_display_edit(qtbot, filesystem):
+def test_11_11_data(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
 
     # If table has more columns than data has, should return None
     assert (
         model.data(
-            model.createIndex(0, len(model._column_data_names)),
+            model.createIndex(0, len(model._data_set[0])),
             Qt.ItemDataRole.DisplayRole,
         )
         == None
     )
 
     for row in range(model.rowCount()):
-        for column in range(len(model._column_data_names)):
+        for column in range(len(model._data_set[0])):
+            index = model.createIndex(row, column)
             assert (
-                model.data(model.createIndex(row, column), Qt.ItemDataRole.DisplayRole)
+                model.data(index, Qt.ItemDataRole.DisplayRole)
                 == test_value_set[row][column]
             )
             assert (
-                model.data(model.createIndex(row, column), Qt.ItemDataRole.EditRole)
+                model.data(index, Qt.ItemDataRole.EditRole)
                 == test_value_set[row][column]
             )
-    datafile_close(datafile)
-
-
-def test_11_12_data_role_tooltip(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-
-    # default tooltips
-    for row in range(model.rowCount()):
-        for column in range(len(model._column_data_names)):
-            assert (
-                model.data(model.createIndex(row, column), Qt.ItemDataRole.ToolTipRole)
-                == tool_tips[column]
+            assert model.data(index, Qt.ItemDataRole.ToolTipRole) == tool_tips[column]
+            assert model.data(index, Qt.ItemDataRole.BackgroundRole) == QBrush(
+                QColor("White")
             )
-    # cell specific tooltip in row 1, column 1.
-    test_row = 1
-    test_col = 1
-    cell_tooltip = "error message " + tool_tips[1]
-    model._cell_tooltips.append([test_row, test_col, cell_tooltip])
-    assert (
-        model.data(model.createIndex(test_row, test_col), Qt.ItemDataRole.ToolTipRole)
-        == cell_tooltip
-    )
-    datafile_close(datafile)
-
-
-def test_11_13_data_role_background(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-
-    for row in range(model.rowCount()):
-        for column in range(len(model._column_data_names)):
             assert (
-                model.data(
-                    model.createIndex(row, column), Qt.ItemDataRole.BackgroundRole
-                )
-                == model._background
-            )
-    # cell specific background in row 1, column 1.
-    test_row = 1
-    test_col = 1
-    cell_background = QBrush(QColor(0xF08080))
-    model._cell_backgrounds.append([test_row, test_col, cell_background])
-    assert (
-        model.data(
-            model.createIndex(test_row, test_col), Qt.ItemDataRole.BackgroundRole
-        )
-        == cell_background
-    )
-    datafile_close(datafile)
-
-
-def test_11_14_data_role_text_alignment(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-
-    model.set_default_column_alignments(cell_alignments)
-    for row in range(model.rowCount()):
-        for column in range(len(model._column_data_names)):
-            assert (
-                model.data(
-                    model.createIndex(row, column), Qt.ItemDataRole.TextAlignmentRole
-                )
+                model.data(index, Qt.ItemDataRole.TextAlignmentRole)
                 == cell_alignments[column]
             )
-    # cell specific alignment in row 1, column 1.
-    test_row = 1
-    test_col = 1
-    cell_justify = Qt.AlignmentFlag.AlignJustify
-    model._cell_alignments.append([test_row, test_col, cell_justify])
-    assert (
-        model.data(
-            model.createIndex(test_row, test_col), Qt.ItemDataRole.TextAlignmentRole
-        )
-        == cell_justify
-    )
+
     datafile_close(datafile)
 
 
-def test_11_15_setData_role_display_edit(qtbot, filesystem):
+def test_11_15_setData(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
 
     def action_data_changed(a_index, b_index):
@@ -303,78 +219,20 @@ def test_11_15_setData_role_display_edit(qtbot, filesystem):
     myindex = model.createIndex(1, 0)
     model.setData(myindex, new_value, Qt.ItemDataRole.DisplayRole)
     assert model.data(myindex) == new_value
-    datafile_close(datafile)
 
-
-def test_11_16_setData_role_tooltip(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-    model._default_column_tooltips = tool_tips
-    # _cell_tooltips should be empty.
-    assert len(model._cell_tooltips) == 0
-
-    # set a default tooltip
-    myindex = model.createIndex(0, 0)
-    model.setData(myindex, tool_tips[0], Qt.ItemDataRole.ToolTipRole)
-    assert len(model._cell_tooltips) == 0
-    assert model.data(myindex, Qt.ItemDataRole.ToolTipRole) == tool_tips[0]
-
-    # set a non default tooltip
+    # set a  tooltip
     new_tooltip = "A new tooltip"
     model.setData(myindex, new_tooltip, Qt.ItemDataRole.ToolTipRole)
-    assert len(model._cell_tooltips) == 1
     assert model.data(myindex, Qt.ItemDataRole.ToolTipRole) == new_tooltip
-
-    # set another non default tooltip
-    new_tooltip = "Another new tooltip"
-    model.setData(myindex, new_tooltip, Qt.ItemDataRole.ToolTipRole)
-    assert len(model._cell_tooltips) == 1
-    assert model.data(myindex, Qt.ItemDataRole.ToolTipRole) == new_tooltip
-
-
-def test_11_17_setData_role_background(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-    # _cell_backgrounds should be empty.
-    assert len(model._cell_backgrounds) == 0
-
-    # set a default background
-    myindex = model.createIndex(0, 0)
-    model.setData(myindex, model._background, Qt.ItemDataRole.BackgroundRole)
-    assert len(model._cell_backgrounds) == 0
-    assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == model._background
 
     # set a non default background
+    assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == model._background
     new_background = QBrush(QColor("Green"))
-    model.setData(myindex, new_background, Qt.ItemDataRole.BackgroundRole)
-    assert len(model._cell_backgrounds) == 1
+    assert model.setData(myindex, new_background, Qt.ItemDataRole.BackgroundRole)
     assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == new_background
 
-    # set default error background
-    new_background = model._error_background
-    model.setData(myindex, new_background, Qt.ItemDataRole.BackgroundRole)
-    assert len(model._cell_backgrounds) == 1
-    assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == new_background
-
-
-def test_11_18_setData_role_alignments(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
-    model._default_column_alignments = cell_alignments
-    # _cell_alignments should be empty.
-    assert len(model._cell_alignments) == 0
-
-    # set a default alignment
-    myindex = model.createIndex(0, 0)
-    model.setData(myindex, cell_alignments[0], Qt.ItemDataRole.TextAlignmentRole)
-    assert len(model._cell_alignments) == 0
+    # set an alignment
     assert model.data(myindex, Qt.ItemDataRole.TextAlignmentRole) == cell_alignments[0]
-
-    # set a non default alignment
-    new_alignment = Qt.AlignmentFlag.AlignJustify
-    model.setData(myindex, new_alignment, Qt.ItemDataRole.TextAlignmentRole)
-    assert len(model._cell_alignments) == 1
-    assert model.data(myindex, Qt.ItemDataRole.TextAlignmentRole) == new_alignment
-
-    # set another non default alignment
-    new_alignment = Qt.AlignmentFlag.AlignRight
-    model.setData(myindex, new_alignment, Qt.ItemDataRole.TextAlignmentRole)
-    assert len(model._cell_alignments) == 1
-    assert model.data(myindex, Qt.ItemDataRole.TextAlignmentRole) == new_alignment
+    new_alignment = cell_alignments[1]
+    assert model.setData(myindex, new_alignment, Qt.ItemDataRole.TextAlignmentRole)
+    assert model.data(myindex, Qt.ItemDataRole.TextAlignmentRole) == cell_alignments[1]

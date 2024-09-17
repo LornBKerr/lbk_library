@@ -1,9 +1,9 @@
 """
 Provides the interface to access and manipulate the table.
 
-This is used to display a 2-dimensional array of strings. There is no
-error checking of values and no conversion of types to strings. Those
-needs to be done externally.
+This is used to display a 2-dimensional array of cell information. There
+is no error checking of values. Each cell information is a dict of
+values for cell value, alignment, background color, and tooltip.
 
 File:       table_model.py
 Author:     Lorn B Kerr
@@ -23,49 +23,51 @@ class TableModel(QAbstractTableModel):
 
     The data for this model is contained in a list of lists of strings.
     The calling program is responsible for translating the program
-    native formate to match this data setup.
+    native format to match this data setup.
     """
 
     def __init__(
         self,
-        data_set: list[list[str]],
+        cell_values: list[list[str]],
         header_titles: list[str],
-        column_data_names: list[str],
         column_tooltips: list[str],
         column_alignments: list[Qt.AlignmentFlag],
+        background: QBrush = QBrush(QColor("White")),
     ) -> None:
         """
         Initialize the TableModel.
 
         Parameters:
-            data_set (list[list[str]]): The information to display in
+            cell_valuest (list[list[str]]): The information to display in
             the table formatted as a list of lists.
             header_titles (list[str]): The names of the table columns.
             column_tootips {list[str]): The tooltips in column order for
                 each column in the table.
-        """
-        super().__init__()
+            column_alignments {list[Qt.AlignmentFlag]): The text
+                alignement in column order for each column in the table.
+            background (Qbrush): The table cell background color,
+                default is QBrush(QColor("White")).
 
-        self._data_set: list[list[Any]] = data_set
-        """The set of Elements to display."""
-        self._column_data_names: [str] = column_data_names
-        """The set of column data names."""
+        """
+        self._data_set: list[list[dict[str, Any]]] = []
+        """The set of cell information to diaplay to display."""
         self._header_titles: list[str] = header_titles
         """ The set of Header Titles."""
-        self._default_column_tooltips: list[str] = column_tooltips
-        """The tooltips in column order for each column in the table."""
-        self._cell_tooltips: list[list[int, int, str]] = []
-        """Tooltips for individual cell (row, col, tooltip)."""
         self._background: QBrush = QBrush(QColor("White"))
         """The standard background for table cells."""
-        self._error_background: QBrush = QBrush(QColor(0xF0C0C0))
-        """Background indicating an error in the cell contents."""
-        self._cell_backgrounds: list[list[int, int, QBrush]] = []
-        """Background for individual cell (row, col, color)."""
-        self._default_column_alignments = column_alignments
-        """The text alignments in column order for each column in the table."""
-        self._cell_alignments: list[list[int, int, Qt.AlignmentFlag]] = []
-        """The text alignment for individual cell (row, col, AlignmentFlag)."""
+
+        super().__init__()
+        for row in range(len(cell_values)):
+            self._data_set.append([])
+            for column in range(len(cell_values[0])):
+                self._data_set[row].append(
+                    {
+                        "value": cell_values[row][column],
+                        "alignment": column_alignments[column],
+                        "background": background,
+                        "tooltip": column_tooltips[column],
+                    }
+                )
 
     def data(
         self, index: QModelIndex, role: Qt.ItemDataRole = Qt.ItemDataRole.DisplayRole
@@ -89,20 +91,21 @@ class TableModel(QAbstractTableModel):
         entry = None
         # handle the situation where number of data columns is less than
         # number of table columns.
-        if index.column() >= len(self._column_data_names):
+        if index.column() >= len(self._data_set[0]):
             pass
 
         elif role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
-            entry = self._data_set[index.row()][index.column()]
+            entry = self._data_set[index.row()][index.column()]["value"]
+            print(entry)
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            entry = self.get_tooltip(index)
+            entry = self._data_set[index.row()][index.column()]["tooltip"]
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            entry = self.get_background(index)
+            entry = self._data_set[index.row()][index.column()]["background"]
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            entry = self.get_text_alignment(index)
+            entry = self._data_set[index.row()][index.column()]["alignment"]
 
         return entry
 
@@ -141,31 +144,23 @@ class TableModel(QAbstractTableModel):
 
         # handle the situation where number data columns is less than
         # number of table columns.
-        if index.column() >= len(self._column_data_names):
+        if index.column() >= len(self._data_set[0]):
             success = True
 
         elif role == Qt.ItemDataRole.EditRole or role == Qt.ItemDataRole.DisplayRole:
-            self._data_set[index.row()][index.column()] = value
+            self._data_set[index.row()][index.column()]["value"] = value
             success = True
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            # if special tooltip is set, then delete it.
-            self.delete_nondefault_entries(index, self._cell_tooltips)
-            # if new value is not the default value , add to special list
-            if value != self._default_column_tooltips[index.column()]:
-                self._cell_tooltips.append([index.row(), index.column(), value])
+            self._data_set[index.row()][index.column()]["tooltip"] = value
             success = True
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            self.delete_nondefault_entries(index, self._cell_backgrounds)
-            if value != self._background:
-                self._cell_backgrounds.append([index.row(), index.column(), value])
+            self._data_set[index.row()][index.column()]["background"] = value
             success = True
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            self.delete_nondefault_entries(index, self._cell_alignments)
-            if value != self._default_column_alignments[index.column()]:
-                self._cell_alignments.append([index.row(), index.column(), value])
+            self._data_set[index.row()][index.column()]["alignment"] = value
             success = True
 
         if success:
@@ -185,7 +180,7 @@ class TableModel(QAbstractTableModel):
         """
         return len(self._data_set)
 
-    def columnCount(self, index=QModelIndex()) -> int:
+    def columnCount(self, index: QModelIndex = QModelIndex()) -> int:
         """
         Get the number of columns.
 
@@ -242,7 +237,6 @@ class TableModel(QAbstractTableModel):
         entry = None
         if role == Qt.ItemDataRole.DisplayRole and section < self.columnCount():
             entry = self._header_titles[section]
-
         return entry
 
     def setHeaderData(
@@ -267,7 +261,6 @@ class TableModel(QAbstractTableModel):
         Returns:
             (bool) True if the header data was successfully changed,
                 False otherwise.
-
         Signals:
             Emits headerDataChanged signal if set is successful.
         """
@@ -294,7 +287,7 @@ class TableModel(QAbstractTableModel):
             (bool) True if the insert was successful, False if not.
         """
         success = False
-        self.beginInsertRows(parent, row, row + count - 1)
+        self.beginRemoveRows(parent, row, row + count - 1)
         count_added = 0
         while count_added < count:
             self._data_set.insert(row, [None for i in range(len(self._data_set[0]))])
@@ -303,114 +296,18 @@ class TableModel(QAbstractTableModel):
         self.endInsertRows()
         return success
 
-    def set_default_background(
-        self, background: QBrush = QBrush(QColor("White"))
-    ) -> None:
+    def removeRows(
+        self, first_row: int, count: int, parent: QModelIndex = QModelIndex()
+    ) -> bool:
         """
-        Set the default cell background.
-
-        Parameters:
-            background (QBrush): The cell backround with no errors,
-                default is 'white'.
+        Need to implement this to delete rows for the table.
         """
-        self._background = background
-
-    def set_default_error_background(
-        self, background: QBrush = QBrush(QColor(0xF08080))
-    ) -> None:
-        """
-        Set the default cell error indicating background.
-
-        Parameters:
-            background (QBrush): The cell backround with no errors,
-                default is 'white'.
-        """
-        self._error_background = background
-
-    def set_default_column_alignments(self, alignments: list[Qt.AlignmentFlag]) -> None:
-        """
-        Set the default cell alignment.
-
-        Parameters:
-            background (QBrush): The cell backround with no errors,
-                default is 'white'.
-        """
-        for i in range(len(alignments)):
-            self._default_column_alignments.append(alignments[i])
-
-    def get_background(self, index: QModelIndex) -> QBrush:
-        """
-        Get the background for the given cell.
-
-        Parameters:
-            index (QModelIndex): the location o fthe cell.
-
-        Returns:
-            (QBrush): the color of the cell.
-        """
-        entry = self._background
-        if len(self._cell_backgrounds):
-            # check if special background is set.
-            for i in range(len(self._cell_backgrounds)):
-                if self._cell_backgrounds[i][0] == index.row():
-                    if self._cell_backgrounds[i][1] == index.column():
-                        entry = self._cell_backgrounds[i][2]
-        return entry
-
-    def get_tooltip(self, index: QModelIndex) -> str:
-        """
-        Get the tooltip for the given cell.
-
-        Parameters:
-            index (QModelIndex): the location o fthe cell.
-
-        Returns:
-            (str): the tooltip for the cell
-        """
-        entry = self._default_column_tooltips[index.column()]
-        if len(self._cell_tooltips):
-            # check if special tooltip is set.
-            for i in range(len(self._cell_tooltips)):
-                if self._cell_tooltips[i][0] == index.row():
-                    if self._cell_tooltips[i][1] == index.column():
-                        entry = self._cell_tooltips[i][2]
-                        break
-        return entry
-
-    def get_text_alignment(self, index: QModelIndex) -> str:
-        """
-        Get the text alignment for the given cell.
-
-        Parameters:
-            index (QModelIndex): the location o  fthe cell.
-
-        Returns:
-            (Qt.AlignmentFlag): the test alignment of the cell,
-                typically one or more of the Qt.AlignmentFlags ored
-                together.
-        """
-        entry = self._default_column_alignments[index.column()]
-        if len(self._cell_alignments):
-            # check if special background is set.
-            for i in range(len(self._cell_alignments)):
-                if self._cell_alignments[i][0] == index.row():
-                    if self._cell_alignments[i][1] == index.column():
-                        entry = self._cell_alignments[i][2]
-                        break
-        return entry
-
-    def delete_nondefault_entries(
-        self, index: QModelIndex, entries: list[list[int, int, Any]]
-    ) -> None:
-        """
-        Remove all entries for the given index from the entry list.
-
-        Parameters:
-            index (QModelIndex): the location of the cell.
-            entries (list[list[int, int, Any]]: set of non-default
-                entries.
-        """
-        for i in range(len(entries)):
-            if entries[i][0] == index.row() and entries[i][1] == index.column():
-                entries.pop(i)
-        return entries
+        success = False
+        self.beginRemoveRows(parent, first_row, first_row + count)
+        count_deleted = 0
+        while count_deleted < count:
+            del self._data_set[first_row]
+            count_deleted += 1
+        success = True
+        self.endRemoveRows()
+        return success
