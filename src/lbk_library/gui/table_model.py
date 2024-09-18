@@ -17,6 +17,37 @@ from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PyQt5.QtGui import QBrush, QColor
 
 
+class CellData:
+    """
+    Holds the data for an individaul table cell.
+
+    The table cell has 4 attributes (value, alignment, background, and
+    tooltip). Default values for these attributes are None. These are
+    public and directly accessable. No error checking is performed.
+    """
+
+    def __init__(
+        self,
+        value: Any = None,
+        alignment: Qt.AlignmentFlag = None,
+        background: QBrush = None,
+        tooltip: str = None,
+    ):
+        """
+        Initialize the table cell.
+
+        Parameters:
+            value (Any): the value for the cell.
+            alignment (Qt.AlignmentFlag): the cell text alignment.
+            background (QBrush): the cell background color.
+            tooltip (str): the tooltip for the cell.
+        """
+        self.value = value
+        self.alignment = alignment
+        self.background = background
+        self.tooltip = tooltip
+
+
 class TableModel(QAbstractTableModel):
     """
     Provides access to QTableView derived tables.
@@ -61,12 +92,12 @@ class TableModel(QAbstractTableModel):
             self._data_set.append([])
             for column in range(len(cell_values[0])):
                 self._data_set[row].append(
-                    {
-                        "value": cell_values[row][column],
-                        "alignment": column_alignments[column],
-                        "background": background,
-                        "tooltip": column_tooltips[column],
-                    }
+                    CellData(
+                        cell_values[row][column],
+                        column_alignments[column],
+                        background,
+                        column_tooltips[column],
+                    )
                 )
 
     def data(
@@ -95,17 +126,16 @@ class TableModel(QAbstractTableModel):
             pass
 
         elif role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
-            entry = self._data_set[index.row()][index.column()]["value"]
-            print(entry)
+            entry = self._data_set[index.row()][index.column()].value
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            entry = self._data_set[index.row()][index.column()]["tooltip"]
+            entry = self._data_set[index.row()][index.column()].tooltip
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            entry = self._data_set[index.row()][index.column()]["background"]
+            entry = self._data_set[index.row()][index.column()].background
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            entry = self._data_set[index.row()][index.column()]["alignment"]
+            entry = self._data_set[index.row()][index.column()].alignment
 
         return entry
 
@@ -148,19 +178,19 @@ class TableModel(QAbstractTableModel):
             success = True
 
         elif role == Qt.ItemDataRole.EditRole or role == Qt.ItemDataRole.DisplayRole:
-            self._data_set[index.row()][index.column()]["value"] = value
+            self._data_set[index.row()][index.column()].value = value
             success = True
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            self._data_set[index.row()][index.column()]["tooltip"] = value
+            self._data_set[index.row()][index.column()].tooltip = value
             success = True
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            self._data_set[index.row()][index.column()]["background"] = value
+            self._data_set[index.row()][index.column()].background = value
             success = True
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            self._data_set[index.row()][index.column()]["alignment"] = value
+            self._data_set[index.row()][index.column()].alignment = value
             success = True
 
         if success:
@@ -290,7 +320,9 @@ class TableModel(QAbstractTableModel):
         self.beginRemoveRows(parent, row, row + count - 1)
         count_added = 0
         while count_added < count:
-            self._data_set.insert(row, [None for i in range(len(self._data_set[0]))])
+            self._data_set.insert(
+                row, [CellData() for i in range(len(self._data_set[0]))]
+            )
             count_added += 1
         success = True
         self.endInsertRows()

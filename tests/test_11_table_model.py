@@ -19,7 +19,7 @@ from PyQt5.QtCore import QAbstractTableModel, Qt  # QModelIndex,
 from PyQt5.QtGui import QBrush, QColor
 from test_setup import datafile_name
 
-from lbk_library.gui import TableModel
+from lbk_library.gui import CellData, TableModel
 from lbk_library.testing_support import (  # ; ;
     datafile_close,
     datafile_create,
@@ -73,10 +73,10 @@ def test_11_01_class_type(qtbot, filesystem):
     assert len(model._data_set) == len(test_value_set)
     for row in range(len(test_value_set)):
         for column in range(len(test_value_set[0])):
-            assert model._data_set[row][column]["value"] == test_value_set[row][column]
-            assert model._data_set[row][column]["alignment"] == cell_alignments[column]
-            assert model._data_set[row][column]["background"] == model._background
-            assert model._data_set[row][column]["tooltip"] == tool_tips[column]
+            assert model._data_set[row][column].value == test_value_set[row][column]
+            assert model._data_set[row][column].alignment == cell_alignments[column]
+            assert model._data_set[row][column].background == model._background
+            assert model._data_set[row][column].tooltip == tool_tips[column]
 
     datafile_close(datafile)
 
@@ -133,7 +133,7 @@ def test_11_06_setHeaderData(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_09_insert_rows(qtbot, filesystem):
+def test_11_07_insert_rows(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
     current_rows = model.rowCount()
     success = model.insertRows(1, 2)
@@ -142,23 +142,23 @@ def test_11_09_insert_rows(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_09_remove_rows(qtbot, filesystem):
+def test_11_08_remove_rows(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
     model.insertRows(1, 2)
     current_rows = model.rowCount()
-    assert model._data_set[1][0] == None
-    assert model._data_set[2][0] == None
-    assert not model._data_set[3][0] == None
+    assert isinstance(model._data_set[1][0], CellData)
+    assert isinstance(model._data_set[2][0], CellData)
+    assert not model._data_set[3][0].value == None
 
     success = model.removeRows(1, 1)
     assert model.rowCount() == current_rows - 1
-    assert model._data_set[1][0] == None
-    assert not model._data_set[2][0] == None
+    assert model._data_set[1][0].value == None
+    assert not model._data_set[2][0].value == None
     assert success
     datafile_close(datafile)
 
 
-def test_11_11_data(qtbot, filesystem):
+def test_11_09_data(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
 
     # If table has more columns than data has, should return None
@@ -193,7 +193,7 @@ def test_11_11_data(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_15_setData(qtbot, filesystem):
+def test_11_10_setData(qtbot, filesystem):
     datafile, model = setup_table_model(qtbot, filesystem)
 
     def action_data_changed(a_index, b_index):

@@ -26,7 +26,7 @@ from .combo_box import ComboBox
 from .dialog import Dialog
 from .error_frame import ErrorFrame
 from .line_edit import LineEdit
-from .table_model import TableModel
+from .table_model import CellData, TableModel
 from .table_widget_int_item import TableWidgetIntItem
 
 #
