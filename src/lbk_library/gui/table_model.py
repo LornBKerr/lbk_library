@@ -14,7 +14,7 @@ License:    MIT, see file LICENSE
 from typing import Any
 
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QBrush, QColor
+from PyQt5.QtGui import QBrush  # , QColor
 
 
 class CellData:
@@ -63,7 +63,7 @@ class TableModel(QAbstractTableModel):
         header_titles: list[str],
         column_tooltips: list[str],
         column_alignments: list[Qt.AlignmentFlag],
-        background: QBrush = QBrush(QColor("White")),
+        background: QBrush,
     ) -> None:
         """
         Initialize the TableModel.
@@ -84,8 +84,6 @@ class TableModel(QAbstractTableModel):
         """The set of cell information to diaplay to display."""
         self._header_titles: list[str] = header_titles
         """ The set of Header Titles."""
-        self._background: QBrush = QBrush(QColor("White"))
-        """The standard background for table cells."""
 
         super().__init__()
         for row in range(len(cell_values)):

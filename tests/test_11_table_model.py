@@ -28,14 +28,21 @@ from lbk_library.testing_support import (  # ; ;
 )
 
 header_names = ["Record Id", "Name", "Species", "Tank Number"]
+
 tool_tips = ["Tool Tip 0", "Tool Tip 1", "Tool Tip 2", "Tool Tip 3"]
+
 cell_alignments = [
     Qt.AlignmentFlag.AlignLeft,
     Qt.AlignmentFlag.AlignHCenter,
     Qt.AlignmentFlag.AlignRight,
     Qt.AlignmentFlag.AlignLeft,
 ]
+
+normal_background = QBrush(QColor("white"))
+error_background = QBrush(QColor("red"))
+
 column_names = ["record_id", "name", "species", "tank_number"]
+
 test_value_set = [
     [1, "Sammy", "shark", 1],
     [2, "Jamie", "cuttlefish", 7],
@@ -61,6 +68,7 @@ def setup_table_model(qtbot, filesystem):
         header_names,
         tool_tips,
         cell_alignments,
+        normal_background,
     )
     return (datafile, model)
 
@@ -75,7 +83,7 @@ def test_11_01_class_type(qtbot, filesystem):
         for column in range(len(test_value_set[0])):
             assert model._data_set[row][column].value == test_value_set[row][column]
             assert model._data_set[row][column].alignment == cell_alignments[column]
-            assert model._data_set[row][column].background == model._background
+            assert model._data_set[row][column].background == normal_background
             assert model._data_set[row][column].tooltip == tool_tips[column]
 
     datafile_close(datafile)
@@ -226,7 +234,7 @@ def test_11_10_setData(qtbot, filesystem):
     assert model.data(myindex, Qt.ItemDataRole.ToolTipRole) == new_tooltip
 
     # set a non default background
-    assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == model._background
+    assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == normal_background
     new_background = QBrush(QColor("Green"))
     assert model.setData(myindex, new_background, Qt.ItemDataRole.BackgroundRole)
     assert model.data(myindex, Qt.ItemDataRole.BackgroundRole) == new_background
