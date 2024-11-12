@@ -319,7 +319,7 @@ class TableModel(QAbstractTableModel):
         count_added = 0
         while count_added < count:
             self._data_set.insert(
-                row, [CellData() for i in range(len(self._data_set[0]))]
+                row, [CellData() for i in range(len(self._header_titles))]
             )
             count_added += 1
         success = True
