@@ -14,7 +14,6 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-# from PySide6 import uic
 from PySide6.QtWidgets import QDialog, QMainWindow, QMessageBox
 from test_setup import (
     DummyForm,
