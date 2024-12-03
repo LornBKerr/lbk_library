@@ -14,8 +14,8 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QTableWidgetItem
 
 from lbk_library.gui import TableWidgetIntItem
 
