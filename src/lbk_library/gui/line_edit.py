@@ -7,9 +7,9 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
-from PyQt5.QtCore import pyqtProperty
-from PyQt5.QtGui import QFocusEvent
-from PyQt5.QtWidgets import QLineEdit, QWidget
+from PySide6.QtCore import Property
+from PySide6.QtGui import QFocusEvent
+from PySide6.QtWidgets import QLineEdit, QWidget
 
 from .error_frame import ErrorFrame
 
@@ -44,7 +44,7 @@ class LineEdit(QLineEdit):
         self.editingFinished.emit()
         super().focusOutEvent(evt)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def error(self) -> bool:
         """Get the error status."""
         return self._error

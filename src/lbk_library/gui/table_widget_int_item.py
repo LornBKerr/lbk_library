@@ -5,7 +5,7 @@ This overloads the 'less than' comparison function to properly handle
 integers instead of strings.
 """
 
-from PyQt5.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QTableWidgetItem
 
 
 class TableWidgetIntItem(QTableWidgetItem):

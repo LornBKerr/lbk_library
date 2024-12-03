@@ -7,8 +7,9 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file License
 """
 
-from PyQt5.QtCore import pyqtProperty
-from PyQt5.QtWidgets import QFrame, QWidget
+
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QFrame, QWidget
 
 
 class ErrorFrame(QFrame):
@@ -25,7 +26,7 @@ class ErrorFrame(QFrame):
         super().__init__(parent)
         self.setStyleSheet(self._frame_style_normal)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def error(self) -> bool:
         """Get the error status."""
         return self._error

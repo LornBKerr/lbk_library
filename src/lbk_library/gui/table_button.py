@@ -7,7 +7,7 @@ Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
 """
 
-from PyQt5.QtWidgets import QPushButton, QTableWidget
+from PySide6.QtWidgets import QPushButton, QTableWidget
 
 
 class TablePushButton(QPushButton):

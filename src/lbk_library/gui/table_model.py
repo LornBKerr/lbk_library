@@ -13,8 +13,8 @@ License:    MIT, see file LICENSE
 
 from typing import Any
 
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QBrush  # , QColor
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QBrush  # , QColor
 
 
 class CellData:
@@ -221,7 +221,7 @@ class TableModel(QAbstractTableModel):
         """
         return len(self._header_titles)
 
-    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+    def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         """
         Set the flags for specific row/column entry to include editable.
 
