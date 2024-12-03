@@ -14,7 +14,7 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from PyQt5.QtWidgets import QLineEdit
+from PySide6.QtWidgets import QLineEdit
 from pytestqt import qtbot
 
 from lbk_library.gui import ErrorFrame, LineEdit
