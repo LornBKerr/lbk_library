@@ -24,7 +24,7 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide6.QtWidgets import QPushButton
 
 from lbk_library import DataFile, Element, ElementSet
 from lbk_library.gui import ComboBox, ErrorFrame, LineEdit
@@ -117,12 +117,12 @@ def save_something(action):
 
 class DummyForm:
     def __init__(self, test_form):
-        self.close_button = QtWidgets.QPushButton(test_form)
+        self.close_button = QPushButton(test_form)
         self.close_button.setObjectName("close_button")
         self.close_button.setToolTip("Close the form, any unsaved changes will be lost")
         self.close_button.setText("Cancel / Close")
 
-        self.change_button = QtWidgets.QPushButton(test_form)
+        self.change_button = QPushButton(test_form)
         self.change_button.setObjectName("change_button")
         self.change_button.setToolTip(
             "Save the updated assembly changes, then clear the form"
