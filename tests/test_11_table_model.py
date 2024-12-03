@@ -15,8 +15,8 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from PyQt5.QtCore import QAbstractTableModel, Qt  # QModelIndex,
-from PyQt5.QtGui import QBrush, QColor
+from PySide6.QtCore import QAbstractTableModel, Qt  # QModelIndex,
+from PySide6.QtGui import QBrush, QColor
 from test_setup import datafile_name
 
 from lbk_library.gui import CellData, TableModel
