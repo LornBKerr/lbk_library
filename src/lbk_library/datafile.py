@@ -62,11 +62,7 @@ class DataFile:
         self.datafile_name = datafile
         return_value = False
         try:
-            self.__connection = sqlite3.connect(
-                self.datafile_name,
-                5.0,
-                sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES,
-            )
+            self.__connection = sqlite3.connect(self.datafile_name)
             # set the row to be a dictionary (map or associative array)
             self.__connection.row_factory = self.__dict_factory
             return_value = True
