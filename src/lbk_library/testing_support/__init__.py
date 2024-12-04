@@ -27,7 +27,14 @@ File:       __init__.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2024 Lorn B Kerr
 License:    MIT, see file LICENSE
- """
+Version:    1.0.1
+"""
+
+file_version = "1.0.1"
+changes = {
+    "1.0.0": "Initial release",
+    "1.0.1": "Added version info.",
+}
 
 from .core_setup import (
     datafile_close,

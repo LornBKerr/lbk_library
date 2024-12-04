@@ -27,11 +27,17 @@ File:       core_setup.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2024 Lorn B Kerr
 License:    MIT, see file License
-"""
+Version:    1.0.1"""
 
 import pytest
 
 from lbk_library import DataFile
+
+file_version = "1.0.1"
+changes = {
+    "1.0.0": "Initial release",
+    "1.0.1": "Added version info.",
+}
 
 # Directories for Windows and Linux
 directories = [
