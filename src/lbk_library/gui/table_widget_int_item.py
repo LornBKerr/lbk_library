@@ -3,9 +3,21 @@ Extends QTableWidgetItem to handle sorting of integer field items.
 
 This overloads the 'less than' comparison function to properly handle
 integers instead of strings.
+
+File:       table_widget_int_item.py
+Author:     Lorn B Kerr
+Copyright:  (c) 2023 Lorn B Kerr
+License:    MIT, see file LICENSE
+Version:    1.1.0
 """
 
 from PySide6.QtWidgets import QTableWidgetItem
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
+}
 
 
 class TableWidgetIntItem(QTableWidgetItem):

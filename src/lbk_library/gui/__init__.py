@@ -20,6 +20,7 @@ File:       __init__.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
+Version:    1.0.1
 """
 
 from .combo_box import ComboBox
@@ -28,6 +29,12 @@ from .error_frame import ErrorFrame
 from .line_edit import LineEdit
 from .table_model import CellData, TableModel
 from .table_widget_int_item import TableWidgetIntItem
+
+file_version = "1.0.1"
+changes = {
+    "1.0.0": "Initial release",
+    "1.0.1": "Added Version Info",
+}
 
 #
 #   pending descriptions.

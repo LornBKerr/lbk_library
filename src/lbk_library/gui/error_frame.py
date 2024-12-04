@@ -4,12 +4,18 @@ Extend QFrame for error indication.
 File:       error_frame.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
+Version:    1.1.0
 """
-
 
 from PySide6.QtCore import Property
 from PySide6.QtWidgets import QFrame, QWidget
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
+}
 
 
 class ErrorFrame(QFrame):

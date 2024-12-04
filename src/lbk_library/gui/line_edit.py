@@ -5,6 +5,7 @@ File:       line_edit.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
+Version:    1.1.0
 """
 
 from PySide6.QtCore import Property
@@ -12,6 +13,12 @@ from PySide6.QtGui import QFocusEvent
 from PySide6.QtWidgets import QLineEdit, QWidget
 
 from .error_frame import ErrorFrame
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
+}
 
 
 class LineEdit(QLineEdit):

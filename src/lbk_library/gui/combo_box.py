@@ -10,17 +10,17 @@ License:    MIT, see file LICENSE
 Version:    1.1.0
 """
 
-file_version = "1.1.0"
-changes = {
-    "1.0.0": "Initial release",
-    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
-}
-
 from PySide6.QtCore import Property
 from PySide6.QtGui import QFocusEvent
 from PySide6.QtWidgets import QComboBox, QFrame, QWidget
 
 from .error_frame import ErrorFrame
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
+}
 
 
 class ComboBox(QComboBox):

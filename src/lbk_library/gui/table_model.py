@@ -9,12 +9,19 @@ File:       table_model.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2024 Lorn B Kerr
 License:    MIT, see file LICENSE
+Version:    1.0.1
 """
 
 from typing import Any
 
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide6.QtGui import QBrush  # , QColor
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.0.1": "Added Version Info",
+}
 
 
 class CellData:
