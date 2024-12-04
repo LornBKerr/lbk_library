@@ -3,13 +3,20 @@ Implement a DataFile for permanent storage of information.
 
 File:       datafile.py
 Author:     Lorn B Kerr
-Copyright:  (c) 202r Lorn B Kerr
+Copyright:  (c) 2022, 2024 Lorn B Kerr
 License:    MIT, see file License
+Version:    1.1.0
 """
 
 import sqlite3
 from traceback import print_exc
 from typing import Any
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed name from 'Dbal' to 'DataFile'."
+}
 
 
 class DataFile:

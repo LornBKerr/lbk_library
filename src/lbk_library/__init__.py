@@ -16,7 +16,14 @@ File:       __init__.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2024 Lorn B Kerr
 License:    see License
+Version:    1.1.0
 """
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed name from 'Dbal' to 'DataFile'."
+}
 
 from .datafile import DataFile
 from .element import Element

@@ -5,6 +5,7 @@ File:       element_set.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
 License:    MIT see file License
+Version:    1.0.0
 """
 
 from collections.abc import Iterator
@@ -12,6 +13,11 @@ from typing import Any
 
 from .datafile import DataFile
 from .element import Element
+
+file_version = "1.0.0"
+changes = {
+    "1.0.0": "Initial release",
+}
 
 
 class ElementSet:
