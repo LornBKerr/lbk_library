@@ -7,7 +7,14 @@ File:       combo_box.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
 License:    MIT, see file LICENSE
+Version:    1.1.0
 """
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed library 'PyQt5' to 'PySide6'",
+}
 
 from PySide6.QtCore import Property
 from PySide6.QtGui import QFocusEvent
