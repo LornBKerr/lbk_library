@@ -4,7 +4,7 @@ Tests for the Validate Class.
 File:       test_01_validate.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os

@@ -4,7 +4,7 @@ Test the LineEdit class.
 File:       test_08_line_edit.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os

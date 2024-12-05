@@ -6,7 +6,7 @@ Test the IniFileParser functions
 File:       test_05_inifileparser.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2024 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os

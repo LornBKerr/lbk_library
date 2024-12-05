@@ -4,7 +4,7 @@ Test the ErrorFrame class.
 File:       test_06_error_frame.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os

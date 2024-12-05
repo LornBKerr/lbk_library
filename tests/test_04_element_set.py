@@ -4,7 +4,7 @@ Tests for the ElementSet Class.
 File:       test_03_element_set.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os

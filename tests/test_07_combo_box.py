@@ -4,7 +4,7 @@ Test the ComboBox class.
 File:       test_07_07_combo_box.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2023 Lorn B Kerr
-License:    MIT, see file License
+License:    MIT, see file LICENSE
 """
 
 import os
