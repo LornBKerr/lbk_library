@@ -16,14 +16,8 @@ File:       __init__.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2024 Lorn B Kerr
 License:    see License
-Version:    1.1.0
+License:    MIT, see file LICENSE
 """
-
-file_version = "1.1.0"
-changes = {
-    "1.0.0": "Initial release",
-    "1.1.0": "Changed name from 'Dbal' to 'DataFile'."
-}
 
 from .datafile import DataFile
 from .element import Element
@@ -31,3 +25,9 @@ from .element_set import ElementSet
 from .ini_file_parser import IniFileParser
 from .testing_support import core_setup
 from .validate import Validate
+
+file_version = "1.1.0"
+changes = {
+    "1.0.0": "Initial release",
+    "1.1.0": "Changed name from 'Dbal' to 'DataFile'.",
+}
