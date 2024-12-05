@@ -15,7 +15,7 @@ from typing import Any
 file_version = "1.1.0"
 changes = {
     "1.0.0": "Initial release",
-    "1.1.0": "Changed name from 'Dbal' to 'DataFile'."
+    "1.1.0": "Changed name from 'Dbal' to 'DataFile'.",
 }
 
 
