@@ -4,8 +4,9 @@ Validate types of information in the database.
 File:       validate.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
-License:    see License
-Version:    1.0.1"""
+License:    MIT, see file LICENSE
+Version:    1.0.1
+"""
 
 import datetime
 import re
@@ -13,10 +14,7 @@ import sys
 from typing import Any, Union
 
 file_version = "1.1.0"
-changes = {
-    "1.0.0": "Initial release",
-    "1.0.1": "Added Version Info."
-}
+changes = {"1.0.0": "Initial release", "1.0.1": "Added Version Info."}
 
 
 class Validate:
