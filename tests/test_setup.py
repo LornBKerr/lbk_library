@@ -13,7 +13,7 @@ Filesystem, Directories and associated files:
 File:       test_setup.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
- License:    MIT, see file License
+ License:    MIT, see file LICENSE
  """
 
 import os
@@ -40,31 +40,12 @@ datafile_definition = [
     ),
 ]
 
-# tool_tips = [
-#    "Tool Tip 0",
-#    "Tool Tip 1",
-#    "Tool Tip 2",
-# ]
-# cell_alignments = [
-#    Qt.AlignmentFlag.AlignLeft,
-#    Qt.AlignmentFlag.AlignHCenter,
-#    Qt.AlignmentFlag.AlignRight,
-# ]
-#
 column_names = ["record_id", "name", "species", "tank_number", "remarks"]
 
 fish_value_set = [
     [1, "Sammy", "shark", 1, "remark 1"],
     [2, "Jamie", "cuttlefish", 7, "remark 2"],
 ]
-#
-# test_record = {
-#    "record_id": 1,
-#    "name": "Sammy",
-#    "species": "shark",
-#    "tank_number": 1,
-#    "remarks": "remark 1",
-# }
 
 # set element values from array of values
 element_values = {
