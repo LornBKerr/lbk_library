@@ -54,7 +54,6 @@ while len(long_string) < 255:
     long_string = long_string + ", " + test_string
 
 
-@pytest.fixture
 def filesystem(tmp_path):
     """
     Setup a temporary filesystem which will be discarded after the test
