@@ -13,8 +13,8 @@ Filesystem, Directories and associated files:
 File:       test_setup.py
 Author:     Lorn B Kerr
 Copyright:  (c) 2022, 2023 Lorn B Kerr
- License:    MIT, see file LICENSE
- """
+License:    MIT, see file LICENSE
+"""
 
 import os
 import sys
