@@ -44,7 +44,7 @@ class CellData:
         Initialize the table cell.
 
         Parameters:
-            value (Any): the value for the cell.
+            value (str): the value for the cell.
             alignment (Qt.AlignmentFlag): the cell text alignment.
             background (QBrush): the cell background color.
             tooltip (str): the tooltip for the cell.
@@ -91,17 +91,24 @@ class TableModel(QAbstractTableModel):
         """The set of cell information to diaplay to display."""
         self._header_titles: list[str] = header_titles
         """ The set of Header Titles."""
+        self.column_tooltips: list[str] = column_tooltips
+        self.column_alignments: list[Qt.AlignmentFlag] = column_alignments
+        background: QBrush = background
 
         super().__init__()
+        self.load_cell_values(cell_values)
+
+    def load_cell_values(self, cell_values: list[list[str]]) -> None:
+        """Load the cell values inot the dataset."""
         for row in range(len(cell_values)):
             self._data_set.append([])
             for column in range(len(cell_values[0])):
                 self._data_set[row].append(
                     CellData(
                         cell_values[row][column],
-                        column_alignments[column],
-                        background,
-                        column_tooltips[column],
+                        self.column_alignments[column],
+                        self.background,
+                        self.column_tooltips[column],
                     )
                 )
 
@@ -234,7 +241,7 @@ class TableModel(QAbstractTableModel):
 
         This adds the ItemIsEditable flag to the default settings of
         itemIsSelectable and ItemIsEnabled for all columns except
-        'Record Id' and 'Action(s)'.
+        'Record Id'.
 
         Parameters:
             index (QModelIndex): The cell requesting the flags.
@@ -322,7 +329,7 @@ class TableModel(QAbstractTableModel):
             (bool) True if the insert was successful, False if not.
         """
         success = False
-        self.beginRemoveRows(parent, row, row + count - 1)
+        self.beginInsertRows(parent, row, row + count - 1)
         count_added = 0
         while count_added < count:
             self._data_set.insert(
