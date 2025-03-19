@@ -7,6 +7,8 @@ actions or combining seversl classes.
 This package contains the following modules:
     ComboBox extends QComboBox - Emits the 'activate' signal when
         the focus is lost.
+    ComboBoxDelegate extends QStyledItemDelegate - Provides a QComboBox
+        for use in QTableView objects.
     Dialog extends QDialog - Base class for various dialogs used
         in projects.
     ErrorFrame extends QFrame - Provides a red border around a dialog
@@ -14,7 +16,7 @@ This package contains the following modules:
     LineEdit extends QLineEdit - Emits the 'editingFinished' signal when
         the focus is lost.
     TableWidgetIntItem extends QTableWidgetItem - Adds the capability of
-        sorting a table on an column of inteegers.
+        sorting a table on an column of integers.
 
 File:       __init__.py
 Author:     Lorn B Kerr
@@ -35,18 +37,3 @@ changes = {
     "1.0.0": "Initial release",
     "1.0.1": "Added Version Info",
 }
-
-#
-#   pending descriptions.
-#    RowState -Enumerates the various states a table row may have.
-#    TableButtonGroup - Contains a group of TablePushButtons.
-#    TableComboBox - Encapsules a ComboBox and an ErrorFrame into a
-#        widget to place in a QtableWidget row.
-#    TableLineEdit - Encapsules a LineEdit and an ErrorFrame into a
-#        widget to place in a QtableWidget row.
-#    TablePushButton - Extends a QPushButton to be used in a Table.
-# from .row_state import RowState
-# from .table_button_group import TableButtonGroup
-# from .table_combo_box import TableComboBox
-# from .table_line_edit import TableLineEdit
-# from .table_push_button import TablePushButton
