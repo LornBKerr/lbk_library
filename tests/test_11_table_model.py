@@ -20,7 +20,7 @@ from PySide6.QtGui import QBrush, QColor
 from test_setup import datafile_name
 
 from lbk_library.gui import CellData, TableModel
-from lbk_library.testing_support import (  # ; ;
+from lbk_library.testing_support import (
     datafile_close,
     datafile_create,
     filesystem,
@@ -59,8 +59,9 @@ datafile_definition = [
 ]
 
 
-def setup_table_model(qtbot, filesystem):
-    filename = filesystem + "/" + datafile_name
+def setup_table_model(qtbot, tmp_path):
+    base_directory = filesystem(tmp_path)
+    filename = base_directory + datafile_name
     datafile = datafile_create(filename, datafile_definition)
     load_datafile_table(datafile, "fish", column_names, test_value_set)
     model = TableModel(
@@ -73,8 +74,8 @@ def setup_table_model(qtbot, filesystem):
     return (datafile, model)
 
 
-def test_11_01_class_type(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_01_class_type(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
 
     assert isinstance(model, TableModel)
     assert isinstance(model, QAbstractTableModel)
@@ -89,20 +90,22 @@ def test_11_01_class_type(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_02_rowCount(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_02_rowCount(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
+
     assert model.rowCount() == len(test_value_set)
     datafile_close(datafile)
 
 
-def test_11_03_columnCount(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_03_columnCount(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
+
     assert model.columnCount() == len(header_names)
     datafile_close(datafile)
 
 
-def test_11_04_flags(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_04_flags(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
 
     for row in range(model.rowCount()):
         for column in range(model.columnCount()):
@@ -114,8 +117,9 @@ def test_11_04_flags(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_05_header_data(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_05_header_data(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
+
     for column in range(model.columnCount()):
         assert (
             model.headerData(column, Qt.Orientation.Horizontal)
@@ -124,8 +128,8 @@ def test_11_05_header_data(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_06_setHeaderData(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_06_setHeaderData(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
 
     def action_header_changed(orientation, first_column, second_column):
         assert orientation == Qt.Orientation.Horizontal
@@ -141,8 +145,9 @@ def test_11_06_setHeaderData(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_07_insert_rows(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_07_insert_rows(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
+
     current_rows = model.rowCount()
     success = model.insertRows(1, 2)
     assert model.rowCount() == current_rows + 2
@@ -150,8 +155,9 @@ def test_11_07_insert_rows(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_08_remove_rows(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_08_remove_rows(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
+
     model.insertRows(1, 2)
     current_rows = model.rowCount()
     assert isinstance(model._data_set[1][0], CellData)
@@ -166,8 +172,8 @@ def test_11_08_remove_rows(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_09_data(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_09_data(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
 
     # If table has more columns than data has, should return None
     assert (
@@ -201,8 +207,8 @@ def test_11_09_data(qtbot, filesystem):
     datafile_close(datafile)
 
 
-def test_11_10_setData(qtbot, filesystem):
-    datafile, model = setup_table_model(qtbot, filesystem)
+def test_11_10_setData(qtbot, tmp_path):
+    datafile, model = setup_table_model(qtbot, tmp_path)
 
     def action_data_changed(a_index, b_index):
         assert a_index.row() == b_index.row()
