@@ -29,37 +29,37 @@ from lbk_library.testing_support.core_setup import (
 )
 
 
-def base_setup(filesystem):
-    datafile_name = directories[2] + "/test_data.data"
-    filename = filesystem + "/" + datafile_name
-    datafile = datafile_create(filename, datafile_definition)
-    return (filename, datafile)
+def base_setup(tmp_path):
+    base_directory = filesystem(tmp_path)
+    filename = base_directory + "/" + datafile_name
+    data_file = datafile_create(filename, datafile_definition)
+    return (filename, data_file)
 
 
 def test_02_01_datafile_constructor():
-    datafile = DataFile()
-    assert isinstance(datafile, DataFile)
+    data_file = DataFile()
+    assert isinstance(data_file, DataFile)
 
 
 def test_02_02_sql_connect_invalid():
-    datafile = DataFile()
+    data_file = DataFile()
     # invalid connection because of invalid path
-    connection = datafile.sql_connect("./invalid_path/nn.db")
+    connection = data_file.sql_connect("./invalid_path/nn.db")
     assert not connection
 
 
-def test_02_03_sql_connect_valid(filesystem):
-    filename, datafile = base_setup(filesystem)
-    datafile.sql_connect(filename)
-    assert datafile.sql_is_connected()
-    datafile_close(datafile)
+def test_02_03_sql_connect_valid(tmp_path):
+    filename, data_file = base_setup(filesystem)
+    data_file.sql_connect(filename)
+    assert data_file.sql_is_connected()
+    datafile_close(data_file)
 
 
-def test_02_04_sql_close(filesystem):
-    filename, datafile = base_setup(filesystem)
-    assert datafile.sql_is_connected()
-    datafile.sql_close()
-    assert not datafile.sql_is_connected()
+def test_02_04_sql_close(tmp_path):
+    filename, data_file = base_setup(filesystem)
+    assert data_file.sql_is_connected()
+    data_file.sql_close()
+    assert not data_file.sql_is_connected()
 
 
 def test_02_05_sql_bad_statement(filesystem):
