@@ -15,7 +15,12 @@ if src_path not in sys.path:
     sys.path.append(src_path)
 
 import pytest
-from test_setup import datafile_name, element_definition, element_values
+from test_setup import (
+    datafile_definition,
+    datafile_name,
+    datafile_table,
+    element_values,
+)
 
 from lbk_library import DataFile, Element, Validate
 from lbk_library.testing_support.core_setup import (
@@ -27,40 +32,41 @@ from lbk_library.testing_support.core_setup import (
 )
 
 
-def base_setup(filesystem):
-    filename = filesystem + "/" + datafile_name
-    datafile = datafile_create(filename, element_definition)
-    element = Element(datafile, None)
+def base_setup(tmp_path):
+    base_directory = filesystem(tmp_path)
+    filename = base_directory + "/" + datafile_name
+    datafile = datafile_create(filename, datafile_definition)
+    element = Element(datafile, datafile_table)
     return (element, datafile)
 
 
-def test_03_01_element_constr(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_01_element_constr(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert isinstance(element, Element)
     datafile_close(datafile)
 
 
-def test_03_02_element_get_datafile(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_02_element_get_datafile(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert element.get_datafile() == datafile
     datafile_close(datafile)
 
 
-def test_03_03_element_get_table(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_03_element_get_table(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements")
     assert element.get_table() == "elements"
     datafile_close(datafile)
 
 
-def test_03_04_element_get_validate(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_04_element_get_validate(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert isinstance(element.validate, Validate)
     datafile_close(datafile)
 
 
-def test_03_05_element_get_set_initial_values(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_05_element_get_set_initial_values(tmp_path):
+    element, datafile = base_setup(tmp_path)
     initial_values = element.get_initial_values()  # start with default values
     assert isinstance(initial_values, dict)
     assert len(initial_values) == len(element._defaults)
@@ -77,8 +83,8 @@ def test_03_05_element_get_set_initial_values(filesystem):
     datafile_close(datafile)
 
 
-def test_03_06_element_set_default_values_constructor(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_06_element_set_default_values_constructor(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", element_values)
     initial_values = element.get_initial_values()
     assert isinstance(initial_values, dict)
@@ -92,8 +98,8 @@ def test_03_06_element_set_default_values_constructor(filesystem):
     datafile_close(datafile)
 
 
-def test_03_07_value_changed_flags(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_07_value_changed_flags(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element.set_initial_values(element_values)
     assert not element.have_values_changed()
     element.set_value_changed_flag("record_id", element_values["record_id"])
@@ -105,8 +111,8 @@ def test_03_07_value_changed_flags(filesystem):
     datafile_close(datafile)
 
 
-def test_03_08_get_set_properties_valid_flags(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_08_get_set_properties_valid_flags(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert not element.set_value_valid_flag("record_id", False)
     assert not element.get_value_valid_flag("record_id")
     assert element.set_value_valid_flag("remarks", True)
@@ -114,15 +120,15 @@ def test_03_08_get_set_properties_valid_flags(filesystem):
     datafile_close(datafile)
 
 
-def test_03_09_element_get_properties(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_09_element_get_properties(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert isinstance(element.get_properties(), dict)
     assert len(element.get_properties()) == 0
     datafile_close(datafile)
 
 
-def test_03_10_get_set_indiv_properties(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_10_get_set_indiv_properties(tmp_path):
+    element, datafile = base_setup(tmp_path)
     with pytest.raises(KeyError) as exc_info:
         # Fails because no property values set yet.
         value = element._get_property("record_id")
@@ -141,8 +147,8 @@ def test_03_10_get_set_indiv_properties(filesystem):
     datafile_close(datafile)
 
 
-def test_03_11_is_element_valid(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_11_is_element_valid(tmp_path):
+    element, datafile = base_setup(tmp_path)
     assert not element.is_element_valid()  # should be false because nothing is set
     element._set_property("record_id", 10)
     # bad key
@@ -164,8 +170,8 @@ def test_03_11_is_element_valid(filesystem):
     datafile_close(datafile)
 
 
-def test_03_12_update_property_flags(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_12_update_property_flags(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     element._set_property("record_id", 1)
     element._set_property("remarks", "")
@@ -190,8 +196,8 @@ def test_03_12_update_property_flags(filesystem):
     datafile_close(datafile)
 
 
-def test_03_13_named_get_value(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_13_named_get_value(tmp_path):
+    element, datafile = base_setup(tmp_path)
     with pytest.raises(KeyError) as exc_info:
         # not assigned so should raise KeyError
         value = element.get_record_id()
@@ -215,8 +221,8 @@ def test_03_13_named_get_value(filesystem):
     datafile_close(datafile)
 
 
-def test_03_14_set_functions(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_14_set_functions(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     # set element properties from 'element_values'
     #'record_id': 9876, required
@@ -243,8 +249,8 @@ def test_03_14_set_functions(filesystem):
     datafile_close(datafile)
 
 
-def test_03_15_element_set_properties(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_15_element_set_properties(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     set_results = element.set_properties(element_values)
     assert len(element.get_properties()) == 2
@@ -257,8 +263,8 @@ def test_03_15_element_set_properties(filesystem):
     datafile_close(datafile)
 
 
-def test_03_16_element_add(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_16_element_add(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     element.set_initial_values({"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
@@ -269,8 +275,8 @@ def test_03_16_element_add(filesystem):
     datafile_close(datafile)
 
 
-def test_03_17_element_read_db(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_17_element_read_db(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
     element_id = element.add()
@@ -292,8 +298,8 @@ def test_03_17_element_read_db(filesystem):
     datafile_close(datafile)
 
 
-def test_03_18_element_update(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_18_element_update(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements")
     element.set_initial_values({"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
@@ -311,8 +317,8 @@ def test_03_18_element_update(filesystem):
     datafile_close(datafile)
 
 
-def test_03_19_element_delete(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_19_element_delete(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     element.set_properties(element_values)
     element_id = element.add()
@@ -328,8 +334,8 @@ def test_03_19_element_delete(filesystem):
     datafile_close(datafile)
 
 
-def test_03_20_set_validated_property(filesystem):
-    element, datafile = base_setup(filesystem)
+def test_03_20_set_validated_property(tmp_path):
+    element, datafile = base_setup(tmp_path)
     element = Element(datafile, "elements")
     element.set_validated_property("test", True, "is_valid", "not_valid")
     assert element._get_property("test") == "is_valid"

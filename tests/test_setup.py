@@ -30,6 +30,8 @@ from lbk_library import DataFile, Element, ElementSet
 from lbk_library.gui import ComboBox, ErrorFrame, LineEdit
 
 datafile_name = "test_file.data"
+datafile_table = "elements"
+
 
 datafile_definition = [
     (
@@ -74,7 +76,7 @@ element_values = {
 
 def new_element(datafile, properties={}):
     # create a new Element from properties
-    element = Element(datafile, "elements")
+    element = Element(datafile, datafile_table)
     element.set_initial_values(properties)
     element.set_properties(properties)
     element.clear_value_changed_flags()
@@ -83,7 +85,7 @@ def new_element(datafile, properties={}):
 
 def better_element(datafile, properties={}):
     # create a new Element from properties
-    better_element = Element(datafile, "elements")
+    better_element = Element(datafile, datafile_table)
     better_element.set_initial_values(properties)
     better_element.set_properties(properties)
     better_element.clear_value_changed_flags()

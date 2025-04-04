@@ -19,6 +19,7 @@ from test_setup import (
     DummyForm,
     better_element,
     datafile_definition,
+    datafile_name,
     element_values,
     new_element,
     save_something,
@@ -36,9 +37,9 @@ from lbk_library.testing_support import (
 )
 
 
-def base_setup(filesystem, qtbot):
-    datafile_name = directories[2] + "/test_data.data"
-    filename = filesystem + "/" + datafile_name
+def base_setup(tmp_path, qtbot):
+    base_directory = filesystem(tmp_path)
+    filename = base_directory + "/" + datafile_name
     datafile = datafile_create(filename, datafile_definition)
     main = QMainWindow()
     dialog = Dialog(main, datafile, Dialog.VIEW_ELEMENT)
@@ -47,8 +48,8 @@ def base_setup(filesystem, qtbot):
     return (dialog, main, datafile)
 
 
-def test_09_01_class_type(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_01_class_type(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert isinstance(dialog, Dialog)
     assert isinstance(dialog, QDialog)
 
@@ -56,13 +57,13 @@ def test_09_01_class_type(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_02_get_datafile(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_02_get_datafile(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert dialog.get_datafile() == datafile
 
 
-def test_09_03_get_set_element(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_03_get_set_element(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert dialog.get_element() is None
     dialog.set_element(new_element(datafile))
     qtbot.addWidget(main)
@@ -72,8 +73,8 @@ def test_09_03_get_set_element(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_04_msg_info_close(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_04_msg_info_close(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     msg = "Testing Information Box"
     msg_box = dialog.message_information_close(msg)
     assert msg_box.icon() == QMessageBox.Icon.Information
@@ -86,8 +87,8 @@ def test_09_04_msg_info_close(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_05_msg_quest_changed_close(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_05_msg_quest_changed_close(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     changed_name = "description"
     msg = "Do you want to save the current changes before closing form?"
     msg_box = dialog.message_question_changed_close(changed_name)
@@ -103,8 +104,8 @@ def test_09_05_msg_quest_changed_close(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_06_msg_quest_change(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_06_msg_quest_change(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     changed_name = "description"
     msg = "Do you want to save the current changes before reloading form?"
     msg_box = dialog.message_question_changed(changed_name)
@@ -119,8 +120,8 @@ def test_09_06_msg_quest_change(filesystem, qtbot):
     )
 
 
-def test_09_07_msg_quest_no_changes(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_07_msg_quest_no_changes(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     title = "Form Entries Have Not Changed"
     msg = "Nothing has changed, so nothing to save"
     msg_box = dialog.message_question_no_changes()
@@ -131,8 +132,8 @@ def test_09_07_msg_quest_no_changes(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_08_msg_warning_selectio(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_08_msg_warning_selectio(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     name = "Source"
     action = "Save"
     msg = "Nothing to "
@@ -144,8 +145,8 @@ def test_09_08_msg_warning_selectio(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_09_msg_warning_failed(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_09_msg_warning_failed(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     operation = "Add"
     msg = "The " + operation + " operation failed for some reason."
     msg_box = dialog.message_warning_failed(operation)
@@ -156,8 +157,8 @@ def test_09_09_msg_warning_failed(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_10_msg_warning_invalid(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_10_msg_warning_invalid(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     error_msg = "3 Entries Missing"
     msg_box = dialog.message_warning_invalid()
     assert msg_box.icon() == QMessageBox.Icon.Warning
@@ -172,8 +173,8 @@ def test_09_10_msg_warning_invalid(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_11_action_cancel(filesystem, qtbot, mocker):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_11_action_cancel(tmp_path, qtbot, mocker):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     dialog.form = DummyForm(dialog)
     dialog.set_element(new_element(datafile, element_values))
     # dialog is unchanged, just close
@@ -212,8 +213,8 @@ def test_09_11_action_cancel(filesystem, qtbot, mocker):
     datafile_close(datafile)
 
 
-def test_09_12_set_combo_box_selections(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_12_set_combo_box_selections(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     dialog.form = DummyForm(dialog)
     ids = ["1", "3", "7", "10", "15", "60"]
     entry = "7"
@@ -229,8 +230,8 @@ def test_09_12_set_combo_box_selections(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_13_get_set_operation(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_13_get_set_operation(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert dialog.get_operation() == Dialog.VIEW_ELEMENT
     dialog.set_operation(Dialog.ADD_ELEMENT)
     assert dialog.get_operation() == Dialog.ADD_ELEMENT
@@ -241,8 +242,8 @@ def test_09_13_get_set_operation(filesystem, qtbot):
     datafile_close(datafile)
 
 
-def test_09_13_update_error_flag(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_13_update_error_flag(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
 
     dialog.form = DummyForm(dialog)
     assert dialog.error_count == 0
@@ -272,8 +273,8 @@ def test_09_13_update_error_flag(filesystem, qtbot):
     assert not dialog.form.line_edit.error
 
 
-def test_09_14_validate_dialog_entry(filesystem, qtbot):
-    dialog, main, datafile = base_setup(filesystem, qtbot)
+def test_09_14_validate_dialog_entry(tmp_path, qtbot):
+    dialog, main, datafile = base_setup(tmp_path, qtbot)
 
     dialog.form = DummyForm(dialog)
     dialog.form.line_edit.set_error_frame(dialog.form.edit_error_frame)

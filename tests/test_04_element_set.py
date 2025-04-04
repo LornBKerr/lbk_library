@@ -14,7 +14,12 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-from test_setup import datafile_name, element_definition, new_element
+from test_setup import (
+    datafile_definition,
+    datafile_name,
+    element_definition,
+    new_element,
+)
 
 from lbk_library import DataFile, Element, ElementSet
 from lbk_library.testing_support.core_setup import (
@@ -25,41 +30,44 @@ from lbk_library.testing_support.core_setup import (
 )
 
 
-def base_setup(filesystem):
-    filename = filesystem + "/" + datafile_name
-    datafile = datafile_create(filename, element_definition)
+def base_setup(tmp_path):
+    base_directory = filesystem(tmp_path)
+    filename = base_directory + "/" + datafile_name
+    datafile = datafile_create(filename, datafile_definition)
     element_set = ElementSet(datafile, "elements", Element)
+    print(type(element_set))
     return (filename, datafile, element_set)
 
 
-def test_04_01_ElementSet_constr():
-    datafile = DataFile()
-    element_set = ElementSet(datafile, "elements", Element)
+def test_04_01_ElementSet_constr(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
+    #    datafile = DataFile()
+    #    element_set = ElementSet(datafile, "elements", Element)
     assert isinstance(element_set, ElementSet)
     datafile_close(datafile)
 
 
-def test_04_02_ElementSet_get_datafile(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_02_ElementSet_get_datafile(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     assert element_set.get_datafile() == datafile
     datafile_close(datafile)
 
 
-def test_04_03_ElementSet_get_table(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_03_ElementSet_get_table(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     assert element_set.get_table() == "elements"
     datafile_close(datafile)
 
 
-def test_04_04_ElementSet_set_table(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_04_ElementSet_set_table(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     element_set.set_table("parts")
     assert element_set.get_table() == "parts"
     datafile_close(datafile)
 
 
-def test_04_05_ElementSet_get_properties_type(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_05_ElementSet_get_properties_type(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     element_set.set_property_set(None)
     prop_set = element_set.get_property_set()
     assert isinstance(prop_set, list)
@@ -67,8 +75,8 @@ def test_04_05_ElementSet_get_properties_type(filesystem):
     datafile_close(datafile)
 
 
-def test_04_06_ElementSet_constructor(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_06_ElementSet_constructor(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     remark = "Remark # "
     element_values = {"record_id": None, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
@@ -112,8 +120,8 @@ def test_04_06_ElementSet_constructor(filesystem):
     datafile_close(datafile)
 
 
-def test_04_07_insert_element(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_07_insert_element(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
@@ -131,8 +139,8 @@ def test_04_07_insert_element(filesystem):
     datafile_close(datafile)
 
 
-def test_04_08_append_element(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_08_append_element(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     remark = "Remark # "
     element_values = {"record_id": None, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
@@ -150,8 +158,8 @@ def test_04_08_append_element(filesystem):
     datafile_close(datafile)
 
 
-def test_04_09_get_element(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_09_get_element(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
     for i in range(5):  # put 5 entries in the table
@@ -167,8 +175,8 @@ def test_04_09_get_element(filesystem):
     datafile_close(datafile)
 
 
-def test_04_10_delete_element(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_10_delete_element(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     length = 5
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -186,8 +194,8 @@ def test_04_10_delete_element(filesystem):
     datafile_close(datafile)
 
 
-def test_04_11_build_option_list(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_11_build_option_list(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
     number_elements = 5
@@ -208,8 +216,8 @@ def test_04_11_build_option_list(filesystem):
     datafile_close(datafile)
 
 
-def test_04_12_iterator(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_12_iterator(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     element = Element(datafile, "elements")
     remark = "Remark # "
     element_values = {"record_id": 1, "remarks": remark}
@@ -226,6 +234,6 @@ def test_04_12_iterator(filesystem):
     datafile_close(datafile)
 
 
-def test_04_13_get_type(filesystem):
-    filename, datafile, element_set = base_setup(filesystem)
+def test_04_13_get_type(tmp_path):
+    filename, datafile, element_set = base_setup(tmp_path)
     assert element_set.get_type() == Element

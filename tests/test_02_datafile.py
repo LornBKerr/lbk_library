@@ -49,21 +49,21 @@ def test_02_02_sql_connect_invalid():
 
 
 def test_02_03_sql_connect_valid(tmp_path):
-    filename, data_file = base_setup(filesystem)
+    filename, data_file = base_setup(tmp_path)
     data_file.sql_connect(filename)
     assert data_file.sql_is_connected()
     datafile_close(data_file)
 
 
 def test_02_04_sql_close(tmp_path):
-    filename, data_file = base_setup(filesystem)
+    filename, data_file = base_setup(tmp_path)
     assert data_file.sql_is_connected()
     data_file.sql_close()
     assert not data_file.sql_is_connected()
 
 
-def test_02_05_sql_bad_statement(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_05_sql_bad_statement(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     with pytest.raises(sqlite3.Error) as exc_info:
         sql = "SELECT * FROM"  # missing table name
         result = datafile.sql_query(sql)
@@ -72,15 +72,15 @@ def test_02_05_sql_bad_statement(filesystem):
     datafile_close(datafile)
 
 
-def test_02_06_sql_validate_value_none(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_06_sql_validate_value_none(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_validate_value(None)
     assert result is None
     datafile_close(datafile)
 
 
-def test_02_07_sql_validate_value_bool(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_07_sql_validate_value_bool(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_validate_value(True)
     assert isinstance(result, int)
     assert result == 1
@@ -90,23 +90,23 @@ def test_02_07_sql_validate_value_bool(filesystem):
     datafile_close(datafile)
 
 
-def test_02_08_sql_validate_value_string(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_08_sql_validate_value_string(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_validate_value("a string")
     assert isinstance(result, str)
     assert result == "'a string'"
     datafile_close(datafile)
 
 
-def test_02_09_sql_nextid_none(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_09_sql_nextid_none(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_nextid(None)
     assert result == 0
     datafile_close(datafile)
 
 
-def test_02_10_sql_validate(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_10_sql_validate(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     assert datafile.sql_validate_value(None) is None
     assert datafile.sql_validate_value("test") == "'test'"
     assert datafile.sql_validate_value(10) == 10
@@ -115,45 +115,45 @@ def test_02_10_sql_validate(filesystem):
     datafile_close(datafile)
 
 
-def test_02_11_sql_fetchrow_none(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_11_sql_fetchrow_none(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_fetchrow(None)
     assert not result
     datafile_close(datafile)
 
 
-def test_02_12_sql_fetchrowset_none(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_12_sql_fetchrowset_none(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     result = datafile.sql_fetchrowset(None)
     assert len(result) == 0
     datafile_close(datafile)
 
 
-def test_02_13_sql_query_from_array_none(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_13_sql_query_from_array_none(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     assert datafile
     result = datafile.sql_query_from_array(None)
     assert result == ""
     datafile_close(datafile)
 
 
-def test_02_14_sql_query_from_array_bad_query(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_14_sql_query_from_array_bad_query(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     query = list()
     result = datafile.sql_query_from_array(query)
     assert not result
     datafile_close(datafile)
 
 
-def test_02_15_sql_query_from_array_bad_type(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_15_sql_query_from_array_bad_type(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     query = {"type": "GiveMe"}
     assert not datafile.sql_query_from_array(query)
     datafile_close(datafile)
 
 
-def test_02_16_sql_query_from_array_delete(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_16_sql_query_from_array_delete(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     value_set = {
         "record_id": None,
         "installed": False,
@@ -188,8 +188,8 @@ def test_02_16_sql_query_from_array_delete(filesystem):
     datafile_close(datafile)
 
 
-def test_02_17_sql_query_from_array_update(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_17_sql_query_from_array_update(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     value_set = {
         "record_id": None,
         "installed": False,
@@ -210,8 +210,8 @@ def test_02_17_sql_query_from_array_update(filesystem):
     datafile_close(datafile)
 
 
-def test_02_18_sql_query_from_array_select(filesystem):
-    filename, datafile = base_setup(filesystem)
+def test_02_18_sql_query_from_array_select(tmp_path):
+    filename, datafile = base_setup(tmp_path)
     value_set = {
         "record_id": None,
         "installed": False,
