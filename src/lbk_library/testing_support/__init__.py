@@ -33,6 +33,7 @@ Version:    1.0.1
 from .core_setup import (
     datafile_close,
     datafile_create,
+    datafile_open,
     directories,
     filesystem,
     load_datafile_table,
