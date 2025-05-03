@@ -23,7 +23,6 @@ from .datafile import DataFile
 from .element import Element
 from .element_set import ElementSet
 from .ini_file_parser import IniFileParser
-from .testing_support import core_setup
 from .validate import Validate
 
 file_version = "1.1.0"
