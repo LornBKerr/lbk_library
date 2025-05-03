@@ -26,7 +26,7 @@ changes = {
 
 class CellData:
     """
-    Holds the data for an individaul table cell.
+    Holds the data for an individual table cell.
 
     The table cell has 4 attributes (value, alignment, background, and
     tooltip). Default values for these attributes are None. These are
@@ -87,23 +87,29 @@ class TableModel(QAbstractTableModel):
                 default is QBrush(QColor("White")).
 
         """
-        self._data_set: list[list[dict[str, Any]]] = []
+        self.data_set: list[list[dict[str, Any]]] = []
         """The set of cell information to diaplay to display."""
-        self._header_titles: list[str] = header_titles
+        self.header_titles: list[str] = header_titles
         """ The set of Header Titles."""
         self.column_tooltips: list[str] = column_tooltips
         self.column_alignments: list[Qt.AlignmentFlag] = column_alignments
-        background: QBrush = background
+        self.background: QBrush = background
 
         super().__init__()
         self.load_cell_values(cell_values)
 
     def load_cell_values(self, cell_values: list[list[str]]) -> None:
-        """Load the cell values inot the dataset."""
+        """
+        Load the cell values inot the dataset.
+
+        Parameters:
+            cell_values  (list[list[str]]): The information to display in
+            the table formatted as a list of lists.
+        """
         for row in range(len(cell_values)):
-            self._data_set.append([])
+            self.data_set.append([])
             for column in range(len(cell_values[0])):
-                self._data_set[row].append(
+                self.data_set[row].append(
                     CellData(
                         cell_values[row][column],
                         self.column_alignments[column],
@@ -134,20 +140,20 @@ class TableModel(QAbstractTableModel):
         entry = None
         # handle the situation where number of data columns is less than
         # number of table columns.
-        if index.column() >= len(self._data_set[0]):
+        if index.column() >= len(self.data_set[0]):
             pass
 
         elif role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
-            entry = self._data_set[index.row()][index.column()].value
+            entry = self.data_set[index.row()][index.column()].value
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            entry = self._data_set[index.row()][index.column()].tooltip
+            entry = self.data_set[index.row()][index.column()].tooltip
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            entry = self._data_set[index.row()][index.column()].background
+            entry = self.data_set[index.row()][index.column()].background
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            entry = self._data_set[index.row()][index.column()].alignment
+            entry = self.data_set[index.row()][index.column()].alignment
 
         return entry
 
@@ -184,25 +190,25 @@ class TableModel(QAbstractTableModel):
         """
         success = False
 
-        # handle the situation where number data columns is less than
+        # Ignore the situation where number data columns is less than
         # number of table columns.
-        if index.column() >= len(self._data_set[0]):
+        if index.column() >= len(self.data_set[0]):
             success = True
 
         elif role == Qt.ItemDataRole.EditRole or role == Qt.ItemDataRole.DisplayRole:
-            self._data_set[index.row()][index.column()].value = value
+            self.data_set[index.row()][index.column()].value = value
             success = True
 
         elif role == Qt.ItemDataRole.ToolTipRole:
-            self._data_set[index.row()][index.column()].tooltip = value
+            self.data_set[index.row()][index.column()].tooltip = value
             success = True
 
         elif role == Qt.ItemDataRole.BackgroundRole:
-            self._data_set[index.row()][index.column()].background = value
+            self.data_set[index.row()][index.column()].background = value
             success = True
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            self._data_set[index.row()][index.column()].alignment = value
+            self.data_set[index.row()][index.column()].alignment = value
             success = True
 
         if success:
@@ -220,7 +226,7 @@ class TableModel(QAbstractTableModel):
         Returns:
             (int) number of rows in table.
         """
-        return len(self._data_set)
+        return len(self.data_set)
 
     def columnCount(self, index: QModelIndex = QModelIndex()) -> int:
         """
@@ -233,7 +239,7 @@ class TableModel(QAbstractTableModel):
         Returns:
             (int) number of columns in table.
         """
-        return len(self._header_titles)
+        return len(self.header_titles)
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         """
@@ -250,7 +256,7 @@ class TableModel(QAbstractTableModel):
             (Qt.ItemFlags) The flags for the specific cell.
         """
         flags = super().flags(index)
-        if self._header_titles[index.column()] != "Record Id":
+        if self.header_titles[index.column()] != "Record Id":
             flags = flags | Qt.ItemFlag.ItemIsEditable
         return flags
 
@@ -278,7 +284,7 @@ class TableModel(QAbstractTableModel):
         """
         entry = None
         if role == Qt.ItemDataRole.DisplayRole and section < self.columnCount():
-            entry = self._header_titles[section]
+            entry = self.header_titles[section]
         return entry
 
     def setHeaderData(
@@ -308,7 +314,7 @@ class TableModel(QAbstractTableModel):
         """
         success = False
         if role == Qt.ItemDataRole.DisplayRole:
-            self._header_titles[section] = value
+            self.header_titles[section] = value
             success = True
             self.headerDataChanged.emit(orientation, section, section)
         return success
@@ -332,8 +338,8 @@ class TableModel(QAbstractTableModel):
         self.beginInsertRows(parent, row, row + count - 1)
         count_added = 0
         while count_added < count:
-            self._data_set.insert(
-                row, [CellData() for i in range(len(self._header_titles))]
+            self.data_set.insert(
+                row, [CellData() for i in range(len(self.header_titles))]
             )
             count_added += 1
         success = True
@@ -344,13 +350,22 @@ class TableModel(QAbstractTableModel):
         self, first_row: int, count: int, parent: QModelIndex = QModelIndex()
     ) -> bool:
         """
-        Need to implement this to delete rows for the table.
+        Delete one or more rows into the table.
+
+        Parameters:
+            row (int): The zero based row number to insert the new rows.
+            count (int): the number (1 or greater) of new rows to insert,
+                default is 1.
+            parent (QModelIndex): The parent node of the row position to
+                insert, default is the empty index.
+        Returns:
+            (bool) True if the insert was successful, False if not.
         """
         success = False
         self.beginRemoveRows(parent, first_row, first_row + count)
         count_deleted = 0
         while count_deleted < count:
-            del self._data_set[first_row]
+            del self.data_set[first_row]
             count_deleted += 1
         success = True
         self.endRemoveRows()
