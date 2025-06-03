@@ -19,7 +19,7 @@ This package contains the following modules:
         Lists as one-line calls.
     TableModel extends QAbstractTableModel - Provides access to 
         QTableView derived tables.
-    tableWidgetIntItem extends QTableWidgetItem - Adds the capability of
+    TableWidgetIntItem extends QTableWidgetItem - Adds the capability of
         sorting a table on an column of integers.
 
 File:       __init__.py
