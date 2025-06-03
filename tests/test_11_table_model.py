@@ -26,9 +26,6 @@ from lbk_library.testing_support.core_setup import (
     load_datafile_table,
 )
 
-# from test_setup import datafile_definition, datafile_name
-
-
 header_titles = ["Record Id", "Name", "Species", "Tank Number"]
 tool_tips = ["Tool Tip 0", "Tool Tip 1", "Tool Tip 2", "Tool Tip 3"]
 cell_alignments = [
