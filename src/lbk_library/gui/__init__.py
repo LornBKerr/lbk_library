@@ -37,7 +37,7 @@ from .settings import Settings
 from .table_model import CellData, TableModel
 from .table_widget_int_item import TableWidgetIntItem
 
-file_version = "1.0.1"
+file_version = "1.1.0"
 changes = {
     "1.0.0": "Initial release",
     "1.0.1": "Added Version Info",
