@@ -16,9 +16,15 @@ var searchData=
   ['lbk_5flibrary_3a_3atesting_5fsupport_13',['testing_support',['../namespacelbk__library_1_1testing__support.html',1,'lbk_library']]],
   ['lbk_5flibrary_3a_3atesting_5fsupport_3a_3acore_5fsetup_14',['core_setup',['../namespacelbk__library_1_1testing__support_1_1core__setup.html',1,'lbk_library::testing_support']]],
   ['lbk_5flibrary_3a_3avalidate_15',['validate',['../namespacelbk__library_1_1validate.html',1,'lbk_library']]],
-  ['line_5fedit_2epy_16',['line_edit.py',['../line__edit_8py.html',1,'']]],
-  ['lineedit_17',['LineEdit',['../classlbk__library_1_1gui_1_1line__edit_1_1LineEdit.html',1,'lbk_library::gui::line_edit']]],
-  ['load_5fcell_5fvalues_18',['load_cell_values',['../classlbk__library_1_1gui_1_1table__model_1_1TableModel.html#a5478b4a8ba1270a2744d73c7a0f38082',1,'lbk_library::gui::table_model::TableModel']]],
-  ['load_5fdatafile_5ftable_19',['load_datafile_table',['../namespacelbk__library_1_1testing__support_1_1core__setup.html#a5a6a057ebbb0cddd95cfd5e7daafaf2d',1,'lbk_library::testing_support::core_setup']]],
-  ['long_5fstring_20',['long_string',['../namespacelbk__library_1_1testing__support_1_1core__setup.html#a886d6c799c9abec1c13101f91306757e',1,'lbk_library::testing_support::core_setup']]]
+  ['library_20collection_16',['A Project Library Collection.',['../md_README.html',1,'']]],
+  ['license_17',['license',['../namespacesetup.html#a8ed6f50a28bd6a8794f8e1153baa6de9',1,'setup']]],
+  ['line_5f1_5fvalue_18',['line_1_value',['../namespacetest__12__settings.html#a5d0908a54cf7b585ff3d4e5f478ad60e',1,'test_12_settings']]],
+  ['line_5fedit_19',['line_edit',['../classtest__setup_1_1DummyForm.html#a7d084ebd08b1d6270dbd83974fdaad4d',1,'test_setup::DummyForm']]],
+  ['line_5fedit_2epy_20',['line_edit.py',['../line__edit_8py.html',1,'']]],
+  ['lineedit_21',['LineEdit',['../classlbk__library_1_1gui_1_1line__edit_1_1LineEdit.html',1,'lbk_library::gui::line_edit']]],
+  ['load_5fcell_5fvalues_22',['load_cell_values',['../classlbk__library_1_1gui_1_1table__model_1_1TableModel.html#a5478b4a8ba1270a2744d73c7a0f38082',1,'lbk_library::gui::table_model::TableModel']]],
+  ['load_5fdatafile_5ftable_23',['load_datafile_table',['../namespacelbk__library_1_1testing__support_1_1core__setup.html#a5a6a057ebbb0cddd95cfd5e7daafaf2d',1,'lbk_library::testing_support::core_setup']]],
+  ['long_5fdescription_24',['long_description',['../namespacesetup.html#a4cda9dbfb952875376a0749fe08a5bde',1,'setup']]],
+  ['long_5fdescription_5fcontent_5ftype_25',['long_description_content_type',['../namespacesetup.html#a3796ea10c998699d07d391414ff5d720',1,'setup']]],
+  ['long_5fstring_26',['long_string',['../namespacelbk__library_1_1testing__support_1_1core__setup.html#a886d6c799c9abec1c13101f91306757e',1,'lbk_library::testing_support::core_setup']]]
 ];

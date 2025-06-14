@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['long_5fstring_0',['long_string',['../namespacelbk__library_1_1testing__support_1_1core__setup.html#a886d6c799c9abec1c13101f91306757e',1,'lbk_library::testing_support::core_setup']]]
+  ['include_5fpackage_5fdata_0',['include_package_data',['../namespacesetup.html#a35139105b25ef46629d31888bad595d8',1,'setup']]],
+  ['install_5frequires_1',['install_requires',['../namespacesetup.html#abead4f26b530856f858f0d44c7cf2588',1,'setup']]]
 ];

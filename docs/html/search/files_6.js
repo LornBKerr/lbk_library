@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['settings_2epy_0',['settings.py',['../settings_8py.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../README_8md.html',1,'']]]
 ];

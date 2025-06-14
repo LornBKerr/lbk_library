@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['settings_0',['Settings',['../classlbk__library_1_1gui_1_1settings_1_1Settings.html',1,'lbk_library::gui::settings']]]
+  ['lineedit_0',['LineEdit',['../classlbk__library_1_1gui_1_1line__edit_1_1LineEdit.html',1,'lbk_library::gui::line_edit']]]
 ];

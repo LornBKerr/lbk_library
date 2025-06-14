@@ -1,9 +1,15 @@
 <map id="lbk_library.element.Element._get_property" name="lbk_library.element.Element._get_property">
-<area shape="rect" id="Node000001" title=" " alt="" coords="525,39,710,81"/>
-<area shape="rect" id="Node000002" href="$classlbk__library_1_1element_1_1Element.html#a905d974cf6ce59d1eb24042ec9cc17ca" title=" " alt="" coords="274,5,477,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="509,48,477,43,478,38,510,42"/>
-<area shape="rect" id="Node000004" href="$classlbk__library_1_1element_1_1Element.html#a2ba8bbbe9cd785249ae4f22f66202a8f" title=" " alt="" coords="274,72,477,115"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="510,78,478,82,477,77,509,72"/>
-<area shape="rect" id="Node000003" href="$classlbk__library_1_1element_1_1Element.html#ab412c6729f85985475e2c41513d55d5d" title=" " alt="" coords="5,13,226,40"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,29,226,29,226,24,258,24"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="525,123,710,165"/>
+<area shape="rect" id="Node000002" href="$classtest__setup_1_1Fish.html#a7fb68fee18b0f0f9550fcce0fc3b47a7" title=" " alt="" coords="289,5,462,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="579,115,532,79,476,46,445,35,447,30,478,42,534,74,582,110"/>
+<area shape="rect" id="Node000003" href="$classlbk__library_1_1element_1_1Element.html#a905d974cf6ce59d1eb24042ec9cc17ca" title=" " alt="" coords="274,56,477,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="523,121,455,102,456,97,524,116"/>
+<area shape="rect" id="Node000005" href="$classlbk__library_1_1element_1_1Element.html#a2ba8bbbe9cd785249ae4f22f66202a8f" title=" " alt="" coords="274,123,477,165"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="509,147,478,147,478,141,509,141"/>
+<area shape="rect" id="Node000006" href="$classtest__setup_1_1Fish.html#ad6b87e65b81dbb036467bbed2ddf4788" title=" " alt="" coords="309,189,442,232"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="524,172,443,195,442,190,522,167"/>
+<area shape="rect" id="Node000007" href="$classtest__setup_1_1Fish.html#a6bcee86aabe41aca5a5f4f6162b024c2" title=" " alt="" coords="309,256,442,299"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="581,177,534,213,478,246,444,261,442,256,476,242,531,208,578,173"/>
+<area shape="rect" id="Node000004" href="$classlbk__library_1_1element_1_1Element.html#ab412c6729f85985475e2c41513d55d5d" title=" " alt="" coords="5,64,226,91"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="258,80,226,80,226,75,258,75"/>
 </map>

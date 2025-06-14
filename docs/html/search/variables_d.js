@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['validate_0',['validate',['../classlbk__library_1_1element_1_1Element.html#acab40881e3137b93b7ee3a1158bc6454',1,'lbk_library::element::Element']]],
-  ['value_1',['value',['../classlbk__library_1_1gui_1_1table__model_1_1CellData.html#a070b7405f51834c17b65bad81c0ed5d6',1,'lbk_library::gui::table_model::CellData']]],
-  ['view_5felement_2',['VIEW_ELEMENT',['../classlbk__library_1_1gui_1_1dialog_1_1Dialog.html#a89cc2850b9f5b8477bc04ff21bcf6209',1,'lbk_library::gui::dialog::Dialog']]]
+  ['required_0',['REQUIRED',['../classlbk__library_1_1validate_1_1Validate.html#a5f7401af5f3acb58af2fcf17978bf2b1',1,'lbk_library::validate::Validate']]]
 ];
