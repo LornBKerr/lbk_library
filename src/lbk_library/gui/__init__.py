@@ -15,9 +15,9 @@ This package contains the following modules:
         member to indicate an error.
     LineEdit extends QLineEdit - Emits the 'editingFinished' signal when
         the focus is lost.
-    Settings extends QSettings -Adds functionality to set and retrieve 
+    Settings extends QSettings -Adds functionality to set and retrieve
         Lists as one-line calls.
-    TableModel extends QAbstractTableModel - Provides access to 
+    TableModel extends QAbstractTableModel - Provides access to
         QTableView derived tables.
     TableWidgetIntItem extends QTableWidgetItem - Adds the capability of
         sorting a table on an column of integers.
@@ -41,5 +41,5 @@ file_version = "1.1.0"
 changes = {
     "1.0.0": "Initial release",
     "1.0.1": "Added Version Info",
-    "1.1.0": "Added TableModel and Settings to the set of classes."
+    "1.1.0": "Added TableModel and Settings to the set of classes.",
 }

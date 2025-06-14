@@ -10,8 +10,6 @@ License:    MIT, see file LICENSE
 import os
 import sys
 
-# from copy import deepcopy
-
 src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
@@ -19,17 +17,12 @@ if src_path not in sys.path:
 from PySide6.QtCore import QSettings
 
 from lbk_library.gui import Settings
-from lbk_library.testing_support.core_setup import (  # datafile_close,; datafile_create,; load_datafile_table,
-    filesystem,
-)
-
-# from PySide6.QtGui import QBrush, QColor
-
+from lbk_library.testing_support.core_setup import filesystem
 
 line_1_value = "line 1 text."
 
 
-def setup_table_model(tmp_path):
+def setup(tmp_path):
     base_directory = filesystem(tmp_path)
     config_dir = base_directory + "/" + ".config"
     settings = Settings("Test Config", "test_config")
@@ -39,7 +32,7 @@ def setup_table_model(tmp_path):
 
 
 def test_12_01_class_type(tmp_path):
-    settings, config_dir = setup_table_model(tmp_path)
+    settings, config_dir = setup(tmp_path)
 
     assert isinstance(settings, Settings)
     assert isinstance(settings, QSettings)
@@ -47,8 +40,7 @@ def test_12_01_class_type(tmp_path):
 
 
 def test_12_02_write_read_array(tmp_path):
-    settings, config_dir = setup_table_model(tmp_path)
-
+    settings, config_dir = setup(tmp_path)
     old_array = ["a", "b", "asd"]
 
     # write the array

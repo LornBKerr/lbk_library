@@ -10,7 +10,7 @@ Version:    1.0.0
 
 from typing import Any
 
-from PySide6.QtCore import QObject, QSettings
+from PySide6.QtCore import QSettings
 
 file_name = "settings.py"
 file_version = "1.0.0"
@@ -25,10 +25,6 @@ class Settings(QSettings):
 
     All other aspects of QSettings are unchanged.
     """
-
-    def __init__(self, organization: str, application: str, parent: QObject = None):
-        """Initalize the object."""
-        super().__init__(organization, application, parent)
 
     def write_list(self, values: list[Any], prefix: str, size: int = -1):
         """
@@ -52,8 +48,8 @@ class Settings(QSettings):
 
         Parameters:
             prefix (str): The QSettings key to hold the list.
-            size (int): the length of the list; defaults to -1; defaults to -1 to be
-                automatically determined).
+            size (int): the length of the list; defaults to -1; defaults
+                to -1 to be automatically determined).
         """
         new_list = []
         size = self.beginReadArray(prefix)
