@@ -53,7 +53,7 @@ the 'record_index' and 'remarks' fields used in all database records,
 element default values and validity checks for dialog entries, and a
 number of canned message box dialogs.
 
-The **gui.ErrorFram** class extends the standard QFrame to provide a simple
+The **gui.ErrorFrame** class extends the standard QFrame to provide a simple
 container for a QLineEdit or QComboBox to indicate an entry error with a
 2px Red Border on error without dealing with stylesheets or palette
 changes on the contained widget. 
