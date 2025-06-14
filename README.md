@@ -24,6 +24,7 @@ Package **lbk_library.gui** has the gui related classes:
 | gui.TableModel | Handle the storage and manipulation of data for a QTableView |
 | gui.Settings | Extend QtCore.QSettings to make retrieving a List from settings easier|
 
+Package **lbk_library.core_setup** provides a number of values and functions<BR>to help setup the general test environment:
 
 
 The **DataFile** class supplies the required minimum functionality to use
@@ -66,12 +67,29 @@ The **gui.LineEdit** class extends the standard QLineEdit to include
 handling the "FocusOut' event to emit the 'editingFinished' signal to
 enable error checking on lost of focus.
 
-The **gui.TableModel** is used to display a 2-dimensional array of
+The **gui.TableModel** class is used to display a 2-dimensional array of
 tableview cell information. There is no error checking of values. Each
 cell information set is a dict of values for cell value, alignment,
 background color, and tooltip.
 
-The **gui.Settings** extends QtCore.QSettings to make saving and
+The **gui.Settings** class extends QtCore.QSettings to make saving and
 retrieving a List from the QSettings object easier.
 
+The **core_settings** module provides a number of values and functions to help setup the
+general test environment for different projects. All test modules draw
+on a varying selection of these values.
+
+    Values Available:
+      test_string - A string for testing where a string is needed.
+    l  ong_string - A string exceeding the base 255 character upper limit.
+
+    Filesystem, Directories and associated files:
+      directories (list): List of directories for the filesystem.
+      filesystem(tmp_path): Pytest fixture to generate a temporary filesystem.
+    Data File Handling:
+      datafile_open: Function to open a database in temporary file system returning a reference to the database.
+      datafile_create: Function to create a new database returning a reference to the new database.
+      datafile_close: function to close the open datafile.
+      load_datafile_table: Function to load a specific datafile table.
+      load_all_datafile_tables(datafile) : Function to load all datafile tables.
 
