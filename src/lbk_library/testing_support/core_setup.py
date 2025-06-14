@@ -14,7 +14,7 @@ Filesystem, Directories and associated files:
     filesystem(tmp_path): Pytest fixture to generate a temporary
         filesystem.
 Data File Handling:
-    datafile_open(: Function to open a database in temporary file system
+    datafile_open: Function to open a database in temporary file system
         returning a reference to the database.
     datafile_create: Function to create a new database returning a
         reference to the new database.
