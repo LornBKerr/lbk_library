@@ -43,15 +43,26 @@ def test_12_02_write_read_array(tmp_path):
     settings, config_dir = setup(tmp_path)
     old_array = ["a", "b", "asd"]
 
-    # write the array
-    settings.beginGroup("array")
-    settings.write_list(old_array, "test")
-    settings.endGroup()
-
-    settings.beginGroup("array")
+    settings.write_list("test", old_array)
     new_array = settings.read_list("test")
-    settings.endGroup()
-
     assert len(new_array) == len(old_array)
     for i in range(len(old_array)):
         assert new_array[i] == old_array[i]
+
+
+
+def test_12_03_boolean_value(tmp_path):
+    settings, config_dir = setup(tmp_path)
+    value = 0
+    result = settings.set_bool_value("test", value)
+    assert not result
+    assert not settings.bool_value("test")
+
+    for value in (True, "1", 1, True, "True", "true"):
+        assert settings.set_bool_value("test", value)
+        assert settings.bool_value("test")
+
+    for value in (None, "False", "me"):
+        assert not settings.bool_value("new_test")
+
+       
