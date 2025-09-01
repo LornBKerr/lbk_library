@@ -63,8 +63,7 @@ class Dialog(QDialog):
         self.error_count: int = 0
         """ The count of outstanding errors on the dialog form."""
         self.__operation: int = operation
-        """The current editing operation, one of ADD_ELEMENT,
-            EDIT_ELEMENT or VIEW_ELEMENT."""
+        """The current editing operation, {ADD, EDIT, VIEW}_ELEMENT"""
         self.form: QDialog
         """The gui form for this dialog."""
 
