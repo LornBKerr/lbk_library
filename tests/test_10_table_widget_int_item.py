@@ -28,7 +28,7 @@ def test_10_01_constructor():
     assert int_table_widget.type() == 1001
 
 
-def test_10_02_less_thane():
+def test_10_02_less_than():
     role = Qt.ItemDataRole.DisplayRole
     test_list = []
     widget_1 = TableWidgetIntItem(10)
