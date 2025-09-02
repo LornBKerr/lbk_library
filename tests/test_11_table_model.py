@@ -124,6 +124,7 @@ def test_11_03_load_cell_values(tmp_path):
             assert model.data_set[row][column].alignment == cell_alignments[column]
             assert model.data_set[row][column].background == normal_background
             assert model.data_set[row][column].tooltip == tool_tips[column]
+    datafile_close(datafile)
 
 
 def test_11_04_rowCount(tmp_path):
@@ -272,3 +273,4 @@ def test_11_12_setData(tmp_path):
         model.data(test_index, Qt.ItemDataRole.TextAlignmentRole)
         == Qt.AlignmentFlag.AlignRight
     )
+    datafile_close(datafile)
