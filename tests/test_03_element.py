@@ -14,6 +14,8 @@ src_path = os.path.join(os.path.realpath("."), "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
+import tracemalloc
+
 import pytest
 from test_setup import (
     datafile_definition,
@@ -22,12 +24,10 @@ from test_setup import (
     element_values,
 )
 
-from lbk_library import DataFile, Element, Validate
+from lbk_library import Element, Validate
 from lbk_library.testing_support.core_setup import (
     datafile_close,
     datafile_create,
-    datafile_open,
-    directories,
     filesystem,
 )
 
@@ -54,7 +54,6 @@ def test_03_02_element_get_datafile(tmp_path):
 
 def test_03_03_element_get_table(tmp_path):
     element, datafile = base_setup(tmp_path)
-    element = Element(datafile, "elements")
     assert element.get_table() == "elements"
     datafile_close(datafile)
 
@@ -281,6 +280,7 @@ def test_03_17_element_read_db(tmp_path):
     element.set_properties(element_values)
     element_id = element.add()
     assert element_id == 1
+
     # read db for existing element
     element2 = Element(datafile, "elements", {"record_id": 0, "remarks": ""})
     element2.get_properties_from_datafile("record_id", 1)
@@ -343,3 +343,4 @@ def test_03_20_set_validated_property(tmp_path):
     element.set_validated_property("test", False, "is_valid", "not_valid")
     assert element._get_property("test") != "is_valid"
     assert element._get_property("test") == "not_valid"
+    datafile_close(datafile)
