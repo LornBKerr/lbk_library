@@ -50,7 +50,6 @@ def test_12_02_write_read_array(tmp_path):
         assert new_array[i] == old_array[i]
 
 
-
 def test_12_03_boolean_value(tmp_path):
     settings, config_dir = setup(tmp_path)
     value = 0
@@ -64,5 +63,3 @@ def test_12_03_boolean_value(tmp_path):
 
     for value in (None, "False", "me"):
         assert not settings.bool_value("new_test")
-
-       
