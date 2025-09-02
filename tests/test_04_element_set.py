@@ -41,8 +41,6 @@ def base_setup(tmp_path):
 
 def test_04_01_ElementSet_constr(tmp_path):
     filename, datafile, element_set = base_setup(tmp_path)
-    #    datafile = DataFile()
-    #    element_set = ElementSet(datafile, "elements", Element)
     assert isinstance(element_set, ElementSet)
     datafile_close(datafile)
 
