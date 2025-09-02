@@ -52,14 +52,13 @@ def test_09_01_class_type(tmp_path, qtbot):
     dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert isinstance(dialog, Dialog)
     assert isinstance(dialog, QDialog)
-
-    #    assert dialog.error_count == 0
     datafile_close(datafile)
 
 
 def test_09_02_get_datafile(tmp_path, qtbot):
     dialog, main, datafile = base_setup(tmp_path, qtbot)
     assert dialog.get_datafile() == datafile
+    datafile_close(datafile)
 
 
 def test_09_03_get_set_element(tmp_path, qtbot):
@@ -118,6 +117,7 @@ def test_09_06_msg_quest_change(tmp_path, qtbot):
         | QMessageBox.StandardButton.No
         | QMessageBox.StandardButton.Cancel
     )
+    datafile_close(datafile)
 
 
 def test_09_07_msg_quest_no_changes(tmp_path, qtbot):
@@ -242,7 +242,7 @@ def test_09_13_get_set_operation(tmp_path, qtbot):
     datafile_close(datafile)
 
 
-def test_09_13_update_error_flag(tmp_path, qtbot):
+def test_09_14_update_error_flag(tmp_path, qtbot):
     dialog, main, datafile = base_setup(tmp_path, qtbot)
 
     dialog.form = DummyForm(dialog)
@@ -271,9 +271,10 @@ def test_09_13_update_error_flag(tmp_path, qtbot):
     assert dialog.form.line_edit.toolTip() == current_tooltip
     assert dialog.error_count == 0
     assert not dialog.form.line_edit.error
+    datafile_close(datafile)
 
 
-def test_09_14_validate_dialog_entry(tmp_path, qtbot):
+def test_09_15_validate_dialog_entry(tmp_path, qtbot):
     dialog, main, datafile = base_setup(tmp_path, qtbot)
 
     dialog.form = DummyForm(dialog)
@@ -328,3 +329,4 @@ def test_09_14_validate_dialog_entry(tmp_path, qtbot):
     assert result["valid"]
     assert result["entry"] == 3
     assert dialog.error_count == 0
+    datafile_close(datafile)
