@@ -56,3 +56,8 @@ match-dir='./src/*'
 
 [tool.setuptools_scm]
 write_to = "src/lbk_library/_version.py"
+
+[tool.pytest]
+pythonpath = ''
+addopts = "--cov-report term-missing --cov=./src/ --cov-context=test"
+filterwarnings = "ignore::ResourceWarning"
