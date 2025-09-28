@@ -20,11 +20,11 @@ if src_path not in sys.path:
 from test_setup import datafile_definition, datafile_name
 
 from lbk_library import DataFile
-
-# ; datafile_open,; directories,;
 from lbk_library.testing_support.core_setup import (
     datafile_close,
     datafile_create,
+    datafile_open,
+    directories,
     filesystem,
 )
 
@@ -39,7 +39,7 @@ def base_setup(tmp_path):
 def test_02_01_datafile_constructor():
     data_file = DataFile()
     assert isinstance(data_file, DataFile)
-    datafile_close(data_file)
+    data_file.sql_close()
 
 
 def test_02_02_sql_connect_invalid():
@@ -47,13 +47,15 @@ def test_02_02_sql_connect_invalid():
     # invalid connection because of invalid path
     connection = data_file.sql_connect("./invalid_path/nn.db")
     assert not connection
-    datafile_close(data_file)
+    data_file.sql_close()
 
 
 def test_02_03_sql_connect_valid(tmp_path):
     filename, data_file = base_setup(tmp_path)
+    data_file.sql_connect(filename)
     assert data_file.sql_is_connected()
     datafile_close(data_file)
+    data_file.sql_close()
 
 
 def test_02_04_sql_close(tmp_path):
@@ -333,3 +335,4 @@ def test_02_19_new_db_file(tmpdir):
     expected_names = ["record_id", "remarks", "installed"]
     for col in column_names:
         assert col["name"] in expected_names
+    datafile_close(datafile)
