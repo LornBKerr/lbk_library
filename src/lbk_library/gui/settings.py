@@ -28,7 +28,7 @@ class Settings(QSettings):
     written ensuring that the values are either True or False
     automatically string and numeric variants of true and false.
 
-    Dictionaries can be converted QSettings object and QSettings objects
+    Dictionaries can be converted to QSettings object and QSettings objects
     can be converted to dictionaries.
 
     All other aspects of QSettings are unchanged.
