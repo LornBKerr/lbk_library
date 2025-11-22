@@ -1,9 +1,0 @@
-<map id="test_setup.Fish" name="test_setup.Fish">
-<area shape="rect" id="Node000001" title=" " alt="" coords="140,172,252,199"/>
-<area shape="rect" id="Node000002" href="$classlbk__library_1_1element_1_1Element.html" title=" " alt="" coords="105,96,286,123"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,138,198,172,193,172,193,138"/>
-<area shape="rect" id="Node000003" href="$classlbk__library_1_1validate_1_1Validate.html" title=" " alt="" coords="5,5,184,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="122,40,183,93,180,97,118,44"/>
-<area shape="rect" id="Node000004" href="$classlbk__library_1_1datafile_1_1DataFile.html" title=" " alt="" coords="208,5,386,32"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="273,44,212,97,209,93,270,40"/>
-</map>

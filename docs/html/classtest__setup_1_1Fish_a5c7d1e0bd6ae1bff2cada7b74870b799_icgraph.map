@@ -1,6 +1,0 @@
-<map id="test_setup.Fish.set_tank_number" name="test_setup.Fish.set_tank_number">
-<area shape="rect" id="Node000001" title=" " alt="" coords="187,29,320,72"/>
-<area shape="rect" id="Node000002" href="$classtest__setup_1_1Fish.html#a8ccef7bc1bd9d8cec3fe456676aab18e" title=" " alt="" coords="5,29,139,72"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,53,139,53,139,48,171,48"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="101,16,90,10,72,8,55,10,45,14,41,21,42,28,37,29,36,19,41,10,54,5,72,3,92,5,103,11"/>
-</map>
