@@ -1,0 +1,12 @@
+<map id="lbk_library.gui.dialog.Dialog" name="lbk_library.gui.dialog.Dialog">
+<area shape="rect" id="Node000001" title=" " alt="" coords="32,187,212,213"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,96,74,123"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,133,112,184,108,188,60,136"/>
+<area shape="rect" id="Node000003" href="$classlbk__library_1_1datafile_1_1DataFile.html" title=" " alt="" coords="33,5,211,32"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,47,125,186,120,186,120,47"/>
+<area shape="rect" id="Node000004" href="$classlbk__library_1_1element_1_1Element.html" title=" " alt="" coords="206,96,388,123"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="162,37,273,93,271,98,160,42"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,132,148,188,146,184,257,128"/>
+<area shape="rect" id="Node000005" href="$classlbk__library_1_1validate_1_1Validate.html" title=" " alt="" coords="236,5,414,32"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="319,48,303,96,298,95,314,46"/>
+</map>
